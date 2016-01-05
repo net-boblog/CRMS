@@ -53,6 +53,5 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <tx:annotation-driven transaction-manager="txManager"/>
-    <!--<import resource="spring-mvc.xml" />-->
-    <!--<import resource="activiti-context.xml"/>-->
+    <import resource="activiti-context.xml"/>
 </beans>
