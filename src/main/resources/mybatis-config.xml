@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="com.amazingfour.crms.domain.Article" alias="Article"/>
-
+        <!--<typeAlias type="com.amazingfour.crms.domain.Article" alias="Article"/>-->
+        <package name="com.amazingfour.crms.domain"/>
     </typeAliases>
 
     <!--<mappers>-->

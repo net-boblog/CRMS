@@ -16,8 +16,9 @@
 <script>
   //custom select box
 
-  $(function () {
+  /*$(function () {
+    alert("style");
     $('select.styled').customSelect();
-  });
+  });*/
 
 </script>

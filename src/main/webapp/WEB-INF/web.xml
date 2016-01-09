@@ -28,6 +28,12 @@
         <!-- struts习惯使用/*，在springmvc不管用 -->
         <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
+    <!--初始化域名信息-->
+    <filter>
+        <filter-name>initFilter</filter-name>
+        <filter-class>com.amazingfour.common.utils.InitFilter</filter-class>
+    </filter>
+    <!--首页设置-->
     <welcome-file-list>
         <welcome-file>login.html</welcome-file>
     </welcome-file-list>
