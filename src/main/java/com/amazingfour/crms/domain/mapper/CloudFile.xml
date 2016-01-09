@@ -17,4 +17,43 @@
         insert into cloudfile(file_name,file_url,file_date,file_descript,file_state)
         values(#{fileName},#{fileUrl},#{fileDate},#{fileDescript},#{fileState})
     </insert>
+
+    <!-- 查找文件 -->
+    <select id="find" parameterType="Map" resultMap="CloudFileResult">
+        select * from cloudfile
+
+        <if test="fileName!=null">
+            where file_name like '%${fileName}%'
+        </if>
+
+        <if test="start!=null and size!=null">  <!-- start=起始页 size=叶容量 -->
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <!-- 查询文件数量 -->
+    <select id="count" parameterType="CloudFile" resultType="Integer">
+        select count(*) from cloudfile
+        <if test="fileName!=null">
+            where file_name like '%${fileName}%'
+        </if>
+    </select>
+
+    <!-- 根据ID查找一个文件 -->
+    <select id="findById" parameterType="Long" resultMap="CloudFileResult">
+        select * from cloudfile
+        where file_id=#{fileId}
+    </select>
+
+    <!-- 删除文件 -->
+    <delete id="delete" parameterType="Long">  <!-- 不需要指明返回类型 自动返回删除行数或者是异常信息 -->
+        delete from cloudfile where file_id=#{fileId}
+    </delete>
+
+    <!-- 更新文件 -->
+    <update id="update" parameterType="CloudFile">
+        update cloudfile set
+        file_name=#{fileName},file_url=#{fileUrl},file_date=#{fileDate},file_descript=#{fileDescript},file_state=#{fileState}
+        where file_id=#{fileId}
+    </update>
 </mapper>
