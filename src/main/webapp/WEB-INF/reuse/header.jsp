@@ -4,7 +4,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
     </div>
     <!--logo start-->
-    <a href="index.html" class="logo"><b>DASHGUM FREE</b></a>
+    <a href="index.html" class="logo"><b>云平台资源管理系统</b></a>
     <!--logo end-->
     <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -152,7 +152,8 @@
     </div>
     <div class="top-menu">
         <ul class="nav pull-right top-menu">
-            <li><a class="logout" href="login.html">Logout</a></li>
+            <li><a class="logout" href="#">修改密码</a></li>
+            <li><a class="logout" href="login.html">退出登录</a></li>
         </ul>
     </div>
 </header>

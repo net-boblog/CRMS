@@ -11,25 +11,45 @@
             <h5 class="centered">Marcel Newman</h5>
 
             <li class="mt">
-                <a href="index.html">
+                <a id="userMainId" href="index.html">
+                    <i class="fa fa-user"></i>
+                    <span>用户管理</span>
+                </a>
+            </li>
+
+            <li class="sub">
+                <a id="roleMainId" href="index.html">
                     <i class="fa fa-dashboard"></i>
-                    <span>Dashboard</span>
+                    <span>角色管理</span>
+                </a>
+            </li>
+
+            <li class="sub">
+                <a id="authorMainId" href="index.html">
+                    <i class="fa fa-cogs"></i>
+                    <span>角色权限管理</span>
+                </a>
+            </li>
+
+            <li class="sub">
+                <a id="fileMainId" href="/filec/init.htm">
+                    <i class="fa fa-desktop"></i>
+                    <span>视频管理</span>
                 </a>
             </li>
 
             <li class="sub-menu">
-                <a href="javascript:;">
-                    <i class="fa fa-desktop"></i>
-                    <span>UI Elements</span>
+                <a id="workMainId" href="javascript:;">
+                    <i class="fa fa-book"></i>
+                    <span>审核流程</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="general.html">General</a></li>
-                    <li><a href="buttons.html">Buttons</a></li>
-                    <li><a href="panels.html">Panels</a></li>
+                    <li><a href="general.html">活动任务</a></li>
+                    <li><a href="buttons.html">历史任务</a></li>
                 </ul>
             </li>
 
-            <li class="sub-menu">
+            <%--<li class="sub-menu">
                 <a href="javascript:;">
                     <i class="fa fa-cogs"></i>
                     <span>Components</span>
@@ -79,7 +99,7 @@
                     <li><a href="morris.html">Morris</a></li>
                     <li><a href="chartjs.html">Chartjs</a></li>
                 </ul>
-            </li>
+            </li>--%>
 
         </ul>
         <!-- sidebar menu end-->

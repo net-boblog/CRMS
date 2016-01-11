@@ -6,17 +6,27 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>上传视频页面</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keyword" content="">
+
+  <title>上传视频页面</title>
+  <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 </head>
+
 <body>
 <form id="fileForm">
   <table class="table table-bordered table-striped table-condensed">
     <tbody>
     <tr>
       <th scope="row">文件名称：</th>
-      <td><input id="fileNameId" type="text" name="fileName" value="" placeholder="请输入文件名称" required></td>
+      <td><input id="fileNameId" class="form-control" type="text" name="fileName" value="" placeholder="请输入文件名称" required></td>
     </tr>
     <tr>
       <th scope="row">上传文件：</th>
@@ -43,7 +53,7 @@
     </tbody>
   </table>
 </form>
-<a href="${url}/login.html">首页</a>
+
 <%--<div id="container">
   <a class="btn btn-default btn-lg " id="pickfiles" href="#" >
     <i class="glyphicon glyphicon-plus"></i>
