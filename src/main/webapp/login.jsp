@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -8,21 +8,24 @@
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
     <title>DASHGUM - Bootstrap Admin Template</title>
+    <!-- 引入全局css样式 -->
+    <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 
-    <!-- Bootstrap core CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <!--external css-->
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        
-    <!-- Custom styles for this template -->
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/style-responsive.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	  <script type="text/javascript">
+		  function checkForm(){
+			  var userName=document.getElementById("userName").value;
+			  var password=document.getElementById("password").value;
+			  if(userName==null || userName==""){
+				  document.getElementById("login_err").innerHTML="用户名不能为空";
+				  return false;
+			  }
+			  if(password==null || password==""){
+				  document.getElementById("login_err").innerHTML="密码不能为空";
+				  return false;
+			  }
+			  return true;
+		  }
+	  </script>
   </head>
 
   <body>
@@ -34,15 +37,20 @@
 	  <div id="login-page">
 	  	<div class="container">
 	  	
-		      <form class="form-login" action="/home/doLogin.htm">
+		      <form class="form-login" action="/user/login.htm">
 		        <h2 class="form-login-heading">用户登录</h2>
 		        <div class="login-wrap">
-		            <input type="text" class="form-control" placeholder="请输入用户名" autofocus>
+
+					<div>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="login_err" class="sty_txt2">${errorMsg }${errorMsg1 }</span>
+					</div>
+
+		            <input type="text" class="form-control" id="userName" name="userName" value="${user.userName }" placeholder="请输入用户名" autofocus>
 		            <br>
-		            <input type="password" class="form-control" placeholder="请输入密码">
+		            <input type="password" class="form-control" id="password"  name="password"  value="${user.password }" placeholder="请输入密码">
 		            <label class="checkbox">
 		                <span class="pull-right">
-		                    <a data-toggle="modal" href="login.html#myModal"> 忘记密码?</a>
+		                    <a data-toggle="modal" href="login.jsp#myModal"> 忘记密码?</a>
 		
 		                </span>
 		            </label>
@@ -95,6 +103,9 @@
     <script>
         $.backstretch("assets/img/login-bg.jpg", {speed: 500});
     </script>
+	  <%
+		  session.removeAttribute("errorMsg1");
+	  %>
 
 
   </body>

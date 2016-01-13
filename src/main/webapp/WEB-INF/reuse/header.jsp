@@ -153,7 +153,7 @@
     <div class="top-menu">
         <ul class="nav pull-right top-menu">
             <li><a class="logout" href="#">修改密码</a></li>
-            <li><a class="logout" href="login.html">退出登录</a></li>
+            <li><a class="logout" href="/login.jsp">退出登录</a></li>
         </ul>
     </div>
 </header>

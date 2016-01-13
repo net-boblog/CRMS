@@ -11,7 +11,7 @@
             <h5 class="centered">Marcel Newman</h5>
 
             <li class="mt">
-                <a id="userMainId" href="index.html">
+                <a id="userMainId" href="/user/list.htm">
                     <i class="fa fa-user"></i>
                     <span>用户管理</span>
                 </a>
@@ -67,7 +67,7 @@
                 </a>
                 <ul class="sub">
                     <li class="active"><a href="blank.html">Blank Page</a></li>
-                    <li><a href="login.html">Login</a></li>
+                    <li><a href="login.jsp">Login</a></li>
                     <li><a href="lock_screen.html">Lock Screen</a></li>
                 </ul>
             </li>
