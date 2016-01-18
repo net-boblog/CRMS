@@ -42,7 +42,7 @@
 		        <div class="login-wrap">
 
 					<div>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="login_err" class="sty_txt2">${errorMsg }${errorMsg1 }</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span  id="login_err" class="sty_txt2"><font color="red">${errorMsg}${errorMsg1 }${blacklist}</font> </span>
 					</div>
 
 		            <input type="text" class="form-control" id="userName" name="userName" value="${user.userName }" placeholder="请输入用户名" autofocus>
@@ -54,7 +54,7 @@
 		
 		                </span>
 		            </label>
-		            <button class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> 登录</button>
+		            <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> 登录</button>
 		            <hr>
 
 		            <div class="registration">

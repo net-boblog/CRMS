@@ -32,7 +32,7 @@
             if (confirm("确定要删除这条记录吗?")) {
                 $
                         .get(
-                        "/user/delete.htm",
+                        "${pageContext.request.contextPath}/user/delete.htm",
                         {
                             userId : userId
                         },
@@ -42,7 +42,28 @@
 
                             if ("success" == data.msg) {
                                 alert("删除成功!");
-                                window.location.href = "/user/list.htm";
+                                window.location.href = "${pageContext.request.contextPath}/user/list.htm";
+                            } else {
+                                alert(data.error);
+                            }
+                        });
+            }
+        }
+        function defriend(userId) {
+            if (confirm("你确定拉黑用户吗?")) {
+                $
+                        .get(
+                        "${pageContext.request.contextPath}/user/defriend.htm",
+                        {
+                            userId : userId
+                        },
+                        function(data) {
+
+                            var data = eval("(" + data + ")"); //将data 转换成JS对象，这样才可以使用data.msg这种形式
+
+                            if ("ok" == data.msg) {
+                                alert("拉黑成功!");
+                                window.location.href = "${pageContext.request.contextPath}/user/list.htm";
                             } else {
                                 alert(data.error);
                             }
@@ -78,7 +99,7 @@
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-theme02"><i class="glyphicon glyphicon-plus"></i>新增</button>
+                        <button type="button" class="btn btn-theme02" onclick="window.location='/user/preinsert.htm'"><i class="glyphicon glyphicon-plus"></i>新增</button>
                     </div>
                     <div class="col-lg-8">
                         <div class="pull-right">
@@ -103,14 +124,14 @@
             </div>
 
             <div>
-                <table class="">
+                <table class="table table-striped">
                     <tr>
                         <th>序号</th>
                         <th>编号</th>
                         <th>用户名</th>
                         <th>角色</th>
                         <th>是否黑名单</th>
-                        <th>操作</th>
+                        <th><center>操作</center></th>
 
                     </tr>
                     <c:forEach var="b" items="${userList}" varStatus="status">
@@ -125,8 +146,12 @@
                                   <c:otherwise>否</c:otherwise>
                                 </c:choose>
                             </td>
-                            <td><a href="${pageContext.request.contextPath}/admin/preUpdate.do?userId=${user.userId}">编辑</a>
-                                <a href="javascript:del('${user.userId}')">删除</a>
+                            <td>
+                                 <center>
+                                     <a href="/user/preUpdate.htm?userId=${b.userId.toString()}">编辑</a>
+                                     <a href="javascript:del('${b.userId}')">删除</a>
+                                     <a href="javascript:defriend('${b.userId}')">拉黑</a>
+                                 </center>
                             </td>
                         </tr>
                     </c:forEach>

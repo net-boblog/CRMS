@@ -150,6 +150,36 @@ a, a:hover, a:focus {
   border-color: #da4453;
 }
 
+.btn-theme05 {
+    color: #fff;
+    background-color:#BEC3C7;
+    border-color: #967adc;
+}
+.btn-theme05:hover,
+.btn-theme05:focus,
+.btn-theme05:active,
+.btn-theme05.active,
+.open .dropdown-toggle.btn-theme05 {
+    color: #fff;
+    background-color:#BEC3C7;
+    border-color: #967adc;
+}
+
+.btn-theme06 {
+    color: #fff;
+    background-color:#c9cdd7;
+    border-color: #967adc;
+}
+.btn-theme06:hover,
+.btn-theme06:focus,
+.btn-theme06:active,
+.btn-theme06.active,
+.open .dropdown-toggle.btn-theme06 {
+    color: #fff;
+    background-color:#c9cdd7;
+    border-color: #967adc;
+}
+
 .btn-clear-g {
 	color: #48bcb4;
 	background: transparent;

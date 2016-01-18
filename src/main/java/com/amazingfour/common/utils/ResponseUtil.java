@@ -6,6 +6,7 @@ import org.springframework.validation.FieldError;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,5 +93,12 @@ public class ResponseUtil {
             maps.put(error.getField(), error.getDefaultMessage());
         }
         return maps;
+    }
+    public static void write(Object o,HttpServletResponse response)throws Exception{
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out=response.getWriter();
+        out.println(o.toString());
+        out.flush();
+        out.close();
     }
 }
