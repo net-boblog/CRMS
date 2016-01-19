@@ -1,6 +1,7 @@
 package com.amazingfour.common.utils.qiniu;
 
 import com.amazingfour.common.utils.PropertiesUtil;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 
@@ -13,7 +14,7 @@ public class ConfigToken {
     //您的七牛云SecretKey
     private static final String SECRET_KEY = "yq8CV89NOa534EHydvrh_zUdkYOAF5tGS8f2Xm7d";
     //您在七牛云创建的空间名称(bucket)
-    private static final String BUCKETNAME = "testbucket";
+    public static final String BUCKETNAME = "testbucket";
     //七牛云下载域名
     private static final String DOWNLOAD_URL="http://7xpdvw.com1.z0.glb.clouddn.com/";
 
@@ -51,11 +52,37 @@ public class ConfigToken {
     }
 
     /**
-     * 根据文件名生成下载URL
-     * @param fileName
+     * 根据资源key名生成下载URL
+     * @param key
      * @return 生成的下载URL
      */
-    public String getDownloadToken(String fileName){
-        return auth.privateDownloadUrl(DOWNLOAD_URL+fileName, 3600 * 24);    //指定Token失效时长为24小时
+    public String getDownloadToken(String key){
+        return auth.privateDownloadUrl(DOWNLOAD_URL+key, 3600 * 24);    //指定Token失效时长为24小时
+    }
+
+    /**
+     * 获得视频元信息的URL
+     * @param key
+     * @return
+     */
+    public String getAvinfo(String key){
+        return auth.privateDownloadUrl(DOWNLOAD_URL+key+"?avinfo");
+    }
+
+    /**
+     * 获得视频帧缩略图的URL
+     * @param key
+     * @return
+     */
+    public String getVfUrl(String key){
+        return auth.privateDownloadUrl(DOWNLOAD_URL+key+"?vframe/png/offset/10/w/252/h/220");
+    }
+
+    /**
+     * 获得资源管理接口实例
+     * @return
+     */
+    public BucketManager getBucketManager(){
+        return new BucketManager(auth);
     }
 }

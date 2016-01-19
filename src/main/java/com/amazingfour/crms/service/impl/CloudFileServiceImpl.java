@@ -6,7 +6,10 @@ import com.amazingfour.crms.domain.CloudFile;
 import com.amazingfour.crms.service.CloudFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by Huy on 2016-01-08.
@@ -21,8 +24,13 @@ public class CloudFileServiceImpl extends AbstractService<CloudFile,Long> implem
         super.setBaseDao(this.cloudFileDao);
     }
 
-    /*@Resource
-    public void setBaseDao(){
-        super.setBaseDao(cloudFileDao);
-    }*/
+    //批量删除文件
+    public int deleteBatch(List<String> fileUrls){
+        return cloudFileDao.deleteBatch(fileUrls);
+        /*if(rows==fileUrls.size()){
+            return true;
+        }else{
+            return false;
+        }*/
+    }
 }

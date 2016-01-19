@@ -37,12 +37,12 @@
 	  <div id="login-page">
 	  	<div class="container">
 	  	
-		      <form class="form-login" action="/user/login.htm">
+		      <form class="form-login" action="/user/login.htm" method="post">
 		        <h2 class="form-login-heading">用户登录</h2>
 		        <div class="login-wrap">
 
 					<div>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span  id="login_err" class="sty_txt2"><font color="red">${errorMsg}${errorMsg1 }${blacklist}</font> </span>
+						<span  id="login_err" class="sty_txt2"><font color="red">${errorMsg}${errorMsg1 }${blacklist}</font> </span>
 					</div>
 
 		            <input type="text" class="form-control" id="userName" name="userName" value="${user.userName }" placeholder="请输入用户名" autofocus>
@@ -65,7 +65,7 @@
 		            </div>
 		
 		        </div>
-		
+			  </form>
 		          <!-- Modal -->
 		          <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
 		              <div class="modal-dialog">
@@ -88,7 +88,7 @@
 		          </div>
 		          <!-- modal -->
 		
-		      </form>	  	
+
 	  	
 	  	</div>
 	  </div>

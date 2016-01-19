@@ -1,18 +1,37 @@
-//初始化上传文件的方法
+//修改文件信息
 $(function() {
     var hasFile = false;    //用于判断是否有选择文件
-    //var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    var fileUrlStr = $("#fileUrlId").val();
+    var frameIndex = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    //若点击了提交按钮，执行以下操作
     parent.$(".layui-layer-btn0").click(function(){
         if($("#fileNameId").val()==""){
             layer.tips('文件名不能为空!', '#fileNameId',{tips: 4});
+            return;
         }
-        if(!hasFile){  //若没有选择文件，提醒。  $('input[type="file"]')[0].files.length <= 0
-            layer.tips('请选择上传的文件!', 'input[type="file"]', {
-                tips: 4,
-                tipsMore: true
+        if($("#efileStateId").val()==""){
+            layer.tips('审核状态不能为空!', '#fileStateId',{tips: 4,tipsMore: true});
+            return;
+        }
+        if(!hasFile){  //若没有选择文件，直接保存
+            //序列化表单数据
+            var formData = $("#fileForm").serializeArray();
+            //异步保存文件信息
+            $.ajax({
+                type:"POST",
+                url:"/filec/updateFile.htm",
+                data:formData,
+                cache:false,
+                success:function(data,status){
+                    parent.layer.msg(status + data.mes,{shade:0.1,time:1000},function(){
+                        parent.window.location="/filec//listFile.htm";
+                    });
+                },
+                error:function(xhr,status,ex){
+                    alert(status+":更新失败!");
+                }
             });
         }else{
-            //console.log("1");
             //启动上传
             uploader.start();
         }
@@ -23,7 +42,7 @@ $(function() {
     var uploader = Qiniu.uploader({
         runtimes: 'html5,html4',    //上传模式,依次退化
         browse_button: 'pickfiles',       //上传选择的点选按钮，**必需**
-        uptoken_url: '/filec/getTokenJs.htm',   //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+        uptoken_url: '/filec/getTokenJs.htm',//'/filec/getReTokenJs.htm?key='+fileUrlStr,   //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
         // uptoken : '<Your upload token>',
         //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
         unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK会为每个文件自动生成key（文件名）
@@ -60,6 +79,7 @@ $(function() {
             'BeforeUpload': function (up, file) {
                 // 每个文件上传前,处理相关的事情
                 $("#fileForm").find("input,textarea").prop('readonly',true);
+                $("#efileStateId").attr("disabled","disabled");
                 $("#container").hide();
                 $("#upproId").show();
                 parent.$(".layui-layer-btn0").unbind('click')
@@ -68,14 +88,14 @@ $(function() {
             'UploadProgress': function (up, file) {
                 // 每个文件上传时,处理相关的事情
                 /*1、文件对象file
-                 文件总大小:size
-                 文件已上传大小：loaded
-                 文件已上传百分比：percent
-                 2、QueueProgress对象（up.total）
-                 文件上传速率：bytePerSec
-                 文件上传剩余时间:(size-loaded)/bytePerSec
+                文件总大小:size
+                文件已上传大小：loaded
+                文件已上传百分比：percent
+                2、QueueProgress对象（up.total）
+                文件上传速率：bytePerSec
+                文件上传剩余时间:(size-loaded)/bytePerSec
 
-                 格式:速率 - 已上传(loaded)MB，共(size)MB，剩余时间*/
+                格式:速率 - 已上传(loaded)MB，共(size)MB，剩余时间*/
                 var frate,floaded,fsize,ftime,fpercent;
                 frate = up.total.bytesPerSec;
                 floaded = file.loaded;
@@ -107,35 +127,27 @@ $(function() {
                 // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
                 //var domain = up.getOption('domain');
                 $("#descId").text("正在保存数据");
+                $("#efileStateId").removeAttr("disabled");
                 var res = Qiniu.parseJSON(info);
                 var keyName = res.key;
-                //var sourceLink = domain + res.key; //获取上传成功后的文件的Url
-                /*//使用formData方式格式化数据(不可用)
-                var form = $("#fileForm");
-                var fileName = $("#fileNameId").val();
-                var fileDes = $("#fileIntroId").val();
-                var formData = new FormData();
-                formData.append("fileName",fileName);
-                formData.append("fileDescript",fileDes);
-                formData.append("fileUrl",sourceLink);*/
                 //序列化表单数据
+                $("#fileUrlId").val(keyName);
                 var params = $("#fileForm").serializeArray();
-                params.push({name:"fileUrl",value:keyName});
+                params.push({name:"key",value:fileUrlStr});
                 //异步保存上传文件信息
                 $.ajax({
                     type:"POST",
-                    url:"/filec/addFile.htm",
+                    url:"/filec/updateFile.htm",
                     data:params,
                     cache:false,
-                    //contentType:false,    //使用formData时，contentType不交给jquery处理，由xhr处理
-                    //processData:false,    //使用formData时，processData不交给jquery处理,由xhr处理
                     success:function(data,status){
-                        parent.layer.msg(status+data.message,{shade:0.1,time:2000},function(){
+                        //alert(status + data.mes);
+                        parent.layer.msg(status+data.mes,{shade:0.1,time:2000},function(){
                             parent.window.location="/filec/listFile.htm";
                         });
                     },
                     error:function(xhr,status,ex){
-                        alert(status+":保存失败");
+                        alert(status+":更新失败!");
                     }
                 });
 
@@ -143,6 +155,7 @@ $(function() {
             'Error': function (up, err, errTip) {
                 //上传出错时,处理相关的事情
                 alert(errTip+"上传出错了!");
+
             },
             'UploadComplete': function () {
                 //队列文件处理完毕后,处理相关的事情
@@ -150,9 +163,9 @@ $(function() {
             'Key': function (up, file) {
                 // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
                 // 该配置必须要在 unique_names: false , save_key: false 时才生效
-                var key = "";
+                var key = "";   //若要覆盖上传，业务服务端要指定key外，客户端也要指定同名的key
                 // do something with key here
-                return key
+                return key;
             }
         }
     });
@@ -179,4 +192,6 @@ Number.prototype.formatTime=function(){
         return (v>>0)<10?"0"+v:v;
     };
     return [zero(h),zero(i),zero(s)].join(":");
-};
+}
+
+

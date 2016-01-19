@@ -16,27 +16,22 @@ public abstract class AbstractService<T, ID extends Serializable> implements Bas
     }
 
     //查询所有
-    @Override
     public List<T> find(Map<String, Object> map){
         return baseDao.find(map);
     }
     //根据id查一个
-    @Override
     public T findById(ID id){
         return baseDao.findById(id);
     }
     //查询数量
-    @Override
     public int count(T domain){
         return baseDao.count(domain);
     }
     //增
-    @Override
     public void insert(T domain){
         baseDao.insert(domain);
     }
     //删
-    @Override
     public boolean delete(ID id){
         if(baseDao.delete(id)>0){
             return true;
@@ -45,7 +40,6 @@ public abstract class AbstractService<T, ID extends Serializable> implements Bas
         }
     }
     //改
-    @Override
     public boolean update(T domain){
         if(baseDao.update(domain)>0){
             return true;

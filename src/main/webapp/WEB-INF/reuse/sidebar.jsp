@@ -32,7 +32,7 @@
             </li>
 
             <li class="sub">
-                <a id="fileMainId" href="/filec/init.htm">
+                <a id="fileMainId" href="/filec/listFile.htm">
                     <i class="fa fa-desktop"></i>
                     <span>视频管理</span>
                 </a>

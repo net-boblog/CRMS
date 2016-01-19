@@ -1,10 +1,10 @@
 package com.amazingfour.common.utils;
+
 import java.util.Iterator;
 import java.util.Map;
-/**
- * Created by kennyho on 2016/1/13.
- */
+
 public class PageUtil {
+
     /**
      * 获取分页代码
      * @param targetUrl 目标地址

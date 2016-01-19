@@ -17,26 +17,12 @@
     <meta name="keyword" content="">
 
     <title>更新用户页面</title>
-    <script type="text/javascript">
-        function checkForm() {
-            var userName = $("#userName").val();
-            if (userName == null || userName == "") {
-                $("#error").html("用户名不能为空！");
-                return false;
-            }
-
-            if (confirm("确认保存?")) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    </script>
     <jsp:include page="/WEB-INF/reuse/css.jsp"/>
+
 </head>
 
 <body>
-<form  action="/user/update.htm" method="post" onsubmit="return checkForm()">
+<form id="euserForm"><%-- action="/user/update.htm" method="post" onsubmit="return checkForm()">--%>
     <table class="table table-bordered table-striped table-condensed">
         <tbody>
         <tr>
@@ -52,7 +38,7 @@
             <th scope="row">角色：</th>
             <td>
                 <div id="container">
-                    <select name="role.roleId" style="width:152px">
+                    <select name="role.roleId" class="form-control" style="width:152px">
                         <option value="${user.role.roleId}" selected="selected">${user.role.roleName}</option>
                         <c:forEach var="b" items="${roleList}" varStatus="status">
                             <option value="${b.roleId}">${b.roleName}</option>
@@ -68,14 +54,15 @@
         </tr>
         <tr>
             <th scope="row">描述：</th>
-            <td><textarea id="" class="form-control" name="userDescript" rows="3" value="${user.userDescript}"></textarea></td>
+            <td><textarea id="" class="form-control" name="userDescript" rows="3">${user.userDescript}</textarea></td>
         </tr>
         <tr>
             <th scope="row"></th>
-            <td>
-                <button id="start_upload" type="submit" class="btn btn-primary">修改</button>
-                <button id="fileCance2" type="reset" class="btn btn-default">重置</button>
-                <button id="fileCance3" type="button" class="btn btn-default" onclick="window.location='/user/list.htm'">返回</button>
+            <td class="text-right">
+                <%--<a class="btn btn-primary" href="javascript:$('#euserForm').submit();" role="button" target="_parent">修改2</a>--%>
+                <button id="euserBtn" type="button" class="btn btn-primary">修改</button>&nbsp;
+                <button id="fileCance2" type="reset" class="btn btn-default">重置</button>&nbsp;
+                <%--<button id="fileCance3" type="button" class="btn btn-default" onclick="window.location='/user/list.htm'">返回</button>--%>
             </td>
         </tr>
         </tbody>
@@ -90,7 +77,50 @@
 </div>--%>
 
 <!-- js placed at the end of the document so the pages load faster -->
-<jsp:include page="/WEB-INF/reuse/js.jsp"/>
+<jsp:include page="/WEB-INF/reuse/layerJs.jsp"/>
 <script type="text/javascript" src="/assets/js/plupload/plupload.full.min.js"></script>
+
+<script type="text/javascript">
+$(function(){
+    $("#euserBtn").click(function(){
+        if($("#userName").val()==""){
+            //$("#userError").text("用户名不能为空！");
+            layer.tips('用户名不能为空!', '#userName',{tips: 4});
+            return;
+        }
+        var userdata = $("#euserForm").serializeArray();
+        $.ajax({
+            type:"POST",
+            url:"/user/update.htm",
+            data:userdata,
+            cache:false,
+            success:function(data,status){
+                parent.layer.msg(status+data.mes,{shade:0.5,time:2000},function(){
+                    parent.window.location="/user/list.htm";
+                });
+            },
+            error:function(xhr,status,ex){
+                alert(status+":更新失败!");
+            }
+        });
+    });
+});
+
+
+/*    function checkForm() {
+        var userName = $("#userName").val();
+        if (userName == null || userName == "") {
+            $("#error").html("用户名不能为空！");
+            return false;
+        }
+
+        if (confirm("确认保存?")) {
+            return true;
+        } else {
+            return false;
+        }
+    }*/
+</script>
+
 </body>
 </html>

@@ -12,6 +12,7 @@ public class CloudFile {
     private Date fileDate;
     private String fileDescript;
     private Byte fileState;
+    private String vframeUrl;
 
     public Long getFileId() {
         return fileId;
@@ -59,5 +60,13 @@ public class CloudFile {
 
     public void setFileState(Byte fileState) {
         this.fileState = fileState;
+    }
+
+    public String getVframeUrl() {
+        return vframeUrl;
+    }
+
+    public void setVframeUrl(String vframeUrl) {
+        this.vframeUrl = vframeUrl;
     }
 }

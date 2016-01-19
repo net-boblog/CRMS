@@ -9,22 +9,10 @@
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>DASHGUM - Bootstrap Admin Template</title>
+    <title>CRMS主页</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
-    <!--external css-->
-    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-
-    <!-- Custom styles for this template -->
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <link href="/assets/css/style-responsive.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!-- 引入全局css样式 -->
+    <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 
 
     <script type="text/javascript">
@@ -80,13 +68,13 @@
     TOP BAR CONTENT & NOTIFICATIONS
     *********************************************************************************************************************************************************** -->
     <!--header-->
-    <jsp:include page="reuse/header.jsp"/>
+    <jsp:include page="/WEB-INF/reuse/header.jsp"/>
 
     <!-- **********************************************************************************************************************************************************
     MAIN SIDEBAR MENU
     *********************************************************************************************************************************************************** -->
     <!--sidebar-->
-    <jsp:include page="reuse/sidebar.jsp"/>
+    <jsp:include page="/WEB-INF/reuse/sidebar.jsp"/>
 
     <!-- **********************************************************************************************************************************************************
     MAIN CONTENT
@@ -99,7 +87,7 @@
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-theme02" onclick="window.location='/user/preinsert.htm'"><i class="glyphicon glyphicon-plus"></i>新增</button>
+                        <button type="button" class="btn btn-theme02" onclick="openAddUser()"><i class="glyphicon glyphicon-plus"></i>新增</button>
                     </div>
                     <div class="col-lg-8">
                         <div class="pull-right">
@@ -123,8 +111,9 @@
                 </div>
             </div>
 
-            <div>
-                <table class="table table-striped">
+            <div class="row mt">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-striped">
                     <tr>
                         <th>序号</th>
                         <th>编号</th>
@@ -148,7 +137,7 @@
                             </td>
                             <td>
                                  <center>
-                                     <a href="/user/preUpdate.htm?userId=${b.userId.toString()}">编辑</a>
+                                     <a href="javascript:openEditUser('${b.userId.toString()}')">编辑</a>
                                      <a href="javascript:del('${b.userId}')">删除</a>
                                      <a href="javascript:defriend('${b.userId}')">拉黑</a>
                                  </center>
@@ -157,10 +146,13 @@
                     </c:forEach>
                 </table>
 
+                <div class="row centered">
                 <nav>
                     <ul class="pagination">${pageCode }
                     </ul>
                 </nav>
+                </div>
+            </div>
             </div>
         </section>
         <! --/wrapper -->
@@ -170,13 +162,16 @@
     <!--main content end-->
 
     <!--footer start-->
-   <jsp:include page="reuse/footer.jsp"/>
+   <jsp:include page="/WEB-INF/reuse/footer.jsp"/>
     <!--footer end-->
 </section>
 
 <!-- js placed at the end of the document so the pages load faster -->
-<jsp:include page="reuse/js.jsp"/>
-
+<jsp:include page="/WEB-INF/reuse/js.jsp"/>
+<!-- 让侧边栏菜单高亮 -->
+<script>$("#userMainId").attr({"class" : "active"});</script>
+<!--引入此页面的js-->
+<script type="text/javascript" src="/res/js/user/index.js"></script>
 </body>
 </html>
 

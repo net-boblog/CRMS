@@ -44,7 +44,7 @@ public class UserController {
             }else {
                 HttpSession session = request.getSession();
                 session.setAttribute("currentUser", resultUser);
-                return "/index";
+                return "redirect:/user/list.htm";
             }
         }
         else {
@@ -127,16 +127,21 @@ public class UserController {
      * @return
      */
     @RequestMapping("/insert")
-    public String insert(User user,HttpSession session) {
-
-        if (userService.existUserByName(user.getUserName())==true){//用户名不能相同
+    public void insert(User user,HttpSession session,HttpServletResponse response) {
+        JSONObject obj = new JSONObject();
+        if (userService.existUserByName(user.getUserName())){//用户名不能相同
             session.setAttribute("user",user);
-            session.setAttribute("errorMsg2","保存失败，该用户已存在");
-            return "redirect:/user/preinsert.htm";
+            //session.setAttribute("errorMsg2","保存失败，该用户已存在");
+            obj.put("usertip",0);
+            obj.put("mes","保存失败，该用户已存在!");
+            //return "redirect:/user/preinsert.htm";
+        }else {
+            userService.insert(user);
+            obj.put("usertip",1);
+            obj.put("mes","保存成功!");
+            //return "redirect:/user/list.htm";
         }
-
-           userService.insert(user);
-           return "redirect:/user/list.htm";
+        ResponseUtil.renderJson(response,obj.toString());
     }
     //用户更新前置
     @RequestMapping("/preUpdate")
@@ -157,9 +162,12 @@ public class UserController {
 
     //管理员更新
     @RequestMapping("/update")
-    public String update(User user, HttpServletResponse response) {
+    public void update(User user, HttpServletResponse response) {
+        JSONObject obj = new JSONObject();
         userService.update(user);
-        return "redirect:/user/list.htm";
+        //return "redirect:/user/list.htm";
+        obj.put("mes","更新成功!");
+        ResponseUtil.renderJson(response,obj.toString());
     }
 
     //拉黑用户，将状态属性设置为1
