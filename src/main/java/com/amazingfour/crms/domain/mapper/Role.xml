@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amazingfour.crms.dao.RoleDao">
+    <resultMap type="Role" id="RoleResult">
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleDescript" column="role_descript"/>
+
+    </resultMap>
+
+    <!-- 通过用户Id查找角色 -->
+    <select id="findByUserId" parameterType="Long" resultMap="RoleResult">
+        select * from role
+        where user_id=#{userId}
+    </select>
+
+    <!-- 通过Id查找角色 -->
+    <select id="findById" parameterType="Long" resultMap="RoleResult">
+        select * from role
+        where role_id=#{id}
+    </select>
+
+    <!--查找所有-->
+    <select id="find" parameterType="Map" resultMap="RoleResult">
+        SELECT * FROM role
+    </select>
+
+
+</mapper>
