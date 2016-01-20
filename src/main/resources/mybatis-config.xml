@@ -3,17 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
     <typeAliases>
-        <!--<typeAlias type="com.amazingfour.crms.domain.Article" alias="Article"/>-->
         <package name="com.amazingfour.crms.domain"/>
     </typeAliases>
-
-    <!--<mappers>-->
-        <!--<mapper resource="com/hm/cms/domain/mapper/Sample.xml"/>-->
-        <!--<mapper resource="com/hm/cms/domain/mapper/Menu.xml"/>-->
-        <!--<mapper resource="com/hm/cms/domain/mapper/Role.xml"/>-->
-        <!--<mapper resource="com/hm/cms/domain/mapper/RoleMenu.xml"/>-->
-        <!--<mapper resource="com/hm/cms/domain/mapper/User.xml"/>-->
-    <!--</mappers>-->
 
 </configuration>

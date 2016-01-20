@@ -29,7 +29,7 @@
 
     <!-- 查询所有用户 -->
     <select id="find" parameterType="Map" resultMap="UserResult">
-        select u.user_id,u.username,u.user_state,a.role_name from user u join role a
+        select u.user_id,u.username,u.user_descript,u.user_state,a.role_name from user u join role a
         where u.role_id=a.role_id
 
       <!--      <if test="userId!=null and roleId!=null">

@@ -7,7 +7,7 @@
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>DASHGUM - Bootstrap Admin Template</title>
+    <title>登录页面</title>
     <!-- 引入全局css样式 -->
     <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 
@@ -45,9 +45,9 @@
 						<span  id="login_err" class="sty_txt2"><font color="red">${errorMsg}${errorMsg1 }${blacklist}</font> </span>
 					</div>
 
-		            <input type="text" class="form-control" id="userName" name="userName" value="${user.userName }" placeholder="请输入用户名" autofocus>
+		            <input type="text" class="form-control" id="userName" name="userName" value="${user.userName }" placeholder="请输入用户名" autofocus required>
 		            <br>
-		            <input type="password" class="form-control" id="password"  name="password"  value="${user.password }" placeholder="请输入密码">
+		            <input type="password" class="form-control" id="password"  name="password" placeholder="请输入密码" required>
 		            <label class="checkbox">
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.jsp#myModal"> 忘记密码?</a>

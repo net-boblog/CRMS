@@ -245,7 +245,7 @@ public class UserController {
            if (password1.equals(password2)){//密码与确认密码的比较
                currentUser.setPassword(Encrypt.Encrypt_md5(password1));
                userService.updatePassword(currentUser);
-               obj.put("mes","修改密码成功!");
+               obj.put("mes","修改密码成功,请重新登录!");
 
            }else {
                obj.put("errorMsg", "输入密码不一致！请重新输入...");

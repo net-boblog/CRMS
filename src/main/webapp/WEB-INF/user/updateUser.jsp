@@ -50,7 +50,7 @@
         <tr>
             <input type="hidden" name="userId" value="${user.userId}"/>
             <th scope="row">密码：</th>
-            <td><input id="password" class="form-control" type="text" name="password" value="${user.password}"  required></td>
+            <td><input id="password" class="form-control" type="password" name="password" value="${user.password}"  required></td>
         </tr>
         <tr>
             <th scope="row">描述：</th>

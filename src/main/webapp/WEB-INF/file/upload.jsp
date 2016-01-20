@@ -16,7 +16,7 @@
   <meta name="author" content="">
   <meta name="keyword" content="">
 
-  <title>上传视频页面</title>
+  <title>新增视频页面</title>
   <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 </head>
 

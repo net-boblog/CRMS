@@ -27,7 +27,7 @@
         <tbody>
         <tr>
             <th scope="row">原密码：</th>
-            <td><input id="pass" class="form-control" type="text" name="password">
+            <td><input id="pass" class="form-control" type="password" name="password" placeholder="请输入原密码">
                 <div>
                     <font color="red" id="error"></font>
                 </div>
@@ -35,12 +35,12 @@
 
         </tr>
 
-            <th scope="row">密码：</th>
-            <td><input id="pass1" class="form-control" type="text" name="password1" required></td>
+            <th scope="row">新密码：</th>
+            <td><input id="pass1" class="form-control" type="password" name="password1" placeholder="请输入新密码" required></td>
         </tr>
         <tr>
             <th scope="row">确认密码：</th>
-            <td><input id="pass2" class="form-control" type="text" name="password2" required></td>
+            <td><input id="pass2" class="form-control" type="password" name="password2" placeholder="两次密码须一致"　required></td>
             <div>
                 <font color="red" id="errorMsg"></font>
             </div>
@@ -72,29 +72,39 @@
 <script type="text/javascript">
     $(function(){
         $("#euserBtn").click(function(){
-            var userdata = $("#passForm").serializeArray();
-            $.ajax({
-                type:"POST",
-                url:"/user/updatepassword.htm",
-                data:userdata,
-                cache:false,
-                success:function(data,status){
-                    if(data.error!=undefined){
-                        layer.tips(data.error, '#pass', {tips: [3, 'red'], tipsMore: true});
+            if($("#pass").val()==""){
+                layer.tips('原密码不能为空!', '#pass',{tips: 4});
+            }
+            if($("#pass1").val()==""){
+                layer.tips('新密码不能为空!', '#pass1',{tips: 4,tipsMore:true});
+            }
+            if($("#pass2").val()=="") {
+                layer.tips('密码不能为空!', '#pass2', {tips: 4, tipsMore: true});
+            }else{
+                var userdata = $("#passForm").serializeArray();
+                $.ajax({
+                    type:"POST",
+                    url:"/user/updatepassword.htm",
+                    data:userdata,
+                    cache:false,
+                    success:function(data,status){
+                        if(data.error!=undefined){
+                            layer.tips(data.error, '#pass', {tips: [3, 'red'], tipsMore: true});
+                        }
+                        if(data.errorMsg!=undefined){
+                            layer.tips(data.errorMsg, '#pass1', {tips: [3, 'red'], tipsMore: true});
+                        }
+                        if(data.mes!=undefined){
+                            parent.layer.alert(data.mes,{icon:1},function(){
+                                parent.window.location="/user/logout.htm";
+                            });
+                        }
+                    },
+                    error:function(xhr,status,ex){
+                        alert(status+":更新失败!");
                     }
-                    if(data.errorMsg!=undefined){
-                        layer.tips(data.errorMsg, '#pass1', {tips: [3, 'red'], tipsMore: true});
-                    }
-                    if(data.mes!=undefined){
-                        parent.layer.alert(data.mes,{icon:1},function(){
-                            parent.window.location="/user/logout.htm";
-                        });
-                    }
-                },
-                error:function(xhr,status,ex){
-                    alert(status+":更新失败!");
-                }
-            });
+                });
+            }
         });
     });
 

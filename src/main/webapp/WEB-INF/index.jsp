@@ -137,26 +137,26 @@
                 <table class="table table-bordered table-striped">
                     <tr>
                         <th><center>序号 </center></th>
-                        <th><center>编号 </center></th>
                         <th><center>用户名 </center></th>
                         <th><center>角色 </center></th>
+                        <th><center>用户描述 </center></th>
                         <th><center>是否黑名单 </center></th>
                         <th><center>操作</center></th>
 
                     </tr>
                     <c:forEach var="b" items="${userList}" varStatus="status">
                         <tr>
-                            <td><center>${status.index+1 } </center></td>
-                            <td><center>${b.userId } </center></td>
+                            <td width="50px"><center>${status.index+1 } </center></td>
                             <td><center>${b.userName } </center></td>
                             <td><center>${b.role.roleName } </center></td>
-                            <td><center>
+                            <td width="500px">${b.userDescript } </td>
+                            <td width="100px"><center>
                                 <c:choose>
                                   <c:when test="${b.userState==1}">是</c:when>
                                   <c:otherwise>否</c:otherwise>
                                 </c:choose>
                             </center> </td>
-                            <td>
+                            <td width="180px">
                                  <center>
                                      <div style="text-align:center">
                                       <table width="100%">
@@ -164,7 +164,7 @@
                                              <td> <a href="javascript:openEditUser('${b.userId.toString()}')">编辑</a></td>
                                              <td> <a href="javascript:del('${b.userId}')">删除</a></td>
                                              <td> <a href="javascript:defriend('${b.userId}')">拉黑</a></td>
-                                             <td><a href="javascript:removeBlack('${b.userId}')">解除黑名单</a></td>
+                                             <td><a href="javascript:removeBlack('${b.userId}')">解除</a></td>
                                          </tr>
                                       </table>
                                      </div>
