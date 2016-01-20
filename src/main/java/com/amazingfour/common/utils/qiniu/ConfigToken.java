@@ -18,6 +18,7 @@ public class ConfigToken {
     //七牛云下载域名
     private static final String DOWNLOAD_URL="http://7xpdvw.com1.z0.glb.clouddn.com/";
 
+
     //初步生成上传下载策略
     private Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
 

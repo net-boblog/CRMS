@@ -58,6 +58,27 @@
                         });
             }
         }
+        function removeBlack(userId) {
+            if (confirm("你要解除该用户黑名单?")) {
+                $
+                        .get(
+                        "${pageContext.request.contextPath}/user/removeBlack.htm",
+                        {
+                            userId : userId
+                        },
+                        function(data) {
+
+                            var data = eval("(" + data + ")"); //将data 转换成JS对象，这样才可以使用data.msg这种形式
+
+                            if ("suc" == data.msg) {
+                                alert("解除黑名单成功!");
+                                window.location.href = "${pageContext.request.contextPath}/user/list.htm";
+                            } else {
+                                alert(data.error);
+                            }
+                        });
+            }
+        }
     </script>
 </head>
 
@@ -115,31 +136,38 @@
             <div class="col-lg-12">
                 <table class="table table-bordered table-striped">
                     <tr>
-                        <th>序号</th>
-                        <th>编号</th>
-                        <th>用户名</th>
-                        <th>角色</th>
-                        <th>是否黑名单</th>
+                        <th><center>序号 </center></th>
+                        <th><center>编号 </center></th>
+                        <th><center>用户名 </center></th>
+                        <th><center>角色 </center></th>
+                        <th><center>是否黑名单 </center></th>
                         <th><center>操作</center></th>
 
                     </tr>
                     <c:forEach var="b" items="${userList}" varStatus="status">
                         <tr>
-                            <td>${status.index+1 }</td>
-                            <td>${b.userId }</td>
-                            <td>${b.userName }</td>
-                            <td>${b.role.roleName }</td>
-                            <td>
+                            <td><center>${status.index+1 } </center></td>
+                            <td><center>${b.userId } </center></td>
+                            <td><center>${b.userName } </center></td>
+                            <td><center>${b.role.roleName } </center></td>
+                            <td><center>
                                 <c:choose>
                                   <c:when test="${b.userState==1}">是</c:when>
                                   <c:otherwise>否</c:otherwise>
                                 </c:choose>
-                            </td>
+                            </center> </td>
                             <td>
                                  <center>
-                                     <a href="javascript:openEditUser('${b.userId.toString()}')">编辑</a>
-                                     <a href="javascript:del('${b.userId}')">删除</a>
-                                     <a href="javascript:defriend('${b.userId}')">拉黑</a>
+                                     <div style="text-align:center">
+                                      <table width="100%">
+                                         <tr>
+                                             <td> <a href="javascript:openEditUser('${b.userId.toString()}')">编辑</a></td>
+                                             <td> <a href="javascript:del('${b.userId}')">删除</a></td>
+                                             <td> <a href="javascript:defriend('${b.userId}')">拉黑</a></td>
+                                             <td><a href="javascript:removeBlack('${b.userId}')">解除黑名单</a></td>
+                                         </tr>
+                                      </table>
+                                     </div>
                                  </center>
                             </td>
                         </tr>

@@ -152,9 +152,21 @@
     </div>
     <div class="top-menu">
         <ul class="nav pull-right top-menu">
-            <li><a class="logout" href="#">修改密码</a></li>
-            <li><a class="logout" href="/login.jsp">退出登录</a></li>
+            <li><a class="logout" href="javascript:openEditPass();">修改密码</a></li>
+            <li><a class="logout" href="/user/logout.htm">退出登录</a></li>
         </ul>
     </div>
 </header>
 <!--header end-->
+<script>
+    function openEditPass(){
+        layer.open({
+            type: 2,
+            title: ['修改密码','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
+            shade: 0.5,
+            area: ['400px', '220px'],
+            content: ["/user/passPre.htm",'no'],
+            move:false
+        });
+    }
+</script>

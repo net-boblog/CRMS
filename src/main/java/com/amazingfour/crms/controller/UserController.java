@@ -1,6 +1,7 @@
 package com.amazingfour.crms.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.amazingfour.common.utils.Encrypt;
 import com.amazingfour.common.utils.PageUtil;
 import com.amazingfour.common.utils.ResponseUtil;
 import com.amazingfour.crms.domain.Role;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +38,12 @@ public class UserController {
     //管理员登录
     @RequestMapping("/login")
     public String login(User user,HttpServletRequest request){
+        String username=user.getUserName();//获取页面填入的用户名
+        String password=user.getPassword();//获取页面填入的密码
+        String s= Encrypt.Encrypt_md5(password);//将页面密码转化为密文
+        user.setPassword(s);
         User resultUser = userService.login(user);
-        if(resultUser!=null){
+        if(resultUser!=null){//判断是否从数据库里查出了数据
             byte userState=resultUser.getUserState();
             if(userState==1){
                 request.setAttribute("user", user);
@@ -45,6 +53,14 @@ public class UserController {
                 HttpSession session = request.getSession();
                 session.setAttribute("currentUser", resultUser);
                 return "redirect:/user/list.htm";
+                /*if(resultUser.getUserName().equals(username)&&resultUser.getPassword().equals(s)){//判断数据库获得的数据与页面输入的数据是否相等
+                    HttpSession session = request.getSession();
+                    session.setAttribute("currentUser", resultUser);
+                    return "redirect:/user/list.htm";
+                }
+                else{
+                    return null;
+                }*/
             }
         }
         else {
@@ -136,12 +152,14 @@ public class UserController {
             obj.put("mes","保存失败，该用户已存在!");
             //return "redirect:/user/preinsert.htm";
         }else {
+
+            user.setPassword(Encrypt.Encrypt_md5(user.getPassword()));
             userService.insert(user);
-            obj.put("usertip",1);
-            obj.put("mes","保存成功!");
+            obj.put("usertip", 1);
+            obj.put("mes", "保存成功!");
             //return "redirect:/user/list.htm";
         }
-        ResponseUtil.renderJson(response,obj.toString());
+        ResponseUtil.renderJson(response, obj.toString());
     }
     //用户更新前置
     @RequestMapping("/preUpdate")
@@ -160,10 +178,11 @@ public class UserController {
         return mav;
     }
 
-    //管理员更新
+    //用户更新
     @RequestMapping("/update")
     public void update(User user, HttpServletResponse response) {
         JSONObject obj = new JSONObject();
+        user.setPassword(Encrypt.Encrypt_md5(user.getPassword()));
         userService.update(user);
         //return "redirect:/user/list.htm";
         obj.put("mes","更新成功!");
@@ -185,6 +204,58 @@ public class UserController {
             e.printStackTrace();
         }
     }
+    //解除用户黑名单，将状态属性设置为0
+    @RequestMapping("/removeBlack")
+    public void removeBlack(@RequestParam(value = "userId") String userId,
+                         HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+
+        if (userService.removeBlack(Long.parseLong(userId))) {  //根据id将状图字段改为1，即拉黑
+            result.put("msg", "suc");
+        }
+        try {
+            ResponseUtil.write(result, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //注销用户
+    @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/login.jsp";
+    }
+
+    //修改密码前置
+    @RequestMapping("/passPre")
+    public String passPre(){
+        return "user/updatePassword";
+    }
+
+    //修改密码
+    @RequestMapping("/updatepassword")
+    public void updatePassword(User user, HttpServletResponse response,HttpServletRequest request,String password1,String password2) {
+        JSONObject obj = new JSONObject();
+        HttpSession session= request.getSession();//获取session实例
+        User currentUser =  (User)session.getAttribute("currentUser");
+        String userName=currentUser.getUserName();
+        String oldPassword=currentUser.getPassword();//获取登录时的密码
+        String inputPassword=Encrypt.Encrypt_md5(user.getPassword());//获取原密码并转化为加密形式
+       if(oldPassword.equals(inputPassword)){//原密码与输入密码的比较
+           if (password1.equals(password2)){//密码与确认密码的比较
+               currentUser.setPassword(Encrypt.Encrypt_md5(password1));
+               userService.updatePassword(currentUser);
+               obj.put("mes","修改密码成功!");
+
+           }else {
+               obj.put("errorMsg", "输入密码不一致！请重新输入...");
+           }
+       } else {
+           obj.put("error", "原密码输入错误！请重新输入...");
+       }
+        ResponseUtil.renderJson(response,obj.toString());
+    }
+
 
 
 

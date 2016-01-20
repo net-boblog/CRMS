@@ -102,9 +102,18 @@
         UPDATE user set role_id=#{role.roleId},username=#{userName},password=#{password},
         user_descript=#{userDescript} WHERE user_id=#{userId}
     </update>
-
+<!--拉黑用户-->
     <update id="defriend" parameterType="Long">
         UPDATE user SET user_state=1 WHERE user_id=#{userId}
+    </update>
+    <!--确认密码-->
+   <select id="updatePassword" parameterType="User">
+      UPDATE USER set password=#{password}
+      WHERE username=#{userName}
+   </select>
+    <!--解除用户黑名单-->
+    <update id="removeBlack" parameterType="Long">
+        UPDATE user SET user_state=0 WHERE user_id=#{userId}
     </update>
 
 
