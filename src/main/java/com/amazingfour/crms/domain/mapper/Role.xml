@@ -4,10 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.amazingfour.crms.dao.RoleDao">
     <resultMap type="Role" id="RoleResult">
-        <result property="roleId" column="role_id"/>
+        <id property="roleId" column="role_id"/>
         <result property="roleName" column="role_name"/>
         <result property="roleDescript" column="role_descript"/>
-
+        <collection property="userList" ofType="com.amazingfour.crms.domain.User" column="role_id">
+            <id column="user_id" property="userId"/>
+            <result property="userName" column="username"/>
+            <result property="password" column="password"/>
+            <result property="userDescript" column="user_descript"/>
+            <result property="userState" column="user_state"/>
+        </collection>
+        <collection property="menuList" ofType="com.amazingfour.crms.domain.Menu" column="menu_id" >
+            <id property="menuId" column="menu_id"/>
+            <result property="name" column="menu_name"/>
+            <result property="url" column="menu_url"/>
+            <result property="type" column="menu_type"/>
+            <result property="pid" column="pid"/>
+        </collection>
     </resultMap>
 
     <!-- 通过用户Id查找角色 -->
@@ -27,5 +40,27 @@
         SELECT * FROM role
     </select>
 
-
+     <!--查询一共有多少个角色-->
+    <select id="getCountByName" parameterType="Role" resultType="int">
+        select count(role_id) from role where role_name=#{roleName}
+        <if test="roleId!=null or roleId>0">
+            and role_id!=#{roleId}
+        </if>
+    </select>
+    <!--新增角色-->
+    <insert id="insertRole" parameterType="Role" useGeneratedKeys="true" keyProperty="roleId">
+        insert into role (role_name) values (#{roleName})
+    </insert>
+    <!--修改角色基本信息-->
+    <update id="updateRoleBaseInfo" parameterType="Role">
+        update role set role_name=#{roleName} where role_id=#{roleId}
+    </update>
+    <!--修改角色对应的权限信息-->
+    <!--<update id="updateRoleRights" parameterType="Role">-->
+        <!--update role set rights=#{rights} where role_id=#{roleId}-->
+    <!--</update>-->
+    <!--删除角色-->
+    <delete id="deleteRoleById" parameterType="int">
+        delete from role where role_id=#{roleId}
+    </delete>
 </mapper>
