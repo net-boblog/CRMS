@@ -38,6 +38,7 @@ public class UserController {
     //管理员登录
     @RequestMapping("/login")
     public String login(User user,HttpServletRequest request){
+
         String username=user.getUserName();//获取页面填入的用户名
         String password=user.getPassword();//获取页面填入的密码
         String s= Encrypt.Encrypt_md5(password);//将页面密码转化为密文
@@ -81,10 +82,13 @@ public class UserController {
         int pageSize = 4; // 页容量
 
         if (page == null || page == "") {
+
             page = "1";
             session.setAttribute("user", user);
         } else {
+
             user = (User) session.getAttribute("user");
+
         }
         String userName=user.getUserName();
         Byte userState=user.getUserState();

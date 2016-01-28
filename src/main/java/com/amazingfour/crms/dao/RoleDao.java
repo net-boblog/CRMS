@@ -12,14 +12,11 @@ import java.util.Map;
 @Repository("roleDao")
 public interface RoleDao extends BaseDao<Role,Long> {
 
-    //查询所有
-    public List<Role> find(Map<String, Object> map);   //map可以存放一些其它数据，如用于分页查询的start(起始页)和size(每页数量)
-    //根据id查一个
-    public Role findById(Long id);
+
     //查询数量
     public int getCountByName(Role domain);
     //增
-    public void insertRole(Role domain);
+    public void insert(Role domain);
     //删
     public int deleteRoleById(Long id);
     //改基本信息

@@ -18,7 +18,7 @@
             </li>
 
             <li class="sub">
-                <a id="roleMainId" href="index.html">
+                <a id="roleMainId" href="/role/list.htm">
                     <i class="fa fa-dashboard"></i>
                     <span>角色管理</span>
                 </a>

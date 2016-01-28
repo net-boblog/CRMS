@@ -5,7 +5,7 @@
 <mapper namespace="com.amazingfour.crms.dao.UserDao">
 
     <resultMap type="User" id="UserResult">
-        <result property="userId" column="user_id"/>
+        <id property="userId" column="user_id"/>
         <result property="userName" column="username"/>
         <result property="password" column="password"/>
         <result property="userDescript" column="user_descript"/>
