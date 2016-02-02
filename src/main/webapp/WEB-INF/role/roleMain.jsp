@@ -103,27 +103,20 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper site-min-height">
-            <h3><i class="fa fa-angle-right"></i>用户管理</h3>
+            <h3><i class="fa fa-angle-right"></i>角色管理</h3>
 
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-theme02" onclick="openAddUser()"><i class="glyphicon glyphicon-plus"></i>新增</button>
+                        <button type="button" class="btn btn-theme02" onclick="openAddRole()"><i class="glyphicon glyphicon-plus"></i>新增</button>
                     </div>
-                                <div class="col-lg-8">
-                                    <div class="pull-right">
-                                        <form class="form-inline" role="form" action="/user/list.htm" method="post">
-                                            <div class="form-group">
-                                    <label class="control-label" for="userNameSearchId">用户名：</label>
-                                    <input type="text" name="userName" class="form-control" id="userNameSearchId" placeholder="">
-                                </div>
+                    <div class="col-lg-8">
+                        <div class="pull-right">
+                            <form class="form-inline" role="form" action="/role/list.htm" method="post">
+
                                 <div class="form-group">
-                                    <label class="control-label" for="userStateId">是否黑名单：</label>
-                                    <select name="userState" class="form-control" id="userStateId">
-                                        <option></option>
-                                        <option value="0">否</option>
-                                        <option value="1">是</option>
-                                    </select>
+                                    <label class="control-label" for="roleNameId">角色名：</label>
+                                    <input type="text" name="roleName" class="form-control" id="roleNameId" placeholder="">
                                 </div>
                                 <button type="submit" class="btn btn-theme">搜索<i class="glyphicon glyphicon-search"></i></button>
                             </form>
@@ -133,54 +126,45 @@
             </div>
 
             <div class="row mt">
-            <div class="col-lg-12">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <th><center>序号 </center></th>
-                        <th><center>用户名 </center></th>
-                        <th><center>角色 </center></th>
-                        <th><center>用户描述 </center></th>
-                        <th><center>是否黑名单 </center></th>
-                        <th><center>操作</center></th>
-
-                    </tr>
-                    <c:forEach var="b" items="${userList}" varStatus="status">
+                <div class="col-lg-12">
+                    <table class="table table-bordered table-striped">
                         <tr>
-                            <td width="50px"><center>${status.index+1 } </center></td>
-                            <td><center>${b.userName } </center></td>
-                            <td><center>${b.role.roleName } </center></td>
-                            <td width="500px">${b.userDescript } </td>
-                            <td width="100px"><center>
-                                <c:choose>
-                                  <c:when test="${b.userState==1}">是</c:when>
-                                  <c:otherwise>否</c:otherwise>
-                                </c:choose>
-                            </center> </td>
-                            <td width="180px">
-                                 <center>
-                                     <div style="text-align:center">
-                                      <table width="100%">
-                                         <tr>
-                                             <td> <a href="javascript:openEditUser('${b.userId.toString()}')">编辑</a></td>
-                                             <td> <a href="javascript:del('${b.userId}')">删除</a></td>
-                                             <td> <a href="javascript:defriend('${b.userId}')">拉黑</a></td>
-                                             <td><a href="javascript:removeBlack('${b.userId}')">解除</a></td>
-                                         </tr>
-                                      </table>
-                                     </div>
-                                 </center>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </table>
+                            <th><center>序号 </center></th>
+                            <th><center>角色名 </center></th>
+                            <th><center>说明 </center></th>
+                            <th><center>权限 </center></th>
+                            <th><center>操作</center></th>
 
-                <div class="row centered">
-                <nav>
-                    <ul class="pagination">${pageCode }
-                    </ul>
-                </nav>
+                        </tr>
+                        <c:forEach var="role" items="${roleList}" varStatus="status">
+                            <tr>
+                                <td width="50px"><center>${status.count } </center></td>
+                                <td><center>${role.roleName } </center></td>
+                                <td><center>${role.roleDescript} </center></td>
+                                <td width="500px"> </td>
+                                <td width="180px">
+                                    <center>
+                                        <div style="text-align:center">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td> <a href="javascript:openEditUser('${role.roleId.toString()}')"> 编辑及权限</a></td>
+                                                    <td> <a href="javascript:del('${role.roleId}')">删除</a></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </center>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+
+                    <div class="row centered">
+                        <nav>
+                            <ul class="pagination">${pageCode }
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </div>
             </div>
         </section>
         <! --/wrapper -->
@@ -190,16 +174,16 @@
     <!--main content end-->
 
     <!--footer start-->
-   <jsp:include page="/WEB-INF/reuse/footer.jsp"/>
+    <jsp:include page="/WEB-INF/reuse/footer.jsp"/>
     <!--footer end-->
 </section>
 
 <!-- js placed at the end of the document so the pages load faster -->
 <jsp:include page="/WEB-INF/reuse/js.jsp"/>
 <!-- 让侧边栏菜单高亮 -->
-<script>$("#userMainId").attr({"class" : "active"});</script>
+<script>$("#roleMainId").attr({"class" : "active"});</script>
 <!--引入此页面的js-->
-<script type="text/javascript" src="/res/js/user/index.js"></script>
+<script type="text/javascript" src="/res/js/role/roleMain.js"></script>
 </body>
 </html>
 

@@ -42,8 +42,8 @@
                     <select id="roleSel" name="role.roleId" class="form-control" style="width:152px">
                         <option value="">------</option>
                         <c:forEach var="b" items="${roleList}" varStatus="status">
-                            <option value="${b.roleId}">${b.roleName}</option>
-                        </c:forEach>
+                        <option value="${b.roleId}">${b.roleName}</option>
+                    </c:forEach>
                     </select>
                 </div>
             </td>

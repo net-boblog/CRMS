@@ -13,19 +13,26 @@
             <result property="userDescript" column="user_descript"/>
             <result property="userState" column="user_state"/>
         </collection>
-        <!--<collection property="Menu" ofType="com.amazingfour.crms.domain.Menu" column="menu_id" >-->
-            <!--<id property="menuId" column="menu_id"/>-->
-            <!--<result property="name" column="menu_name"/>-->
-            <!--<result property="url" column="menu_url"/>-->
-            <!--<result property="type" column="menu_type"/>-->
-            <!--<result property="pid" column="pid"/>-->
-        <!--</collection>-->
+        <collection property="menuList" ofType="com.amazingfour.crms.domain.Menu" column="menu_id" >
+            <id property="menuId" column="menu_id"/>
+            <result property="name" column="menu_name"/>
+            <result property="url" column="menu_url"/>
+            <result property="type" column="menu_type"/>
+            <result property="pid" column="pid"/>
+        </collection>
     </resultMap>
 
     <!-- 通过用户Id查找角色 -->
     <select id="findByUserId" parameterType="Long" resultMap="RoleResult">
         select * from role
         where user_id=#{userId}
+    </select>
+
+    <!-- 根据role表中的id查询角色和菜单信息 -->
+    <select id="findMenuByRoleId" parameterType="Long"
+            resultMap="RoleResult">
+         select r.role_id,r.role_name,r.role_desc from role r left join
+          t_user_role u on r.role_id=u.ROLE_ID where u.USER_ID=#{id}
     </select>
 
     <!-- 通过Id查找角色 -->
@@ -36,15 +43,17 @@
 
     <!--查找所有-->
     <select id="find" parameterType="Map" resultMap="RoleResult">
-        select u.*,r.* from user u ,role r where r.role_id=u.role_id
-        <if test="roleId!=null">
+--         select u.*,r.* from user u ,role r where r.role_id=u.role_id
+        select * from role
+        <where>
+        <if test="roleName!=null">
             and role_name like '%${roleName}%'
         </if>
 
         <if test="userName!=null">
             and username like '%${userName}%'
         </if>
-
+        </where>
         <if test="start!=null and size!=null">  <!-- start=起始页 size=叶容量 -->
             limit #{start},#{size}
         </if>
