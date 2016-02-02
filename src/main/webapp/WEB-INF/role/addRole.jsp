@@ -33,7 +33,7 @@
 </head>
 
 <body>
-<form id="auserForm"> <%--action="/user/insert.htm" method="post" onsubmit="return checkForm()">--%>
+<form id="aroleForm"> <%--action="/user/insert.htm" method="post" onsubmit="return checkForm()">--%>
   <table class="table table-bordered table-striped table-condensed">
     <tbody>
     <tr>
@@ -48,7 +48,7 @@
     </tr>
     <tr>
       <th scope="row">说明：</th>
-      <td><input id="roleDes" class="form-control" type="text" name="roleDes" value="" placeholder="请输入角色说明" required>
+      <td><input id="roleDes" class="form-control" type="text" name="roleDescript" value="" placeholder="请输入角色说明" required>
         <div>
           <span id="userError"></span>
           <%--<span font color="red">${errorMsg2}</span>--%>
@@ -62,11 +62,10 @@
           <!-- 树加载后存放的容器 -->
          <ul id="treeDemo" class="ztree"></ul>
       </td>
-    <tr>
-      <td><input type="hidden" name="roledto.permissionIds" /></td>
-      <td><input type="hidden" name="roledto.roleId" value="${roleId}"/></td>
-      <td><input type="hidden" name="orgid" value="${orgId}"/></td>
+
     </tr>
+    <tr>
+        <input type="hidden" id="ids" name="ids" value="hei">
     </tr>
 
     <tr>
@@ -88,31 +87,23 @@
           if ($("#roleName").val() == "") {
               layer.tips('角色名不能为空!', '#roleName', {tips: 4, tipsMore: true});
           }
-          if ($("#roleDes").val() == "") {
+          if ($("#roleDescript").val() == "") {
               layer.tips('角色说明不能为空!', '#roleDes', {tips: 4, tipsMore: true});
-          }
-          if ($("#roleSel").val() == "") {
-              layer.tips('请选择角色!', '#roleSel', {tips: 4, tipsMore: true});
           } else {
-              var userdata = $("#auserForm").serializeArray();
+              var ids = fun();
+              $("#ids").val(ids);
+              var roledata = $("#aroleForm").serializeArray();
+
+              $.each(roledata, function(i, field){
+                  alert(field.name + ":" + field.value + " ");
+              });
               $.ajax({
                   type: "POST",
                   url: "/role/insert.htm",
-                  data: userdata,
+                  data: roledata,ids:ids,
                   cache: false,
                   success: function (data, status) {
-                      var utip = data.usertip;
-                      if (utip == 0) {
-                          //$("#userError").text(reData.mes);
-                          layer.tips(data.mes, '#userName', {tips: [3, 'red'], tipsMore: true});
-                      } else if (utip == 1) {
-                          parent.layer.msg(status + data.mes, {shade: 0.1, time: 2000}, function () {
-                              parent.window.location = "/user/list.htm";
-                          });
-                      } else {
-                          //do nothing
-                          alert("do nothing");
-                      }
+                      alert(status + ":成功！!");
                   },
                   error: function (xhr, status, ex) {
                       alert(status + ":保存失败!");
@@ -132,11 +123,14 @@
               //dblClickExpand: false,
               expandSpeed: 300 //设置树展开的动画速度，IE6下面没效果，
           },
+          edit: {
+              enable: true
+          },
           async: {
               enable: true,
               type: 'post',
-              url: "/role/addRole.htm"
-              ///dataFilter: filter
+              url: "/role/addRole.htm",
+              dataFilter: filter
           },
           data: {
               simpleData: {   //简单的数据源，一般开发中都是从数据库里读取，API有介绍，这里只是本地的
@@ -152,8 +146,35 @@
           }
       };
 
+  function filter(treeId, parentNode, childNodes) {
+      if (!childNodes) return null;
+      for (var i = 0, l = childNodes.length; i < l; i++) {
+          childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+      }
+      return childNodes;
+  }
+  function fun() {
+      var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+      var checkedNodes = zTree.getCheckedNodes(true);
+      var count=checkedNodes.length;
+      var ids=new Array();
+      for(var i=0;i<count;i=i+1){
+          ids.push(checkedNodes[i].id);
+      }
+      ids=ids.join(",");
+      return ids;
+  }
+
+  function beforeRename(treeId, treeNode, newName) {
+      if (newName.length == 0) {
+          alert("节点名称不能为空.");
+          return false;
+      }
+      return true;
+  }
       $(document).ready(function () {//初始化ztree对象
           var zTreeDemo = $.fn.zTree.init($("#treeDemo"), setting);
+          zTreeDemo.expandAll(true);//全部展开
       });
 
 

@@ -39,15 +39,12 @@ public class RoleServiceImpl extends AbstractService<Role,Long> implements RoleS
     public List<Object> listAllMenu(){
         List<Object> listZTree = new ArrayList<Object>();
         List<Menu> listLibrary  = menuDao.listAllMenu();
-        System.out.println("即将进入");
         String str = "";
         for (int i = 0; i < listLibrary.size(); i++) {
             Menu  library = listLibrary.get(i);//分类信息
             str = "{id:'" +library.getMenuId() + "', pId:'"+library.getPid()+"', name:\""+library.getName()+"\" }";//封装ztree需要格式的字符串
             listZTree.add(str);
-            System.out.println(str+"正在进入");
         }
-        System.out.println("完成进入");
         return listZTree;
 
     }
