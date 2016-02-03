@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amazingfour.crms.dao.MenuDao">
+
+    <resultMap type="Menu" id="menuResultMap">
+        <id property="menuId" column="menu_id"/>
+        <result property="name" column="menu_name"/>
+        <result property="url" column="menu_url"/>
+        <result property="type" column="menu_type"/>
+        <result property="pid" column="pid"/>
+
+        <collection property="roleList" ofType="com.amazingfour.crms.domain.Role" column="role_id">
+            <id property="roleId" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleDescript" column="role_descript"/>
+        </collection>
+    </resultMap>
+
+    <!--查询所有菜单 -->
+    <select id="find" resultMap="menuResultMap">
+        select * from menu
+    </select>
+    <!--查询所有父菜单 -->
+    <select id="listAllMenu" resultMap="menuResultMap">
+        select * from menu
+    </select>
+    <select id="listSubMenuByParentId" parameterType="int" resultMap="menuResultMap">
+        select * from menu where pid=#{parentId}
+    </select>
+   <!--通过菜单id查询菜单信息-->
+    <select id="getMenuById" parameterType="Long" resultMap="menuResultMap">
+        select * from menu m ,role_menu rm where m.menu_id = rm.menu_id and rm.role_id = #{roleId}
+    </select>
+    <!--查询所有子菜单-->
+    <select id="listSubMenu" parameterType="int" resultMap="menuResultMap">
+        select * from menu where pid is not null and menu_id = #{menuId}
+    </select>
+    <!--新增菜单-->
+    <insert id="insertMenu" parameterType="Menu"  useGeneratedKeys="true" keyProperty="menuId">
+        insert into menu (menu_name,menu_url,pid) values (#{menuName},#{menuUrl},#{parentId})
+    </insert>
+    <!--修改菜单-->
+    <update id="updateMenu" parameterType="Menu">
+        update menu set
+        menu_name=#{menuName},
+        menu_url=#{menuUrl},
+        parent_id=#{parentId}
+        where menu_id=#{menuId}
+    </update>
+    <!--删除菜单-->
+    <delete id="deleteMenuById" parameterType="int">
+        delete from tb_menu where menu_id=#{menuId} or parent_id=#{menuId}
+    </delete>
+</mapper>

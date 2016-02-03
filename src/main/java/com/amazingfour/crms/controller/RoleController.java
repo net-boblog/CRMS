@@ -5,9 +5,11 @@ import com.amazingfour.common.utils.PageUtil;
 
 import com.amazingfour.common.utils.ResponseUtil;
 
+import com.amazingfour.crms.domain.Menu;
 import com.amazingfour.crms.domain.Role;
 
 
+import com.amazingfour.crms.service.MenuService;
 import com.amazingfour.crms.service.RoleService;
 import com.amazingfour.crms.service.UserService;
 
@@ -35,6 +37,8 @@ public class RoleController {
     private UserService userService;
     @Resource
     private RoleService roleService;
+    @Resource
+    private MenuService menuService;
 
     //从数据库中获取所有角色信息
     @RequestMapping("/list")
@@ -54,7 +58,14 @@ public class RoleController {
         map.put("roleName", roleName);
 
         List<Role> roleList = roleService.find(map); //查询符合条件的所有Role角色
-
+        List<Role> list = new ArrayList<Role>();
+        for(Role role1:roleList){
+            Long roleId = role1.getRoleId();
+            //根据roleId查询对应的menu，并填充到MenuList
+            List<Menu> menu = menuService.getMenuById(roleId);//查询到List<Menu>集合
+            role1.setMenuList(menu);
+            list.add(role1);
+        }
         int total = roleService.count(role); //符合条件的总记录数
 
         Map<String, Object> params = new HashMap<String, Object>();
@@ -63,7 +74,7 @@ public class RoleController {
 
         String pageCode = PageUtil.getPagation("/role/list.htm", params, total, Integer.parseInt(page), pageSize);
         mav.addObject("pageCode", pageCode);
-        mav.addObject("roleList", roleList);
+        mav.addObject("roleList", list);
         mav.setViewName("role/roleMain");
         return mav;
     }

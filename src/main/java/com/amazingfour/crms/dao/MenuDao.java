@@ -14,7 +14,7 @@ import java.util.List;
 public interface MenuDao  extends BaseDao<Menu,Long> {
     List<Menu> listAllMenu();
     List<Menu> listSubMenuByParentId(Integer parentId);
-    Menu getMenuById(Integer menuId);
+    List<Menu> getMenuById(Long roleId);
     void insertMenu(Menu menu);
     void updateMenu(Menu menu);
     void deleteMenuById(Integer menuId);

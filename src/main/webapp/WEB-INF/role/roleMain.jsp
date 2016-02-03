@@ -141,7 +141,11 @@
                                 <td width="50px"><center>${status.count } </center></td>
                                 <td><center>${role.roleName } </center></td>
                                 <td><center>${role.roleDescript} </center></td>
-                                <td width="500px"> </td>
+                                <td style="WORD-WRAP: break-word"  width="500px">
+                                    <c:forEach var="menu" items="${role.menuList}" varStatus="status">
+                                    ${menu.name},
+                                    </c:forEach></td>
+
                                 <td width="180px">
                                     <center>
                                         <div style="text-align:center">

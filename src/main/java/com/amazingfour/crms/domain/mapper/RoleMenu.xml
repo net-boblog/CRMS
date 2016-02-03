@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amazingfour.crms.dao.MenuDao">
+
+    <resultMap type="Menu" id="roleAndmenuMap">
+        <id property="roleId" column="role_id"/>
+        <id property="menuId" column="menu_id"/>
+
+        <association property="menu" column="menu_id" javaType="Menu"
+                     resultMap="com.amazingfour.crms.dao.MenuDao.menuResultMap">
+        </association>
+        <association property="role" column="role_id" javaType="Role"
+                     resultMap="com.amazingfour.crms.dao.RoleDao.RoleResult">
+        </association>
+    </resultMap>
+
+
+
+</mapper>
