@@ -16,13 +16,13 @@
 
 
     <script type="text/javascript">
-        function del(userId) {
+        function del(roleId) {
             if (confirm("确定要删除这条记录吗?")) {
                 $
                         .get(
-                        "${pageContext.request.contextPath}/user/delete.htm",
+                        "${pageContext.request.contextPath}/role/delete.htm",
                         {
-                            userId : userId
+                            roleId : roleId
                         },
                         function(data) {
 
@@ -30,7 +30,7 @@
 
                             if ("success" == data.msg) {
                                 alert("删除成功!");
-                                window.location.href = "${pageContext.request.contextPath}/user/list.htm";
+                                window.location.href = "${pageContext.request.contextPath}/role/list.htm";
                             } else {
                                 alert(data.error);
                             }
@@ -151,7 +151,7 @@
                                         <div style="text-align:center">
                                             <table width="100%">
                                                 <tr>
-                                                    <td> <a href="javascript:openEditUser('${role.roleId.toString()}')"> 编辑及权限</a></td>
+                                                    <td> <a href="javascript:openEditRole('${role.roleId.toString()}')"> 编辑及权限</a></td>
                                                     <td> <a href="javascript:del('${role.roleId}')">删除</a></td>
                                                 </tr>
                                             </table>

@@ -49,6 +49,7 @@
         <if test="roleName!=null">
             and role_name like '%${roleName}%'
         </if>
+
         </where>
         <if test="start!=null and size!=null">  <!-- start=起始页 size=叶容量 -->
             limit #{start},#{size}
@@ -70,8 +71,19 @@
     </select>
     <!--新增角色-->
     <insert id="insert" parameterType="Role" useGeneratedKeys="true" keyProperty="roleId">
-        insert into role (role_name) values (#{roleName})
+        insert into role (role_name,role_descript) values (#{roleName},#{roleDescript})
     </insert>
+    <!--更新用户信息-->
+    <update id="update" parameterType="Role">
+        UPDATE role set role_name=#{roleName},role_descript=#{roleDescript} WHERE role_id=#{roleId}
+    </update>
+    <!-- 检查某个账号的用户是否存在 -->
+    <select id="existRoleByName" parameterType="String"
+            resultType="Integer">
+        select count(*) from role
+        where
+        role_name=#{roleName}
+    </select>
     <!--修改角色基本信息-->
     <update id="updateRoleBaseInfo" parameterType="Role">
         update role set role_name=#{roleName} where role_id=#{roleId}
@@ -81,7 +93,7 @@
         <!--update role set rights=#{rights} where role_id=#{roleId}-->
     <!--</update>-->
     <!--删除角色-->
-    <delete id="deleteRoleById" parameterType="int">
+    <delete id="delete" parameterType="Long">
         delete from role where role_id=#{roleId}
     </delete>
 </mapper>

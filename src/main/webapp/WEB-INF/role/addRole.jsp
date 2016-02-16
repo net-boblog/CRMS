@@ -65,7 +65,7 @@
 
     </tr>
     <tr>
-        <input type="hidden" id="ids" name="ids" value="hei">
+        <input type="hidden" id="ids" name="ids" value="">
     </tr>
 
     <tr>
@@ -86,24 +86,37 @@
       $("#auserBtn").click(function () {
           if ($("#roleName").val() == "") {
               layer.tips('角色名不能为空!', '#roleName', {tips: 4, tipsMore: true});
+              return;
           }
-          if ($("#roleDescript").val() == "") {
+          if ($("#roleDes").val() == "") {
               layer.tips('角色说明不能为空!', '#roleDes', {tips: 4, tipsMore: true});
+              return;
           } else {
               var ids = fun();
               $("#ids").val(ids);
+              if (ids == "") {
+                  layer.tips('请选择权限菜单!', '#treeDemo', {tips: 4, tipsMore: true});
+                  return;
+              }
               var roledata = $("#aroleForm").serializeArray();
-
-              $.each(roledata, function(i, field){
-                  alert(field.name + ":" + field.value + " ");
-              });
               $.ajax({
                   type: "POST",
                   url: "/role/insert.htm",
                   data: roledata,ids:ids,
                   cache: false,
                   success: function (data, status) {
-                      alert(status + ":成功！!");
+                      var utip = data.roletip;
+                      if (utip == 0) {
+                          //$("#userError").text(reData.mes);
+                          layer.tips(data.mes, '#roleName', {tips: [3, 'red'], tipsMore: true});
+                      } else if (utip == 1) {
+                          parent.layer.msg(status + data.mes, {shade: 0.1, time: 2000}, function () {
+                              parent.window.location = "/role/list.htm";
+                          });
+                      } else {
+                          //do nothing
+                          alert("您输入的数据有误，请重新输入！");
+                      }
                   },
                   error: function (xhr, status, ex) {
                       alert(status + ":保存失败!");
@@ -117,20 +130,18 @@
           check: {
               enable: true,
               chkStyle: "checkbox",
-              chkboxType: {"Y": "p", "N": "s"}
+              chkboxType: {"Y": "ps", "N": "ps"}
           },
           view: {
               //dblClickExpand: false,
               expandSpeed: 300 //设置树展开的动画速度，IE6下面没效果，
           },
-          edit: {
-              enable: true
-          },
+
           async: {
               enable: true,
               type: 'post',
               url: "/role/addRole.htm",
-              dataFilter: filter
+
           },
           data: {
               simpleData: {   //简单的数据源，一般开发中都是从数据库里读取，API有介绍，这里只是本地的
@@ -146,13 +157,7 @@
           }
       };
 
-  function filter(treeId, parentNode, childNodes) {
-      if (!childNodes) return null;
-      for (var i = 0, l = childNodes.length; i < l; i++) {
-          childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
-      }
-      return childNodes;
-  }
+
   function fun() {
       var zTree = $.fn.zTree.getZTreeObj("treeDemo");
       var checkedNodes = zTree.getCheckedNodes(true);
@@ -174,7 +179,7 @@
   }
       $(document).ready(function () {//初始化ztree对象
           var zTreeDemo = $.fn.zTree.init($("#treeDemo"), setting);
-          zTreeDemo.expandAll(true);//全部展开
+
       });
 
 

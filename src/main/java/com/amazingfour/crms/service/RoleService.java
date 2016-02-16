@@ -11,5 +11,7 @@ import java.util.List;
 public interface RoleService extends BaseService<Role,Long> {
     //public List<Role> findByUserId(Long userId);
     public List<Object> listAllMenu();
+    public List<Object> listAllMenuById(List<Menu> menu);
     public List<Menu> listSubMenu(String menuId);
+    public boolean existRoleByName(String roleName);
 }

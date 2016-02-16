@@ -76,7 +76,7 @@
     </delete>
 
     <!-- 新增用户 -->
-    <insert id="insert" parameterType="User">
+    <insert id="insert" parameterType="User" >
         insert into user(username,role_id,password,user_descript,user_state)
         values(#{userName},#{role.roleId},#{password},#{userDescript},0)
     </insert>

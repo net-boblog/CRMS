@@ -14,8 +14,8 @@ package com.amazingfour.crms.domain;
  * */
 public class RoleMenu {
 
-    private String roleId;  //角色id
-    private String menuId;  //菜单id
+    private Long roleId;  //角色id
+    private Long menuId;  //菜单id
     private Menu menu;
     private Role role;
 
@@ -35,16 +35,20 @@ public class RoleMenu {
         this.role = role;
     }
 
-    public String getRoleId() {
+
+    public Long getRoleId() {
         return roleId;
     }
-    public void setRoleId(String roleId) {
+
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
-    public String getMenuId() {
+
+    public Long getMenuId() {
         return menuId;
     }
-    public void setMenuId(String menuId) {
+
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 

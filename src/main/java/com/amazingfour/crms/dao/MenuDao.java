@@ -2,6 +2,7 @@ package com.amazingfour.crms.dao;
 
 import com.amazingfour.crms.domain.Menu;
 import com.amazingfour.crms.domain.Role;
+import com.amazingfour.crms.domain.RoleMenu;
 import org.springframework.stereotype.Repository;
 
 
@@ -16,7 +17,8 @@ public interface MenuDao  extends BaseDao<Menu,Long> {
     List<Menu> listSubMenuByParentId(Integer parentId);
     List<Menu> getMenuById(Long roleId);
     void insertMenu(Menu menu);
-    void updateMenu(Menu menu);
-    void deleteMenuById(Integer menuId);
+    void updateMenu(RoleMenu roleMenu);
+    void deleteMenu(RoleMenu roleMenu);
     List<Menu> listSubMenu(String menuId);
+    public void insertMenu(RoleMenu domain);
 }

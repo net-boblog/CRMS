@@ -23,5 +23,7 @@ public interface RoleDao extends BaseDao<Role,Long> {
     public void updateRoleBaseInfo(Role domain);
     //修改权限信息
     void updateRoleRights(Role role);
+    //查询是否存在相同名字的角色
+    public int existRoleByName(String roleName);
 
 }
