@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -46,13 +47,24 @@ public class RoleController {
     //从数据库中获取所有角色信息
     @RequestMapping("/list")
     public ModelAndView list(
-            @RequestParam(value = "page", required = false, defaultValue = "1") String page,
-            Role role, HttpServletRequest request) {
+            @RequestParam(value = "page", required = false) String page,
+            Role role, HttpServletRequest request) throws UnsupportedEncodingException {
         ModelAndView mav = new ModelAndView();
+        request.setCharacterEncoding("utf-8");
+        HttpSession session = request.getSession();
 
         int pageSize = 4; // 页容量
 
-        String roleName = role.getRoleName();
+        if (page == null || page == "") {
+
+            page = "1";
+            session.setAttribute("role", role);
+        } else {
+
+            role = (Role) session.getAttribute("role");
+
+        }
+        String roleName=role.getRoleName();
 
         Map<String, Object> map = new HashMap<String, Object>(); // 使用Map传值到mapper处理
         map.put("start", (Integer.parseInt(page) - 1) * pageSize); // 起始记录

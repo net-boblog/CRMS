@@ -84,13 +84,14 @@ public class UserController {
         if (page == null || page == "") {
 
             page = "1";
-            session.setAttribute("user", user);
+
         } else {
 
             user = (User) session.getAttribute("user");
 
         }
         String userName=user.getUserName();
+
         Byte userState=user.getUserState();
         Map<String, Object> map = new HashMap<String, Object>(); // 使用Map传值到mapper处理
         map.put("start", (Integer.parseInt(page) - 1) * pageSize); // 起始记录
