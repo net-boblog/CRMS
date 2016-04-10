@@ -31,7 +31,7 @@
     <!-- 根据role表中的id查询角色和菜单信息 -->
     <select id="findMenuByRoleId" parameterType="Long"
             resultMap="RoleResult">
-         select r.role_id,r.role_name,r.role_desc from role r left join
+         select m.* from role r left join
           t_user_role u on r.role_id=u.ROLE_ID where u.USER_ID=#{id}
     </select>
 

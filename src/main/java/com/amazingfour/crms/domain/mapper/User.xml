@@ -97,6 +97,7 @@
 
     </select>
 
+
     <!--更新用户信息-->
     <update id="update" parameterType="User">
         UPDATE user set role_id=#{role.roleId},username=#{userName},password=#{password},

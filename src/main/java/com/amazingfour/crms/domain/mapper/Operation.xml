@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amazingfour.crms.dao.OperationDao">
+
+    <resultMap type="Operation" id="OperResultMap">
+        <id property="operationId" column="operation_id"/>
+        <result property="funName" column="fun_name"/>
+        <result property="action" column="action"/>
+        <result property="fun" column="fun"/>
+        <result property="pid" column="pid"/>
+
+        <collection property="roleList" ofType="com.amazingfour.crms.domain.Role" column="role_id">
+            <id property="roleId" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleDescript" column="role_descript"/>
+        </collection>
+    </resultMap>
+
+    <!--查询所有菜单 -->
+    <select id="findParent" resultMap="OperResultMap">
+        select * from operation where pid = 0;
+    </select>
+    <!--查询子节点 -->
+    <select id="findChild" parameterType="Long" resultMap="OperResultMap">
+        select * from operation where pid = #{id} or operation_id=#{id};
+    </select>
+    <!--查询当前角色拥有的菜单 -->
+    <select id="getOperbyId" parameterType="Long" resultMap="OperResultMap">
+        select * from operation o ,role_operation ro where o.operation_id = ro.operation_id and ro.role_id = #{id};
+    </select>
+    <!--查询所有父菜单 -->
+    <select id="listAllOper" resultMap="OperResultMap">
+        select * from operation
+    </select>
+    <select id="listSubOperByParentId" parameterType="Long" resultMap="OperResultMap">
+        select * from menu where pid=#{pid}
+    </select>
+    <!--通过菜单id查询菜单信息-->
+    <select id="getOperById" parameterType="Long" resultMap="OperResultMap">
+        select * from Operation o ,role_operation ro where o.operation_id= ro.operation_id and ro.role_id = #{roleId}
+    </select>
+    <!--查询所有子菜单-->
+    <select id="listSubOper" parameterType="Long" resultMap="OperResultMap">
+        select * from operation where pid is not null and operation_id = #{operationId}
+    </select>
+    <!--新增菜单-->
+    <insert id="insertOper" parameterType="RoleOper" >
+        insert into role_operation (operation_id,role_id) values (#{operationId},#{roleId})
+    </insert>
+    <!--修改菜单-->
+    <!--<update id="updateOper" parameterType="RoleMenu">-->
+    <!--insert into role_menu (menu_id,role_id) values (#{menuId},#{roleId})-->
+    <!--</update>-->
+    <!--删除菜单-->
+    <delete id="deleteOper" parameterType="RoleOper">
+        delete from role_operation where operation_id=#{operationId} and role_id=#{roleId}
+    </delete>
+
+
+</mapper>

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.amazingfour.common.utils.Encrypt;
 import com.amazingfour.common.utils.PageUtil;
 import com.amazingfour.common.utils.ResponseUtil;
+import com.amazingfour.crms.domain.Menu;
 import com.amazingfour.crms.domain.Role;
 import com.amazingfour.crms.domain.User;
+import com.amazingfour.crms.service.MenuService;
 import com.amazingfour.crms.service.RoleService;
 import com.amazingfour.crms.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,8 @@ public class UserController {
     private UserService userService;
     @Resource
     private RoleService roleService;
+    @Resource
+    private MenuService menuService;
 
     //管理员登录
     @RequestMapping("/login")
@@ -52,7 +56,26 @@ public class UserController {
                 return "forward:/login.jsp";
             }else {
                 HttpSession session = request.getSession();
+                /*
+                    1.将用户存入session
+                 */
                 session.setAttribute("currentUser", resultUser);
+                User u  =userService.findById(resultUser.getUserId());
+                Role role = u.getRole();
+                /*
+                    2.将角色存入session
+                 */
+                session.setAttribute("role",role);
+                List<Menu> menuList = menuService.getMenuById(Long.valueOf(role.getRoleId()));//查询到List<Menu>集合
+//                for(Menu m : menu){
+//                    System.out.println(m.getName());
+//                }
+                /*
+                    3.将菜单存入session
+                 */
+                session.setAttribute("menuList",menuList);
+
+
                 return "redirect:/user/list.htm";
                 /*if(resultUser.getUserName().equals(username)&&resultUser.getPassword().equals(s)){//判断数据库获得的数据与页面输入的数据是否相等
                     HttpSession session = request.getSession();

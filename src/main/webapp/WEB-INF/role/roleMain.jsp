@@ -37,48 +37,7 @@
                         });
             }
         }
-        function defriend(userId) {
-            if (confirm("你确定拉黑用户吗?")) {
-                $
-                        .get(
-                        "${pageContext.request.contextPath}/user/defriend.htm",
-                        {
-                            userId : userId
-                        },
-                        function(data) {
 
-                            var data = eval("(" + data + ")"); //将data 转换成JS对象，这样才可以使用data.msg这种形式
-
-                            if ("ok" == data.msg) {
-                                alert("拉黑成功!");
-                                window.location.href = "${pageContext.request.contextPath}/user/list.htm";
-                            } else {
-                                alert(data.error);
-                            }
-                        });
-            }
-        }
-        function removeBlack(userId) {
-            if (confirm("你要解除该用户黑名单?")) {
-                $
-                        .get(
-                        "${pageContext.request.contextPath}/user/removeBlack.htm",
-                        {
-                            userId : userId
-                        },
-                        function(data) {
-
-                            var data = eval("(" + data + ")"); //将data 转换成JS对象，这样才可以使用data.msg这种形式
-
-                            if ("suc" == data.msg) {
-                                alert("解除黑名单成功!");
-                                window.location.href = "${pageContext.request.contextPath}/user/list.htm";
-                            } else {
-                                alert(data.error);
-                            }
-                        });
-            }
-        }
     </script>
 </head>
 
@@ -151,7 +110,8 @@
                                         <div style="text-align:center">
                                             <table width="100%">
                                                 <tr>
-                                                    <td> <a href="javascript:openEditRole('${role.roleId.toString()}')"> 编辑及权限</a></td>
+                                                    <td> <a href="javascript:openEditRole('${role.roleId.toString()}')"> 菜单</a></td>
+                                                    <td> <a href="javascript:openEditOper('${role.roleId.toString()}')"> 功能</a></td>
                                                     <td> <a href="javascript:del('${role.roleId}')">删除</a></td>
                                                 </tr>
                                             </table>

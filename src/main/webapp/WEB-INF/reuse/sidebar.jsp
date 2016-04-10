@@ -24,12 +24,12 @@
                 </a>
             </li>
 
-            <li class="sub">
-                <a id="authorMainId" href="index.html">
-                    <i class="fa fa-cogs"></i>
-                    <span>角色权限管理</span>
-                </a>
-            </li>
+            <%--<li class="sub">--%>
+                <%--<a id="authorMainId" href="/operation/list.htm">--%>
+                    <%--<i class="fa fa-cogs"></i>--%>
+                    <%--<span>角色权限管理</span>--%>
+                <%--</a>--%>
+            <%--</li>--%>
 
             <li class="sub">
                 <a id="fileMainId" href="/filec/listFile.htm">

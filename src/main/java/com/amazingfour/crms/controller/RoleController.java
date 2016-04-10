@@ -1,18 +1,15 @@
 package com.amazingfour.crms.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.amazingfour.common.utils.PageUtil;
 
 import com.amazingfour.common.utils.ResponseUtil;
 
-import com.amazingfour.crms.domain.Menu;
-import com.amazingfour.crms.domain.Role;
+import com.amazingfour.crms.domain.*;
 
 
-import com.amazingfour.crms.domain.RoleMenu;
-import com.amazingfour.crms.domain.User;
 import com.amazingfour.crms.service.MenuService;
+import com.amazingfour.crms.service.OperationService;
 import com.amazingfour.crms.service.RoleService;
 import com.amazingfour.crms.service.UserService;
 
@@ -26,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -43,6 +39,8 @@ public class RoleController {
     private RoleService roleService;
     @Resource
     private MenuService menuService;
+    @Resource
+    private OperationService operationService;
 
     //从数据库中获取所有角色信息
     @RequestMapping("/list")
@@ -165,7 +163,7 @@ public class RoleController {
 
     }
 
-    //角色更新前置
+    //角色菜单更新前置
     @RequestMapping("/preUpdate")
     public ModelAndView preUpdate(@RequestParam(value = "roleId") String roleId,HttpServletRequest request) {
 
@@ -174,6 +172,16 @@ public class RoleController {
         request.setAttribute("role",role);
         mav.addObject("roleId",roleId);
         mav.setViewName("role/updateRole");
+        return mav;
+    }
+
+    //角色功能更新前置
+    @RequestMapping("/preUpdateOper")
+    public ModelAndView preUpdateOper(@RequestParam(value = "roleId") String roleId,HttpServletRequest request) {
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("roleId",roleId);
+        mav.setViewName("role/updateOper");
         return mav;
     }
 
@@ -187,8 +195,42 @@ public class RoleController {
         ResponseUtil.renderJson(response, list.toString());
     }
 
+    //显示功能栏目树
+    @RequestMapping("/updateOper")
+    public void showUpdateOper(@RequestParam(value = "roleId") String roleId, HttpServletResponse response) {
+        //查出roleId对应的菜单
+        List<Menu> rmList = menuService.getMenuById(Long.valueOf(roleId));//查询到List<Menu>集合
+        List<Operation> operList = operationService.findParent();   //查询pid为0的功能节点
+        List list = new ArrayList();
+        for (Menu m : rmList) {
+            String mn = m.getName();
+            for (Operation oper : operList) {
+                String op = oper.getFunName();
+                if (mn.equals(op)) {              //如果菜单名相同
+                    list.add(Long.valueOf(oper.getOperationId()));    //则获取功能对应的id
+                }
+            }
+        }
 
-    //更新角色
+        String str = "";
+        List<Operation> operChecked = operationService.getOperbyId(Long.valueOf(roleId));
+        List<Object> liste  = new ArrayList<Object>();
+        List<Object> listztree = null;
+        for (int i = 0; i < list.size(); i++) {
+            Long id = (Long) list.get(i);
+            List<Operation> operSub = operationService.findChild(id);   //寻找父ID下的子节点及父节点
+            listztree= operationService.listAllOperById(operSub,operChecked);
+          for(int j=0;j<listztree.size();j++){
+              str = (String) listztree.get(j);
+              liste.add(str);               //将所有json数据添加到liste集合中
+          }
+        }
+
+        ResponseUtil.renderJson(response, liste.toString());
+    }
+
+
+    //更新角色菜单
     @RequestMapping("/updateMenu")
     public void updateMenu(@RequestParam(value = "roleId") String roleId,Role role,HttpServletRequest request,HttpServletResponse response) {
         String rname = request.getParameter("rname");
@@ -228,9 +270,21 @@ public class RoleController {
                 }
             }
             //数据库存在而页面不存在就删除
+            /*
+                1.这里要同时删除对应菜单下的所有功能
+             */
             for (Menu menu : rmList) {
                 String menuid = menu.getMenuId().toString();
+
                 if(this.isContain(mids,menuid)){
+                    List<Operation> delist = operationService.findChild(Long.valueOf(menuid));
+                    RoleOper roleOper = new RoleOper();
+                    for(int i=0;i<delist.size();i++){
+                        roleOper.setOperationId(delist.get(i).getOperationId());
+                        roleOper.setRoleId(Long.valueOf(roleId));
+                        //删除对应的权限
+                        operationService.deleteOper(roleOper);
+                    }
                     RoleMenu rolemenu = new RoleMenu();
                     rolemenu.setRoleId(Long.valueOf(roleId));
                     rolemenu.setMenuId(Long.valueOf(menuid));
@@ -241,6 +295,52 @@ public class RoleController {
             }
             obj.put("roletip", 1);
             obj.put("mes", "保存成功!");
+
+
+
+        ResponseUtil.renderJson(response, obj.toString());
+    }
+
+    //更新角色功能
+    @RequestMapping("/updateOperByMenu")
+    public void updateOperByMenu(@RequestParam(value = "roleId") String roleId,Role role,HttpServletRequest request,HttpServletResponse response) {
+
+        JSONObject obj = new JSONObject();
+
+        //查出roleId对应的功能
+        List<Operation> opList = operationService.getOperbyId(Long.valueOf(roleId));
+        String ids = request.getParameter("ids");
+        //页面勾选权限id
+        String[] mids = ids.split(",");
+
+        //页面存在数据库不存在就添加
+        if(mids.length>0){
+
+            for (String operationId : mids) {
+                if(this.isContainOper(opList, operationId)){
+                    RoleOper roleOper = new RoleOper();
+                    roleOper.setOperationId(Long.valueOf(operationId));
+                    roleOper.setRoleId(Long.valueOf(roleId));
+                    //添加页面有数据库没有的菜单
+                    operationService.insertOper(roleOper);
+
+                }
+            }
+        }
+        //数据库存在而页面不存在就删除
+        for (Operation oper : opList) {
+            String operationId = oper.getOperationId().toString();
+            if(this.isContain(mids,operationId)){
+                RoleOper roleOper = new RoleOper();
+                roleOper.setOperationId(Long.valueOf(operationId));
+                roleOper.setRoleId(Long.valueOf(roleId));
+                //删除对应的菜单
+                operationService.deleteOper(roleOper);
+
+            }
+        }
+        obj.put("roletip", 1);
+        obj.put("mes", "保存成功!");
 
 
 
@@ -258,6 +358,20 @@ public class RoleController {
     private boolean isContain(List<Menu> menuList,String menuid){
         for (Menu menu : menuList) {
             if(menuid.equals(menu.getMenuId().toString()))
+                return false;
+        }
+        return true;
+    }
+    private boolean isContainOper(String [] mids,String operationId){
+        for (String mid : mids) {
+            if(operationId.equals(mid))
+                return false;
+        }
+        return true;
+    }
+    private boolean isContainOper(List<Operation> opList,String operationId){
+        for (Operation oper : opList) {
+            if(operationId.equals(oper.getOperationId().toString()))
                 return false;
         }
         return true;
