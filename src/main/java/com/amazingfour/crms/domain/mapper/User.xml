@@ -10,6 +10,10 @@
         <result property="password" column="password"/>
         <result property="userDescript" column="user_descript"/>
         <result property="userState" column="user_state"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="activated" column="activated"/>
+        <result property="emailKey" column="email_key"/>
+        <result property="outDate" column="out_date"/>
 
         <!--<collection property="Role" column="role_id" ofType="Role">
             <result property="roleName" column="role_name"/>
@@ -100,22 +104,48 @@
 
     <!--更新用户信息-->
     <update id="update" parameterType="User">
-        UPDATE user set role_id=#{role.roleId},username=#{userName},password=#{password},
-        user_descript=#{userDescript} WHERE user_id=#{userId}
+        UPDATE user set role_id=#{role.roleId},username=#{userName},user_descript=#{userDescript}
+        WHERE user_id=#{userId}
     </update>
 <!--拉黑用户-->
     <update id="defriend" parameterType="Long">
         UPDATE user SET user_state=1 WHERE user_id=#{userId}
     </update>
-    <!--确认密码-->
-   <select id="updatePassword" parameterType="User">
+    <!--修改密码-->
+   <update id="updatePassword" parameterType="User">
       UPDATE USER set password=#{password}
       WHERE username=#{userName}
-   </select>
+   </update>
     <!--解除用户黑名单-->
     <update id="removeBlack" parameterType="Long">
         UPDATE user SET user_state=0 WHERE user_id=#{userId}
     </update>
-
+    <!--判断用户是否已绑定邮箱-->
+    <select id="findOneById" parameterType="User" resultMap="UserResult">
+        SELECT * from user
+        WHERE
+        <choose>
+            <when test="userId!=null">
+                user_id=#{userId}
+            </when>
+            <otherwise>
+                username=#{userName}
+            </otherwise>
+        </choose>
+    </select>
+    <!--绑定邮箱-->
+    <update id="bindEmail" parameterType="User">
+        UPDATE user set user_email=#{userEmail},activated=0,email_key=#{emailKey},out_date=#{outDate}
+        WHERE user_id=#{userId}
+    </update>
+    <!--激活邮箱-->
+    <update id="activated" parameterType="User">
+        UPDATE user set activated=1 WHERE user_id=#{userId}
+    </update>
+    <!--找回密码发邮件时保存验证信息-->
+    <update id="saveEmailMes" parameterType="User">
+        UPDATE user set email_key=#{emailKey},out_date=#{outDate}
+        WHERE username=#{userName}
+    </update>
 
 </mapper>

@@ -12,4 +12,10 @@ public interface UserService extends BaseService<User,Long> {
     public boolean defriend(Long id);
     public boolean updatePassword(User user);
     public boolean removeBlack(Long id);
+    public User findOneById(User user);
+    public boolean existEmail(User user);
+    public boolean bindEmail(User user);
+    public boolean activated(User user);
+    public int existUserEmail(User user);
+    public boolean saveEmailMes(User user);
 }

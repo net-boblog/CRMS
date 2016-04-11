@@ -50,7 +50,21 @@
         <tr>
             <input type="hidden" name="userId" value="${user.userId}"/>
             <th scope="row">密码：</th>
-            <td><input id="password" class="form-control" type="password" name="password" value="${user.password}"  required></td>
+            <td><input id="password" class="form-control" type="password" name="password" value="${user.password}" disabled></td>
+        </tr>
+        <tr>
+            <th scope="row">邮箱：</th>
+            <td><c:set var="acti" scope="page" value="${user.activated}"/>
+                <span class="col-xs-7" style="padding: 0px;">
+                    <input id="userEmail" class="form-control" type="text" name="userEmail" value="${user.userEmail}" placeholder="email@example.com"
+                           <c:if test="${acti == 1}">disabled</c:if>>
+                </span>
+                <span id="emailSpan" <c:if test="${acti==1}">style="display: none"</c:if> class="col-xs-2"><button id="emailBtn" type="button" class="btn btn-success">绑定</button></span>
+                <span id="eSpan" <c:if test="${acti==1}">style="display: none"</c:if>>绑定邮箱<br>可以找回密码!</span>
+                <span id="rEmailSpan" <c:if test="${acti==0||acti==null}">style="display: none"</c:if> class="col-xs-2"><button id="rEmailBtn" type="button" class="btn btn-default">重新绑定</button></span>
+                <span id="cEmailSpan" style="display: none"><button id="cEmailBtn" type="button" class="btn btn-default">取消</button></span>
+
+            </td>
         </tr>
         <tr>
             <th scope="row">描述：</th>
@@ -82,6 +96,7 @@
 
 <script type="text/javascript">
 $(function(){
+    //更新用户信息，不包括邮箱
     $("#euserBtn").click(function(){
         if($("#userName").val()==""){
             //$("#userError").text("用户名不能为空！");
@@ -104,22 +119,51 @@ $(function(){
             }
         });
     });
+
+    //绑定邮箱
+    $("#emailBtn").click(function(){
+        if($("#userEmail").val()==""){
+            layer.tips('邮箱不能为空!', '#userEmail',{tips: 1});
+            return;
+        }
+        var userid = $("input[name='userId']").val();
+        var useremail = $("input[name='userEmail']").val();
+        var emaildata = {userId:userid,userEmail:useremail};
+        $.ajax({
+            type:"POST",
+            url:"/user/bindEmail.htm",
+            data:emaildata,
+            cache:false,
+            success:function(data,status){
+                parent.layer.alert(data, {icon: 6,title:'激活邮箱',btn:'已激活'},function(index){
+                    window.location="/user/preUpdate.htm?userId="+userid;
+                    parent.layer.close(index);
+                });
+            },
+            error:function(xhr,status,ex){
+                alert(status+":绑定邮箱失败，请重新绑定!");
+            }
+        });
+    });
+
+    //重新绑定邮箱
+    $("#rEmailBtn").click(function(){
+        $("#userEmail").attr("disabled",false)
+        $("#rEmailSpan").hide();
+        $("#emailSpan").show();
+        $("#cEmailSpan").show();
+    });
+    //取消按钮
+    $("#cEmailBtn").click(function(){
+        $("#userEmail").attr("disabled",true);
+        $("#emailSpan").hide();
+        $("#cEmailSpan").hide();
+        $("#rEmailSpan").show();
+    });
 });
 
 
-/*    function checkForm() {
-        var userName = $("#userName").val();
-        if (userName == null || userName == "") {
-            $("#error").html("用户名不能为空！");
-            return false;
-        }
 
-        if (confirm("确认保存?")) {
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 </script>
 
 </body>

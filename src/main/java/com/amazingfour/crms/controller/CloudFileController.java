@@ -83,7 +83,7 @@ public class CloudFileController {
             @RequestParam(value = "page", required = false) String page,
             CloudFile cloudFile) {
         ModelAndView mav = new ModelAndView();
-        int pageSize = 4; // 页容量
+        int pageSize = 8; // 页容量
 
         if (page == null || page == "") {
             page = "1";

@@ -14,6 +14,10 @@ public interface UserDao extends BaseDao<User,Long>{
     public User login(User user);
     public int existUserByName(String userName);
     public int defriend(Long id);
-    public User updatePassword(User user);
+    public int updatePassword(User user);
     public int removeBlack(Long id);
+    public User findOneById(User user);
+    public int bindEmail(User user);
+    public int activated(User user);
+    public int saveEmailMes(User user);
 }

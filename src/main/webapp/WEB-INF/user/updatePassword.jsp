@@ -73,10 +73,10 @@
     $(function(){
         $("#euserBtn").click(function(){
             if($("#pass").val()==""){
-                layer.tips('原密码不能为空!', '#pass',{tips: 4});
+                layer.tips('密码不能为空!', '#pass',{tips: 4});
             }
             if($("#pass1").val()==""){
-                layer.tips('新密码不能为空!', '#pass1',{tips: 4,tipsMore:true});
+                layer.tips('密码不能为空!', '#pass1',{tips: 4,tipsMore:true});
             }
             if($("#pass2").val()=="") {
                 layer.tips('密码不能为空!', '#pass2', {tips: 4, tipsMore: true});
@@ -107,21 +107,6 @@
             }
         });
     });
-
-
-    /*    function checkForm() {
-     var userName = $("#userName").val();
-     if (userName == null || userName == "") {
-     $("#error").html("用户名不能为空！");
-     return false;
-     }
-
-     if (confirm("确认保存?")) {
-     return true;
-     } else {
-     return false;
-     }
-     }*/
 </script>
 
 </body>

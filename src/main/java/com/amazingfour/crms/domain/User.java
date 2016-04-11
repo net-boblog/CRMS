@@ -12,6 +12,10 @@ public class User {
     private String password;
     private String userDescript;
     private Byte userState;
+    private String userEmail;
+    private Byte activated;
+    private String emailKey;
+    private Date outDate;
 
     public Role getRole() {
         return role;
@@ -61,4 +65,35 @@ public class User {
         this.userState = userState;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public Byte getActivated() {
+        return activated;
+    }
+
+    public void setActivated(Byte activated) {
+        this.activated = activated;
+    }
+
+    public String getEmailKey() {
+        return emailKey;
+    }
+
+    public void setEmailKey(String emailKey) {
+        this.emailKey = emailKey;
+    }
+
+    public Date getOutDate() {
+        return outDate;
+    }
+
+    public void setOutDate(Date outDate) {
+        this.outDate = outDate;
+    }
 }

@@ -11,21 +11,7 @@
     <!-- 引入全局css样式 -->
     <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 
-	  <script type="text/javascript">
-		  function checkForm(){
-			  var userName=document.getElementById("userName").value;
-			  var password=document.getElementById("password").value;
-			  if(userName==null || userName==""){
-				  document.getElementById("login_err").innerHTML="用户名不能为空";
-				  return false;
-			  }
-			  if(password==null || password==""){
-				  document.getElementById("login_err").innerHTML="密码不能为空";
-				  return false;
-			  }
-			  return true;
-		  }
-	  </script>
+
   </head>
 
   <body>
@@ -72,16 +58,22 @@
 		                  <div class="modal-content">
 		                      <div class="modal-header">
 		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                          <h4 class="modal-title">Forgot Password ?</h4>
+		                          <h4 class="modal-title">找回密码</h4>
 		                      </div>
-		                      <div class="modal-body">
-		                          <p>Enter your e-mail address below to reset your password.</p>
-		                          <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
-		
+							  <div class="modal-body">
+								  <form id="passForm">
+									  <p>您的用户名：</p>
+									  <input type="text" name="userName" placeholder="Username" autocomplete="off" class="form-control placeholder-no-fix" required>
+									  <br>
+									  <p>您的激活邮箱：</p>
+									  <input type="text" name="userEmail" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix" required>
+									  <br>
+									  <p id="pmes" class="text-center" style="color: red"></p>
+								  </form>
 		                      </div>
 		                      <div class="modal-footer">
-		                          <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-		                          <button class="btn btn-theme" type="button">Submit</button>
+		                          <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+		                          <button class="btn btn-theme" type="button" onclick="findPassByEmail()">提交</button>
 		                      </div>
 		                  </div>
 		              </div>
@@ -107,6 +99,50 @@
 		  session.removeAttribute("errorMsg1");
 	  %>
 
+	  <script type="text/javascript">
+		  function checkForm(){
+			  var userName=document.getElementById("userName").value;
+			  var password=document.getElementById("password").value;
+			  if(userName==null || userName==""){
+				  document.getElementById("login_err").innerHTML="用户名不能为空";
+				  return false;
+			  }
+			  if(password==null || password==""){
+				  document.getElementById("login_err").innerHTML="密码不能为空";
+				  return false;
+			  }
+			  return true;
+		  }
+
+		  //找回密码
+		  function findPassByEmail(){
+			  var passForm = $("#passForm");
+			  var userInput = passForm.children("input[name='userName']");
+			  var emailInput = passForm.children("input[name='userEmail']");
+			  var pmes = $("#pmes");
+			  var userVal = userInput.val();
+			  var emailVal = emailInput.val();
+
+			  if(userVal==""){
+				  pmes.text("用户名不能为空");
+			  }else if(emailVal==""){
+				  pmes.text("邮箱不能为空");
+			  }else{
+				  $.ajax({
+					  type:"POST",
+					  url:"/user/findPassByEmail.htm",
+					  data:passForm.serializeArray(),
+					  cache:false,
+					  success:function(data,status){
+						  $("#pmes").text(data);
+					  },
+					  error:function(xhr,status,ex){
+						  $("#pmes").text(status+":提交失败!");
+					  }
+				  });
+			  }
+		  }
+	  </script>
 
   </body>
 </html>

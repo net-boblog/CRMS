@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.amazingfour.common.utils.Encrypt;
 import com.amazingfour.common.utils.PageUtil;
 import com.amazingfour.common.utils.ResponseUtil;
+import com.amazingfour.common.utils.mail.Mail;
+import com.amazingfour.common.utils.mail.MailUtils;
 import com.amazingfour.crms.domain.Menu;
 import com.amazingfour.crms.domain.Role;
 import com.amazingfour.crms.domain.User;
@@ -15,15 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * Created by kennyho on 2016/1/11.
@@ -108,11 +112,11 @@ public class UserController {
 
             page = "1";
 
-        } else {
+        } /*else {
 
             user = (User) session.getAttribute("user");
 
-        }
+        }*/
         String userName=user.getUserName();
 
         Byte userState=user.getUserState();
@@ -210,7 +214,7 @@ public class UserController {
     @RequestMapping("/update")
     public void update(User user, HttpServletResponse response) {
         JSONObject obj = new JSONObject();
-        user.setPassword(Encrypt.Encrypt_md5(user.getPassword()));
+        //user.setPassword(Encrypt.Encrypt_md5(user.getPassword()));
         userService.update(user);
         //return "redirect:/user/list.htm";
         obj.put("mes","更新成功!");
@@ -285,6 +289,209 @@ public class UserController {
     }
 
 
+    //绑定邮箱
+    @RequestMapping("/bindEmail")
+    public void bindEmail(User user,HttpServletResponse response) throws Exception{
+        //判断邮箱是否已被绑定
+        if(userService.existEmail(user)){
+            ResponseUtil.renderText(response,"该邮箱已被绑定");
+            return;
+        }
 
+        //开始绑定邮箱
+        String key = UUID.randomUUID().toString(); //邮箱密钥，用于验证邮件的url
+        Date outDate = new Date(System.currentTimeMillis()+30*60*1000);    //设置邮件30分钟后过期
+        //long date = outDate.getTime()/1000*1000;    //忽略毫秒数，mySql取出时间是忽略毫秒数的
+        String sid = Encrypt.Encrypt_md5(user.getUserId()+"$"+ outDate.getTime()+"$"+key);   //数字签名
+        user.setEmailKey(sid);
+        user.setOutDate(outDate);
+        if(!userService.bindEmail(user)){
+            ResponseUtil.renderText(response,"绑定邮箱失败，请重试！");
+            return;
+        }
 
+		/*
+		 * 发邮件
+		 */
+        //把配置文件内容加载到prop中
+        Properties prop = new Properties();
+        try {
+            prop.load(this.getClass().getClassLoader().getResourceAsStream("email_template.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+		// 登录邮件服务器，得到session
+        String host = prop.getProperty("host");//服务器主机名
+        String name = prop.getProperty("username");//登录名
+        String pass = prop.getProperty("password");//登录密码
+        Session session = MailUtils.createSession(host, name, pass);
+
+		// 创建Mail对象
+        String from = prop.getProperty("from");
+        String to = user.getUserEmail();
+        String subject = prop.getProperty("subject");
+        // MessageForm.format方法会把第一个参数中的{0},使用第二个参数来替换。
+        // 例如MessageFormat.format("你好{0}, 你{1}!", "张三", "去死吧"); 返回“你好张三，你去死吧！”
+        String content = MessageFormat.format(prop.getProperty("content"), sid,user.getUserId());
+        Mail mail = new Mail(from, to, subject, content);
+
+        // 发送邮件
+        try {
+            MailUtils.send(session, mail);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ResponseUtil.renderText(response,"还差一步你就绑定邮箱啦，赶紧前往邮箱激活吧！");
+    }
+
+    //激活邮箱
+    @RequestMapping("/activated")
+    public ModelAndView activated(String sid,Long userId) {
+        User user = new User();
+        user.setUserId(userId);
+        User oneUser = userService.findOneById(user);
+        String tip = null;
+        ModelAndView mav = new ModelAndView();
+
+        if(oneUser==null){  //判断该用户是否存在
+            tip = "该用户不存在!";
+        }else if(oneUser.getOutDate().getTime() <= System.currentTimeMillis()) { //判断邮件链接是否过期
+            tip = "链接已经过期，请重新申请绑定邮箱！";
+        }else if(sid.equals(oneUser.getEmailKey())) {   //验证邮件链接的数字签名是否一致
+            if(userService.activated(user)){    //激活邮箱
+                tip = "恭喜你，你的邮箱已绑定成功！";
+            }else{
+                tip = "绑定邮箱失败，请重新申请绑定！";
+            }
+        }else{
+            tip = "链接错误，请重新申请绑定邮箱！";
+        }
+
+        mav.addObject("tip",tip);
+        mav.setViewName("user/emailTip");
+        return mav;
+    }
+
+    //用邮箱找回密码
+    @RequestMapping("/findPassByEmail")
+    public void findPassByEmail(User user,HttpServletResponse response) throws Exception {
+        switch (userService.existUserEmail(user)){
+            case 0:
+                ResponseUtil.renderText(response,"用户名不正确");
+                return;
+            case 1:
+                ResponseUtil.renderText(response,"邮箱不正确或未绑定");
+                return;
+            default:
+                break;
+        }
+
+        String key = UUID.randomUUID().toString(); //邮箱密钥，用于验证邮件的url
+        Date outDate = new Date(System.currentTimeMillis()+30*60*1000);    //设置邮件30分钟后过期
+        String sid = Encrypt.Encrypt_md5(user.getUserName()+"$"+outDate.getTime()+"$"+key);   //数字签名
+        user.setEmailKey(sid);
+        user.setOutDate(outDate);
+        if(!userService.saveEmailMes(user)){
+            ResponseUtil.renderText(response,"出现异常，请点击提交重试！");
+            return;
+        }
+
+        //发邮件
+        Properties prop = new Properties();
+        try {
+            prop.load(this.getClass().getClassLoader().getResourceAsStream("email_template.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // 登录邮件服务器，得到session
+        String host = prop.getProperty("host");//服务器主机名
+        String name = prop.getProperty("username");//登录名
+        String pass = prop.getProperty("password");//登录密码
+        Session session = MailUtils.createSession(host, name, pass);
+        // 创建Mail对象
+        String from = prop.getProperty("from");
+        String to = user.getUserEmail();
+        String subject = prop.getProperty("passSubject");
+        String content = MessageFormat.format(prop.getProperty("contentPass"), sid,user.getUserName());
+        Mail mail = new Mail(from, to, subject, content);
+        // 发送邮件
+        try {
+            MailUtils.send(session, mail);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        ResponseUtil.renderText(response,"邮件已发送，赶紧去邮箱找回密码吧!");
+    }
+
+    //重置密码前置
+    @RequestMapping("/findPassPre")
+    public ModelAndView preFindPass(String sid,String username){
+        ModelAndView mav = new ModelAndView();
+
+        User user = new User();
+        user.setUserName(username);
+        User oneUser = userService.findOneById(user);
+        String tip = null;
+
+        if(oneUser==null){  //判断该用户是否存在
+            tip = username + "该用户不存在!";
+        }else if(oneUser.getOutDate().getTime() <= System.currentTimeMillis()) { //判断邮件链接是否过期
+            tip = "链接已经过期，请重新申请找回密码！";
+        }else if (sid.equals(oneUser.getEmailKey())) {
+            mav.addObject("username",username);
+            mav.addObject("sid",sid);
+            mav.setViewName("user/findPassword");
+            return mav;
+        }else{
+            tip = "链接错误，请重新申请找回密码！";
+        }
+
+        mav.addObject("tip",tip);
+        mav.setViewName("user/emailTip");
+        return mav;
+    }
+
+    //重置密码
+    @RequestMapping("/findPass")
+    public void findPassword(User user, HttpServletResponse response,String password1,String password2) {
+        if (!password1.equals(password2)) {   //密码与确认密码的比较
+            ResponseUtil.renderText(response,"两次密码输入不一致！请重新输入...");
+            return;
+        }
+
+        String mes = null;
+        User oneUser = userService.findOneById(user);
+
+        if(oneUser==null){  //判断该用户是否存在
+            mes = user.getUserName() + "该用户不存在!";
+        }else if(oneUser.getOutDate().getTime() <= System.currentTimeMillis() ||
+                !oneUser.getEmailKey().equals(user.getEmailKey())) { //再次匹配过期时间和数字签名，防止恶意重置他人密码
+            mes = "找回密码操作可能已失效，请重新申请找回密码！";
+        }else {
+            user.setPassword(Encrypt.Encrypt_md5(password1));
+            if(userService.updatePassword(user)){
+                mes = "重置密码成功,请返回登录页面进行登录!";
+            }else{
+                mes = "重置密码失败，请重新输入!";
+            }
+        }
+
+        ResponseUtil.renderText(response,mes);
+    }
+
+    /*//非业务代码，测试用
+    @RequestMapping("/findPassPage")
+    public String findPassPage(){
+        return "user/findPassword";
+    }
+    @RequestMapping("/findPassPage2")
+    public String findPassPage2(){
+        return "user/emailTip";
+    }*/
 }

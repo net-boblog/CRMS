@@ -24,7 +24,7 @@
     .checkDiv{
       padding:0;
       margin:0;
-      margin-top:0;
+      /*margin-top:0;*/
       top:0;
       left:0;
       position: absolute;
@@ -42,6 +42,33 @@
     .Atag a:link,.Atag a:visited,.Atag a:hover,.Atag a:active{
       color:#000000;
       text-decoration:none;
+    }
+
+    .black_overlay{
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height:100%;
+      background-color: black;
+      z-index:1100;
+      -moz-opacity: 0.8;
+      opacity:.85;
+      filter: alpha(opacity=88);
+    }
+    .white_content {
+      display: none;
+      position: fixed;
+      top: 18%;
+      left: 20%;
+      width: 800px;
+      height: 450px;
+      /*padding: 20px;
+      border: 2px solid black;*/
+      background-color: black;
+      z-index:1101;
+      overflow: hidden;
     }
   </style>
 
@@ -129,10 +156,6 @@
                       <c:otherwise>未审核</c:otherwise>
                     </c:choose>
                   </span>
-                  <%--<!--<button class="btn btn-sm btn-clear-g">FOLLOW</button>-->
-                  <!--<span class="label label-danger pull-right">未审核</span>-->
-                  <!--<span class="label label-warning pull-right">审核中</span>	   label-success -->
-                  <span class="label btn btn-sm btn-clear-g">已审核</span>--%>
                 </div>
                 <div class="sp-title" style="width:220px">
                   <h4>${cloudFile.fileName}</h4>
@@ -144,7 +167,7 @@
             </a>
               <p class="followers text-right">
                 <span class="pull-left"><i class="glyphicon glyphicon-time"></i> ${cloudFile.fileDate.toLocaleString()}</span>
-                <a href='javascript:editFilePre("${cloudFile.fileId}");'><i class="glyphicon glyphicon-edit"></i>编辑</a>&nbsp;
+                <a href='javascript:editFilePre("${cloudFile.fileId}");'><i class="glyphicon glyphicon-edit"></i>编辑</a>
                 <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'><i class="glyphicon glyphicon-download-alt">下载</i></a>&nbsp;
               </p>
             </div>
@@ -163,6 +186,13 @@
 
     </section><! --/wrapper -->
   </section><!-- /MAIN CONTENT -->
+
+  <!--弹出层-->
+  <div id="light" class="white_content" onmouseover="$(this).find('div').show();" onmouseout="$(this).find('div').hide();">
+    <div id="lightDiv" style="position:absolute;z-index:1102;display:none;color: white"><h4>&nbsp;</h4></div>
+  </div>
+  <div id="fade" class="black_overlay"></div>
+  <!--/弹出层结束-->
 
   <!--main content end-->
 
