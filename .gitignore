@@ -7,4 +7,5 @@ target
 CRMS.iml
 url.properties
 jdbc.properties
+META-INF
 
