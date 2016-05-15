@@ -148,4 +148,10 @@
         WHERE username=#{userName}
     </update>
 
+    <!-- 根据角色名来查找所有用户-->
+    <select id="findByRoleName" parameterType="String" resultType="Int">
+        select u.user_id from user u join role a
+        where u.role_id=a.role_id AND a.role_name=#{roleName}
+    </select>
+
 </mapper>

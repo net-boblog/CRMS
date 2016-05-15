@@ -3,6 +3,8 @@ package com.amazingfour.crms.service;
 
 import com.amazingfour.crms.domain.User;
 
+import java.util.List;
+
 /**
  * Created by kennyho on 2016/1/11.
  */
@@ -18,4 +20,5 @@ public interface UserService extends BaseService<User,Long> {
     public boolean activated(User user);
     public int existUserEmail(User user);
     public boolean saveEmailMes(User user);
+    public List<Integer> findByRoleName(String roleName);
 }

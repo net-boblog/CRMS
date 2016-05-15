@@ -6,6 +6,7 @@ import com.amazingfour.crms.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by kennyho on 2016/1/11.
@@ -119,6 +120,7 @@ public class UserServiceImpl extends AbstractService<User,Long> implements UserS
         }
     }
 
-
-
+    public List<Integer> findByRoleName(String roleName) {
+        return userDao.findByRoleName(roleName);
+    }
 }

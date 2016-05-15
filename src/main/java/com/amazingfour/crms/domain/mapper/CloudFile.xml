@@ -10,12 +10,14 @@
         <result property="fileDate" column="file_date"/>
         <result property="fileDescript" column="file_descript"/>
         <result property="fileState" column="file_state"/>
+        <result property="instanceId" column="instanceId"/>
+        <result property="bussinessKey" column="bussinessKey"/>
     </resultMap>
 
     <!-- 添加文件 -->
     <insert id="insert" parameterType="CloudFile" useGeneratedKeys="true" keyProperty="fileId">
-        insert into cloudfile(file_name,file_url,file_date,file_descript,file_state)
-        values(#{fileName},#{fileUrl},#{fileDate},#{fileDescript},0)
+        insert into cloudfile(file_id,file_name,file_url,file_date,file_descript,file_state,instanceId,bussinessKey)
+        values(#{fileId},#{fileName},#{fileUrl},#{fileDate},#{fileDescript},0,#{instanceId},#{bussinessKey})
     </insert>
 
     <!-- 查找文件 -->
@@ -74,4 +76,47 @@
             #{item}
         </foreach>
     </delete>
+
+    <!-- 根据bussinessKey查找一个文件 -->
+    <select id="findByBussinessKey" parameterType="String" resultMap="CloudFileResult">
+        select * from cloudfile
+        where bussinessKey=#{bussinessKey}
+    </select>
+
+    <!-- 添加user/file的联系 -->
+    <insert id="insertUF" parameterType="UserFile" useGeneratedKeys="true">
+        insert into user_file(bussinessKey,user_id)
+        values(#{bussinessKey},#{user_id})
+    </insert>
+
+    <!-- 查找个人所有文件 -->
+    <select id="findByUserId" parameterType="Map" resultMap="CloudFileResult">
+        select * from cloudfile cf join user_file uf
+        WHERE cf.bussinessKey=uf.bussinessKey AND uf.user_id=#{user_id}
+        <if test="fileName!=null">
+           AND file_name like '%${fileName}%'
+        </if>
+
+        <if test="fileState!=null">
+            and file_state=#{fileState}
+        </if>
+        <if test="start!=null and size!=null">  <!-- start=起始页 size=页容量 -->
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <!-- 查询个人文件数量 -->
+    <select id="countById" parameterType="Map" resultType="Integer">
+        select count(*) from cloudfile cf join user_file uf
+        WHERE cf.bussinessKey=uf.bussinessKey AND uf.user_id=#{user_id}
+            <if test="fileName!=null">
+               and file_name like '%${fileName}%'
+            </if>
+
+            <if test="fileState!=null">
+                and file_state=#{fileState}
+            </if>
+    </select>
+
+
 </mapper>

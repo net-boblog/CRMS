@@ -20,4 +20,5 @@ public interface UserDao extends BaseDao<User,Long>{
     public int bindEmail(User user);
     public int activated(User user);
     public int saveEmailMes(User user);
+    public List<Integer> findByRoleName(String roleName);
 }

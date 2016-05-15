@@ -1,5 +1,8 @@
 package com.amazingfour.crms.domain;
 
+import org.activiti.engine.task.Task;
+
+import java.beans.Transient;
 import java.util.Date;
 
 /**
@@ -13,6 +16,10 @@ public class CloudFile {
     private String fileDescript;
     private Byte fileState;
     private String vframeUrl;
+    private String instanceId;
+    private String bussinessKey;
+    //临时变量
+    private Task task;
 
     public Long getFileId() {
         return fileId;
@@ -68,5 +75,29 @@ public class CloudFile {
 
     public void setVframeUrl(String vframeUrl) {
         this.vframeUrl = vframeUrl;
+    }
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
+    public String getBussinessKey() {
+        return bussinessKey;
+    }
+
+    public void setBussinessKey(String bussinessKey) {
+        this.bussinessKey = bussinessKey;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 }

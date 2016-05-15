@@ -59,7 +59,7 @@
           </td>
         </tr>
         <tr>
-          <th scope="row">文件描述：</th>
+          <th scope="row">上传理由及文件描述：</th>
           <td><textarea id="fileIntroId" class="form-control" name="fileDescript" rows="3" placeholder="请输入文件描述"></textarea></td>
         </tr>
         <%--<tr>
