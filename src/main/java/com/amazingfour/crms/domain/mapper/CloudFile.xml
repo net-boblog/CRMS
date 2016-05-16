@@ -118,5 +118,10 @@
             </if>
     </select>
 
+    <!--根据instanceid查找文件-->
+    <select id="findByInstanceId" parameterType="String" resultMap="CloudFileResult">
+        select * from cloudfile
+        where instanceId=#{instanceId}
+    </select>
 
 </mapper>

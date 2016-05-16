@@ -1,13 +1,10 @@
 package com.amazingfour.crms.service.impl;
 
-import com.amazingfour.crms.dao.BaseDao;
 import com.amazingfour.crms.dao.CloudFileDao;
 import com.amazingfour.crms.domain.CloudFile;
 import com.amazingfour.crms.domain.UserFile;
 import com.amazingfour.crms.service.CloudFileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -51,6 +48,10 @@ public class CloudFileServiceImpl extends AbstractService<CloudFile, Long> imple
 
     public int countById(Map<String, Object> map) {
         return cloudFileDao.countById(map);
+    }
+
+    public CloudFile findByInstanceId(String instanceId) {
+        return cloudFileDao.findByInstanceId(instanceId);
     }
 }
 

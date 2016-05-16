@@ -54,18 +54,19 @@
                     <li><a href="/task/taskList.htm?taskState=0">待领任务</a></li>
                     <li><a href="/task/taskList.htm?taskState=1">待办任务</a></li>
                     <li><a href="/task/showHistroicTask.htm">已完成任务</a></li>
+                    <li><a href="/task/showAllRunningTasks.htm">所有正在运行的任务</a></li>
                 </ul>
             </li>
-            <li class="sub-menu">
-                <a id="processMainId" href="javascript:;">
-                    <i class="fa fa-book"></i>
-                    <span>流程管理</span>
-                </a>
-                <ul class="sub">
-                    <li><a href="">所有运行中流程</a></li>
-                    <li><a href="">我参与的流程</a></li>
-                </ul>
-            </li>
+            <%--<li class="sub-menu">--%>
+            <%--<a id="processMainId" href="javascript:;">--%>
+            <%--<i class="fa fa-book"></i>--%>
+            <%--<span>流程管理</span>--%>
+            <%--</a>--%>
+            <%--<ul class="sub">--%>
+            <%--<li><a href="">所有运行中流程</a></li>--%>
+            <%--<li><a href="">我参与的流程</a></li>--%>
+            <%--</ul>--%>
+            <%--</li>--%>
         </ul>
         <!-- sidebar menu end-->
     </div>

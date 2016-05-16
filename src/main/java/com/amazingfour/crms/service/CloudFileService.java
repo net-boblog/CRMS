@@ -23,4 +23,6 @@ public interface CloudFileService extends BaseService<CloudFile, Long> {
     public List<CloudFile> findByUserId(Map<String, Object> map);
 
     public int countById(Map<String, Object> map);
+
+    public CloudFile findByInstanceId(String instanceId);
 }

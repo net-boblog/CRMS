@@ -2,7 +2,6 @@ package com.amazingfour.crms.domain;
 
 import org.activiti.engine.task.Task;
 
-import java.beans.Transient;
 import java.util.Date;
 
 /**
@@ -20,6 +19,7 @@ public class CloudFile {
     private String bussinessKey;
     //临时变量
     private Task task;
+    private User user;
 
     public Long getFileId() {
         return fileId;
@@ -99,5 +99,13 @@ public class CloudFile {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

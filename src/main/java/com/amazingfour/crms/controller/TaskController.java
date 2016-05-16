@@ -6,26 +6,20 @@ import com.amazingfour.common.utils.ResponseUtil;
 import com.amazingfour.common.utils.qiniu.MyBucketManager;
 import com.amazingfour.common.utils.qiniu.MyUploadToken;
 import com.amazingfour.crms.domain.CloudFile;
-import com.amazingfour.crms.domain.Role;
 import com.amazingfour.crms.domain.User;
 import com.amazingfour.crms.service.CloudFileService;
 import com.amazingfour.crms.service.impl.TaskServiceImp;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.Response;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +122,12 @@ public class TaskController {
         ResponseUtil.renderJson(response, jsonObject.toString());
     }
 
+
+    /**
+     * 跳转到拒绝页面
+     *
+     * @return
+     */
     @RequestMapping("/gotoRejectForm")
     public String gotoReject() {
         return "task/rejectForm";
@@ -177,7 +177,7 @@ public class TaskController {
     @RequestMapping("/showHistroicTask")
     public ModelAndView showHistroicTask(@RequestParam(value = "page", required = false) String page,
                                          HttpServletRequest httpServletRequest) {
-        ModelAndView modelAndView = new ModelAndView("task/taskMain");
+        ModelAndView modelAndView = new ModelAndView("task/historicTask");
         int pageSize = 9; // 页容量
         if (page == null || page == "") {
             page = "1";
@@ -188,16 +188,12 @@ public class TaskController {
         int maxResults = Integer.parseInt(page) * pageSize;
         Map<String, Object> mapTask = null;
         mapTask = taskServiceImp.showHistoryTasks(userId, firstResults, maxResults);
-        List<CloudFile> cloudFileTaskList = (List<CloudFile>) mapTask.get("taskList");
-        if (cloudFileTaskList!=null){
-            logger.debug("这不是空6666666666666666");
-        }
-//        List<CloudFile> cloudFileList = MyUploadToken.getVframes(cloudFileTaskList);
+        List<HistoricTaskInstance> historicTaskInstanceList = (List<HistoricTaskInstance>) mapTask.get("taskList");
         int total = (Integer) mapTask.get("total");
         String pageCode = PageUtil.getPagation("/task/showHistroicTask.htm", null,
                 total, Integer.parseInt(page), pageSize);
         modelAndView.addObject("pageCode", pageCode);
-        modelAndView.addObject("cloudFileList", cloudFileTaskList);
+        modelAndView.addObject("historicTaskInstanceList", historicTaskInstanceList);
         return modelAndView;
     }
 
@@ -207,7 +203,6 @@ public class TaskController {
             CloudFile cloudFile, HttpSession session) {
         ModelAndView mav = new ModelAndView();
         int pageSize = 9; // 页容量
-        logger.debug("fuck");
         if (page == null || page == "") {
             page = "1";
         }
@@ -230,6 +225,10 @@ public class TaskController {
                 total, Integer.parseInt(page), pageSize);
         mav.addObject("pageCode", pageCode);
         mav.addObject("cloudFileList", cloudFileList);
+        String proDefId = taskServiceImp.getProDefId();
+        if (proDefId != null) {
+            mav.addObject("proDefId", proDefId);
+        }
         mav.setViewName("task/myList");
         return mav;
     }
@@ -237,6 +236,7 @@ public class TaskController {
 
     /**
      * 查看拒绝理由
+     *
      * @param instanceId
      * @param response
      */
@@ -248,6 +248,12 @@ public class TaskController {
         ResponseUtil.renderJson(response, object.toString());
     }
 
+    /**
+     * 跳出调整窗口
+     *
+     * @param fileId
+     * @return
+     */
     @RequestMapping("/preAdjust")
     public ModelAndView preAdjust(@RequestParam(value = "fileId") String fileId) {
         ModelAndView mav = new ModelAndView();
@@ -258,10 +264,16 @@ public class TaskController {
     }
 
 
-
+    /**
+     * 接受申请
+     *
+     * @param cloudFile
+     * @param key
+     * @param response
+     */
     @RequestMapping("/receiveAdjust")
-    public void receiveAdjust(CloudFile cloudFile, String key, HttpServletResponse response){
-        taskServiceImp.dealWithAdjust(cloudFile.getInstanceId(),"yes");
+    public void receiveAdjust(CloudFile cloudFile, String key, HttpServletResponse response) {
+        taskServiceImp.dealWithAdjust(cloudFile.getInstanceId(), "yes");
         String state = "0";
         cloudFile.setFileState(Byte.parseByte(state));
         cloudFile.setFileDate(new Date());
@@ -279,14 +291,50 @@ public class TaskController {
 
     }
 
+    /**
+     * 拒绝调整
+     *
+     * @param instanceId
+     * @param fileId
+     * @param response
+     */
     @RequestMapping("/rejectAdjust")
-    public void rejectAdjust(String instanceId,String fileId, HttpServletResponse response){
-        taskServiceImp.dealWithAdjust(instanceId,"no");
-        Long id=Long.valueOf(fileId);
+    public void rejectAdjust(String instanceId, String fileId, HttpServletResponse response) {
+        taskServiceImp.dealWithAdjust(instanceId, "no");
+        Long id = Long.valueOf(fileId);
         cloudFileService.delete(id);
         JSONObject object = new JSONObject();
         object.put("status", "success");
         ResponseUtil.renderJson(response, object.toString());
     }
+
+    /**
+     * 显示所有正在运行的任务
+     *
+     * @param page
+     * @return
+     */
+    @RequestMapping("/showAllRunningTasks")
+    public ModelAndView showAllRunningTasks(@RequestParam(value = "page", required = false) String page) {
+        ModelAndView mav = new ModelAndView();
+        int pageSize = 9; // 页容量
+        if (page == null || page == "") {
+            page = "1";
+        }
+        int firstResults = (Integer.parseInt(page) - 1) * pageSize;
+        int maxResults = Integer.parseInt(page) * pageSize;
+        Map<String, Object> mapTask = null;
+        mapTask = taskServiceImp.showAllRunningTasks(firstResults, maxResults);
+        List<CloudFile> cloudFileTaskList = (List<CloudFile>) mapTask.get("cloudFileist");
+//        List<CloudFile> cloudFileList = MyUploadToken.getVframes(cloudFileTaskList);
+        int total = (Integer) mapTask.get("total");
+        String pageCode = PageUtil.getPagation("/task/showAllRunningTasks.htm", null,
+                total, Integer.parseInt(page), pageSize);
+        mav.addObject("pageCode", pageCode);
+        mav.addObject("cloudFileList", cloudFileTaskList);
+        mav.setViewName("task/allTask");
+        return mav;
+    }
+
 
 }

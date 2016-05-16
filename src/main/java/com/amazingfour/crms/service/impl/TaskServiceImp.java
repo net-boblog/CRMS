@@ -6,7 +6,6 @@ import com.amazingfour.crms.service.CloudFileService;
 import com.amazingfour.crms.service.UserService;
 import org.activiti.engine.*;
 import org.activiti.engine.delegate.Expression;
-import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.RepositoryServiceImpl;
@@ -168,17 +167,8 @@ public class TaskServiceImp {
         List<HistoricTaskInstance> taskInstanceList = taskInfoQuery.listPage(firstResult, maxresult);
         Long count = taskInfoQuery.count();
         int total = new Long(count).intValue();
-        //        根据流程id查询将要审核的业务实体
-        for (HistoricTaskInstance historicTaskInstance : taskInstanceList) {
-            String processInstanceId = historicTaskInstance.getProcessInstanceId();
-//            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).active().singleResult();
-            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-            String bussinessKey = historicProcessInstance.getBusinessKey();
-            CloudFile cloudFile = cloudFileService.findByBussinessKey(bussinessKey);
-            results.add(cloudFile);
-        }
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("taskList", results);
+        map.put("taskList", taskInstanceList);
         map.put("total", total);
         return map;
     }
@@ -375,19 +365,73 @@ public class TaskServiceImp {
 
     /**
      * 获得拒绝理由
+     *
      * @param instanceId
      * @return
      */
-    public String getReseaon(String instanceId){
+    public String getReseaon(String instanceId) {
         String reseaon = (String) runtimeService.getVariable(instanceId, "reseaon");
         return reseaon;
     }
 
-    public void dealWithAdjust(String instanceId,String next){
-       Task task= taskService.createTaskQuery().processInstanceId(instanceId).singleResult();
-        Map<String, Object> map=new HashMap<String, Object>();
-        map.put("answer",next);
-        taskService.complete(task.getId(),map);
+    /**
+     * 普通用户处理调整
+     *
+     * @param instanceId
+     * @param next
+     */
+    public void dealWithAdjust(String instanceId, String next) {
+        Task task = taskService.createTaskQuery().processInstanceId(instanceId).singleResult();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("answer", next);
+        taskService.complete(task.getId(), map);
+    }
+
+    /**
+     * 获取流程定义id
+     *
+     * @return
+     */
+    public String getProDefId() {
+        List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().active().listPage(0, 1);
+        ProcessInstance processInstance = null;
+        String proDefId = "";
+        if (processInstanceList.size() != 0) {
+            processInstance = processInstanceList.get(0);
+            proDefId = processInstance.getProcessDefinitionId();
+        }
+        return proDefId;
+    }
+
+    /**
+     * 获得所有正在运行的任务
+     *
+     * @param firstResult
+     * @param maxresult
+     * @return
+     */
+    public Map<String, Object> showAllRunningTasks(int firstResult, int maxresult) {
+        List<CloudFile> cloudFileist = new ArrayList<CloudFile>();
+        TaskQuery taskQuery = taskService.createTaskQuery().active();
+        List<Task> taskList = taskQuery.listPage(firstResult, maxresult);
+        for (Task task : taskList) {
+            CloudFile cloudFile = cloudFileService.findByInstanceId(task.getProcessInstanceId());
+            com.amazingfour.crms.domain.User user = null;
+            String id = task.getAssignee();
+            if (id != null && !id.equals("")) {
+                Long userId = Long.parseLong(id);
+                user = userService.findById(userId);
+            }
+            cloudFile.setTask(task);
+            cloudFile.setUser(user);
+            cloudFileist.add(cloudFile);
+        }
+        Long count = taskQuery.count();
+        int total = new Long(count).intValue();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("total", total);
+        map.put("cloudFileist", cloudFileist);
+        return map;
     }
 
 

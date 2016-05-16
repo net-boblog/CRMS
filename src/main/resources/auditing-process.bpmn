@@ -3,7 +3,7 @@
   <process id="auditing-process" isExecutable="true">
     <startEvent id="start" name="StartEvent" activiti:initiator="applyuserId"></startEvent>
     <userTask id="firstverify" name="一级审核员审批" activiti:candidateUsers="${taskServiceImp.setTaskUsers('firstassessor')}"></userTask>
-    <userTask id="secondverify" name="二级审核员审批" activiti:assignee="second-assessor"></userTask>
+    <userTask id="secondverify" name="二级审核员审批" activiti:candidateUsers="${taskServiceImp.setTaskUsers('secondassessor')}"></userTask>
     <endEvent id="end" name="EndEvent"></endEvent>
     <exclusiveGateway id="_7" name="ExclusiveGateway"></exclusiveGateway>
     <exclusiveGateway id="_8" name="ExclusiveGateway"></exclusiveGateway>
@@ -26,10 +26,10 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reply=='yes'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_15" name="通过" sourceRef="_9" targetRef="end">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${secondreply=='yes'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reply=='yes'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_20" name="拒绝" sourceRef="_9" targetRef="adjust">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${secondreply=='no'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reply=='no'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-B6C45323-568C-45FD-B46E-667DCF959B05" sourceRef="adjust" targetRef="sid-330221E3-2233-4B51-B303-C83CAE650EC2"></sequenceFlow>
     <sequenceFlow id="_19" name="调整" sourceRef="sid-330221E3-2233-4B51-B303-C83CAE650EC2" targetRef="firstverify">
