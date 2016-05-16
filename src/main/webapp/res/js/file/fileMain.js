@@ -48,12 +48,58 @@ function viewFile(fileUrl,fileName){
             });
             $('iframe').attr("allowfullscreen","");
             layer.msg(fileName+'正在播放',{time:2000});*/
-            //3.自定义弹出层播放视频
-            var videoStr = "<video style='width:100%; height:450px' src='" + data.downloadUrl +
-                "' controls='controls' autoplay='autoplay' height='450px' width='800px'></video>";
-            $('#lightDiv').find('h4').append(fileName);
-            $('#light').append(videoStr);
-            opendiv();
+            //3.自定义弹出层预览文件
+            var fileType = fileUrl.substring(fileUrl.lastIndexOf(".")+1).toLowerCase();
+
+            if(/^(doc|docx|xls|xlsx|ppt|pptx|pdf|txt)$/.test(fileType)){    //文本文件预览
+                //window.open("http://officeweb365.com/o/?i="+9755+"&furl="+data.downloadUrl);  //office web 365
+                var textUrl = encodeURIComponent(data.downloadUrl);
+                //window.open("http://view.officeapps.live.com/op/view.aspx?src="+textUrl);    //微软office
+                window.open("http://docs.google.com/viewer?url="+textUrl+"&embedded=true");  //google doc
+            }else if(/^(flv|mp4|webm|ogg)$/.test(fileType)){    //视频文件预览
+                var videoStr = "<video style='width:100%; height:450px' src='" + data.downloadUrl +
+                    "' controls='controls' autoplay='autoplay' height='450px' width='800px'></video>";
+                $('#lightDiv').find('h4').append(fileName);
+                $('#light').append(videoStr);
+                opendiv();
+            }else if(/^(mp3|acc)$/.test(fileType)){
+                //var str = "<p>"+fileName+"</p>";
+                layer.open({
+                    type: 1,
+                    title: [fileName,'background-color:#A94442;color:white;border-bottom:0;'],
+                    closeBtn: 1,
+                    area: "auto",
+                    offset:'rb',
+                    //skin: 'black',
+                    shade: 0,
+                    content: "<div style='background-color:#101010'><audio src='"+data.downloadUrl+"' controls autoplay>无法播放音乐，格式不支持!</audio></div>"
+                });
+            }else if(/^(gif|jpg|jpeg|png)$/.test(fileType)){    //图像预览
+                /*var picStr = "<img class='showc' src='"+data.downloadUrl+"' alt='"+fileName+"'>";
+                $('#light').append(picStr);
+                opendiv();*/
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: 'auto',
+                    offset:['2px','2px'],
+                    //skin: 'white',
+                    shade:0.9,
+                    shadeClose: true,
+                    content: "<img src='"+data.downloadUrl+"' alt='"+fileName+"'/>"
+                    /*content: [data.downloadUrl,'no'],
+                    success: function(layero, index){
+                        layer.iframeAuto(layero);
+                    }*/
+                });
+            }else{
+                layer.alert(fileName+' 不支持在线预览，请下载文件后用合适的工具打开！', {
+                    icon:5,
+                    offset:'10%',
+                    title:'提示'
+                });
+            }
         });
 }
 
@@ -94,7 +140,7 @@ function downloadFile(fileUrl,fileName){
 function openAddFile(){
     layer.open({
         type: 2,
-        title: ['新增视频','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
+        title: ['新增文件','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
         shade: 0.5,
         area: ['600px', '305px'],
         content: ['/filec/gotoUpload.htm','no'],
@@ -157,7 +203,7 @@ function editFilePre(fileId){
     var contentUrl = 'filec/preUpdate.htm?fileId='+fileId;
     layer.open({
         type: 2,
-        title: ['编辑视频','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
+        title: ['更新文件','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
         shade: 0.5,
         area: ['600px', '407px'],
         content: [contentUrl,'no'],

@@ -16,7 +16,7 @@
   <meta name="author" content="">
   <meta name="keyword" content="">
 
-  <title>视频管理页面</title>
+  <title>资源管理页面</title>
   <!-- 引入全局css样式 -->
   <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 
@@ -96,7 +96,7 @@
   <!--main content start-->
   <section id="main-content">
     <section class="wrapper site-min-height">
-      <h3><i class="fa fa-angle-right"></i> 视频管理</h3>
+      <h3><i class="fa fa-angle-right"></i> 资源管理</h3>
       <!--<img src="http://developer.qiniu.com/samples/黑名单-S01E12.flv?vframe/jpg/offset/10/w/328/h/220">-->
 
       <!-- DEL ADD SEARCH FORM -->
@@ -139,17 +139,48 @@
           <!-- PANELS -->
 <c:forEach var="cloudFile" items="${cloudFileList}" varStatus="status">
           <!-- Spotify Panel -->
-          <div class="col-lg-3 col-md-3 col-sm-3 mb videoDiv">
+          <div class="col-lg-2 col-md-2 col-sm-2 mb videoDiv">
             <!--复选框div-->
             <div class="checkDiv" title="选中进行删除">
               <input class="cb" type="checkbox" name="fileUrl" value="${cloudFile.fileUrl}">
               <%--<input type="hidden" name="fileId" value="${cloudFile.fileId}">--%>
             </div><!-- /复选框div -->
-            <div class="content-panel pn">
+            <div class="content-panel pn"> <%--style="background-color:#f2f2f2;">--%>
             <a class="Atag" href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>
-              <div id="spotify" style="background:url(${cloudFile.vframeUrl}) no-repeat center top;background-position-x:50%;background-position-y:50%;background-size:cover;">
+              <c:set var="cfurl" value="${cloudFile.fileUrl}" scope="request"/>
+              <c:set var="vurl" value="${cloudFile.vframeUrl}" scope="request"/>
+              <%
+                String url = (String)request.getAttribute("cfurl");
+                String fileType = url.substring(url.lastIndexOf('.')+1).toLowerCase();
+                String furl = "/res/img/file-type/256/file.png";
+                if(fileType.matches("(^(doc|docx)$)")){
+                  furl = "/res/img/file-type/256/word.png";
+                }else if(fileType.matches("(^(xls|xlsx)$)")){
+                  furl = "/res/img/file-type/256/excel.png";
+                }else if(fileType.matches("(^(ppt|pptx)$)")){
+                  furl = "/res/img/file-type/256/ppt.png";
+                }else if(fileType.equals("pdf")){
+                  furl = "/res/img/file-type/256/pdf.png";
+                }else if(fileType.equals("txt")){
+                  furl = "/res/img/file-type/256/txt.png";
+                }else if(fileType.matches("^(flv|mp4|webm|ogg)$")){
+                  //furl = (String)request.getAttribute("vurl");
+                  furl = "/res/img/file-type/256/movie.png";
+                }else if(fileType.matches("^(gif|jpg|jpeg|png)$")){
+                  furl = "/res/img/file-type/256/image.png";
+                }else if(fileType.matches("^(mp3|acc)$")){
+                  furl = "/res/img/file-type/256/music.png";
+                }else if(fileType.matches("(^(zip|rar)$)")){
+                  furl = "/res/img/file-type/256/zip.png";
+                }else{}
+
+                /*if(furl==null || "".equals(furl)){
+                  furl = "/res/img/file-type/file.png";
+                }*/
+              %>
+              <div id="spotify" style="background:url(<%=furl%>) no-repeat center top;background-position-x:50%;background-position-y:50%;background-size:cover;">
                 <div class="col-xs-4 col-xs-offset-8">
-                  <span class="label btn btn-clear-g">
+                  <span class="label btn btn-clear-g" style="color:#68dff0;border-color:#68dff0;">
                     <c:choose>
                       <c:when test="${cloudFile.fileState==2}">已审核</c:when>
                       <c:when test="${cloudFile.fileState==1}">审核中</c:when>
@@ -157,18 +188,20 @@
                     </c:choose>
                   </span>
                 </div>
-                <div class="sp-title" style="width:220px">
-                  <h4>${cloudFile.fileName}</h4>
+                <div class="sp-title" style="width:140px;text-align: center">
+                  ${cloudFile.fileName}
                 </div>
-                <div class="play">
+                <%--<div class="play">
                   <i class="fa fa-play-circle"></i>
-                </div>
+                </div>--%>
               </div>
             </a>
-              <p class="followers text-right">
-                <span class="pull-left"><i class="glyphicon glyphicon-time"></i> ${cloudFile.fileDate.toLocaleString()}</span>
+              <p class="followers text-right" style="margin-left: 10px;margin-right: 10px;">
+                <%--<span class="pull-left"><i class="glyphicon glyphicon-time"></i> ${cloudFile.fileDate.toLocaleString()}</span>--%>
+                <span class="pull-left">
                 <a href='javascript:editFilePre("${cloudFile.fileId}");'><i class="glyphicon glyphicon-edit"></i>编辑</a>
-                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'><i class="glyphicon glyphicon-download-alt">下载</i></a>&nbsp;
+                </span>
+                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'><i class="glyphicon glyphicon-download-alt">下载</i></a>
               </p>
             </div>
           </div>

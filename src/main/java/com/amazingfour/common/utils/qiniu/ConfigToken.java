@@ -76,7 +76,7 @@ public class ConfigToken {
      * @return
      */
     public String getVfUrl(String key){
-        return auth.privateDownloadUrl(DOWNLOAD_URL+key+"?vframe/png/offset/10/w/252/h/220");
+        return auth.privateDownloadUrl(DOWNLOAD_URL+key+"?vframe/png/offset/10/w/256/h/256");
     }
 
     /**
