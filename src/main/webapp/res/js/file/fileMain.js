@@ -188,7 +188,7 @@ function deleteFiles(){
             cache:false,
             success:function(data,status){
                 layer.msg(data.mes, {icon: 1,time:1000,offset:100},function(){
-                    window.location.href = "/filec/listFile.htm";
+                    window.location.href = "/task/listMyFile.htm";
                 });
             },
             error:function(xhr,status,ex){

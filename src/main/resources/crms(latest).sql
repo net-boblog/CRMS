@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : test
+Source Server         : wamp4mysql
 Source Server Version : 50709
 Source Host           : localhost:3306
 Source Database       : crms
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50709
 File Encoding         : 65001
 
-Date: 2016-05-08 10:13:40
+Date: 2016-05-16 21:49:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -73,7 +73,7 @@ CREATE TABLE `act_ge_property` (
 -- ----------------------------
 -- Records of act_ge_property
 -- ----------------------------
-INSERT INTO `act_ge_property` VALUES ('next.dbid', '105001', '43');
+INSERT INTO `act_ge_property` VALUES ('next.dbid', '127501', '52');
 INSERT INTO `act_ge_property` VALUES ('schema.history', 'create(5.18.0.1) upgrade(5.18.0.1->5.20.0.0)', '2');
 INSERT INTO `act_ge_property` VALUES ('schema.version', '5.20.0.0', '2');
 
@@ -404,7 +404,6 @@ CREATE TABLE `act_re_deployment` (
 -- ----------------------------
 -- Records of act_re_deployment
 -- ----------------------------
-INSERT INTO `act_re_deployment` VALUES ('90001', 'auditing-process', null, '', '2016-05-01 21:45:59.078');
 
 -- ----------------------------
 -- Table structure for `act_re_model`
@@ -463,19 +462,6 @@ CREATE TABLE `act_re_procdef` (
 -- ----------------------------
 -- Records of act_re_procdef
 -- ----------------------------
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:10:77504', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '10', '77501', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:11:80004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '11', '80001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:12:85004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '12', '85001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:13:90004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '13', '90001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:1:55004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '1', '55001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:2:57504', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '2', '57501', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:3:60004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '3', '60001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:4:62504', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '4', '62501', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:5:65004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '5', '65001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:6:67504', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '6', '67501', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:7:70004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '7', '70001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:8:72504', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '8', '72501', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
-INSERT INTO `act_re_procdef` VALUES ('auditing-process:9:75004', '1', 'http://www.activiti.org/testm1461830952315', null, 'auditing-process', '9', '75001', 'auditing-process.bpmn', 'auditing-process.auditing-process.png', null, '0', '1', '1', '');
 
 -- ----------------------------
 -- Table structure for `act_ru_event_subscr`
@@ -684,13 +670,18 @@ CREATE TABLE `cloudfile` (
   `bussinessKey` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`file_id`),
   KEY `bussinessKey` (`bussinessKey`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 21
+  DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of cloudfile
 -- ----------------------------
 INSERT INTO `cloudfile` VALUES ('1', '黑名单-S01E12', 'o_1a8rcen951h803jvam5gl3fue9.flv', '2016-01-13 01:00:43', '123喀喀喀', '0', null, null);
-INSERT INTO `cloudfile` VALUES ('2', 'Surface Pro 3触控笔使用演示', 'o_1a9bqpsnn1rp8a25rbifgga7s9.mp4', '2016-01-19 10:19:58', 'surface pro3的演示233', '1', null, null);
+INSERT INTO `cloudfile` VALUES
+  ('2', 'Surface Pro 3触控笔使用演示', 'o_1a9bqpsnn1rp8a25rbifgga7s9.mp4', '2016-05-13 16:05:06', 'surface pro3的演示  hhhhhh',
+   '1', NULL, NULL);
 INSERT INTO `cloudfile` VALUES ('3', 'Apple Ad iPad mini Piano', 'o_1a9br7ao61brgu23bodb8q12gu9.mp4', '2016-01-19 10:26:06', 'Apple iPad very good! Do you like Apple! ', '2', null, null);
 INSERT INTO `cloudfile` VALUES ('4', 'Apple iPhone Brilliant', 'o_1a9braq4od52d2nlesoar5979.mp4', '2016-01-19 10:27:40', '', '0', null, null);
 
@@ -769,7 +760,10 @@ CREATE TABLE `role` (
   `role_name` varchar(30) NOT NULL,
   `role_descript` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 7
+  DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of role
@@ -777,6 +771,7 @@ CREATE TABLE `role` (
 INSERT INTO `role` VALUES ('1', '超级管理员', null);
 INSERT INTO `role` VALUES ('4', '普通用户', '普通用户');
 INSERT INTO `role` VALUES ('5', 'firstassessor', '一级审核员');
+INSERT INTO `role` VALUES ('6', 'secondassessor', '二级审核员');
 
 -- ----------------------------
 -- Table structure for `role_menu`
@@ -799,6 +794,12 @@ INSERT INTO `role_menu` VALUES ('3', '5');
 INSERT INTO `role_menu` VALUES ('4', '5');
 INSERT INTO `role_menu` VALUES ('5', '5');
 INSERT INTO `role_menu` VALUES ('6', '5');
+INSERT INTO `role_menu` VALUES ('1', '6');
+INSERT INTO `role_menu` VALUES ('2', '6');
+INSERT INTO `role_menu` VALUES ('3', '6');
+INSERT INTO `role_menu` VALUES ('4', '6');
+INSERT INTO `role_menu` VALUES ('5', '6');
+INSERT INTO `role_menu` VALUES ('6', '6');
 
 -- ----------------------------
 -- Table structure for `role_operation`
@@ -855,7 +856,10 @@ CREATE TABLE `user` (
   PRIMARY KEY (`user_id`),
   KEY `FK_user_role` (`role_id`),
   CONSTRAINT `FK_user_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 8
+  DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of user
@@ -864,6 +868,8 @@ INSERT INTO `user` VALUES ('1', '1', 'admin', '21232F297A57A5A743894A0E4A801FC3'
 INSERT INTO `user` VALUES ('4', '4', 'user1', 'c4ca4238a0b923820dcc509a6f75849b', '普通用户', '0', null, null, null, null);
 INSERT INTO `user` VALUES ('5', '5', 'assessor', 'c4ca4238a0b923820dcc509a6f75849b', 'assessor', '0', null, null, null, null);
 INSERT INTO `user` VALUES ('6', '5', 'assessor2', 'c4ca4238a0b923820dcc509a6f75849b', 'assessor2', '0', null, null, null, null);
+INSERT INTO `user`
+VALUES ('7', '6', 'assessor3', 'c4ca4238a0b923820dcc509a6f75849b', '二级审核员', '0', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for `user_file`
@@ -878,7 +884,10 @@ CREATE TABLE `user_file` (
   KEY `FK_user_file` (`bussinessKey`),
   CONSTRAINT `FK_user_file` FOREIGN KEY (`bussinessKey`) REFERENCES `cloudfile` (`bussinessKey`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_user_file2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 17
+  DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of user_file

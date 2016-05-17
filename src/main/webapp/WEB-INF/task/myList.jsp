@@ -124,7 +124,8 @@
                                         <option value="">请选择...</option>
                                         <option value="0">未审核</option>
                                         <option value="1">审核中</option>
-                                        <option value="2">已审核</option>
+                                        <option value="2">审核已通过</option>
+                                        <option value="3">审核未通过</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-theme">搜索<i class="glyphicon glyphicon-search"></i>
@@ -211,6 +212,10 @@
                                                         class="glyphicon glyphicon-download-alt">下载</i></a>
                                                 <a class="Atag nowrap"
                                                    href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>查看</a>
+                                                <c:if test="${cloudFile.fileState==2}">
+                                                    <a href='javascript:editFilePre("${cloudFile.fileId}");'><i
+                                                            class="glyphicon glyphicon-edit"></i>编辑</a>
+                                                </c:if>
                                                 <c:choose>
                                                     <c:when test="${cloudFile.fileState==1||cloudFile.fileState==3}">
                                                         <a href="/diagram-viewer/index.html?processDefinitionId=${proDefId}&processInstanceId=${cloudFile.instanceId}"

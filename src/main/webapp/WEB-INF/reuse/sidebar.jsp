@@ -41,7 +41,7 @@
             <li class="sub">
                 <a id="myUpLoadId" href="/task/listMyFile.htm">
                     <i class="fa fa-desktop"></i>
-                    <span>投稿管理</span>
+                    <span>我的资源</span>
                 </a>
             </li>
 
@@ -53,7 +53,7 @@
                 <ul class="sub">
                     <li><a href="/task/taskList.htm?taskState=0">待领任务</a></li>
                     <li><a href="/task/taskList.htm?taskState=1">待办任务</a></li>
-                    <li><a href="/task/showHistroicTask.htm">已完成任务</a></li>
+                    <li><a href="/task/showHistroicTask.htm">历史任务</a></li>
                     <li><a href="/task/showAllRunningTasks.htm">所有正在运行的任务</a></li>
                 </ul>
             </li>

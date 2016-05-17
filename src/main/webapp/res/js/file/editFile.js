@@ -24,7 +24,7 @@ $(function() {
                 cache:false,
                 success:function(data,status){
                     parent.layer.msg(status + data.mes,{shade:0.1,time:1000},function(){
-                        parent.window.location="/filec//listFile.htm";
+                        parent.window.location = "/task/listMyFile.htm";
                     });
                 },
                 error:function(xhr,status,ex){
@@ -143,7 +143,7 @@ $(function() {
                     success:function(data,status){
                         //alert(status + data.mes);
                         parent.layer.msg(status+data.mes,{shade:0.1,time:2000},function(){
-                            parent.window.location="/filec/listFile.htm";
+                            parent.window.location = "/task/listMyFile.htm";
                         });
                     },
                     error:function(xhr,status,ex){
