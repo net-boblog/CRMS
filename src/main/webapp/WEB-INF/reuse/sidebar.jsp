@@ -39,8 +39,15 @@
             </li>
 
             <li class="sub">
+                <a id="fileLibId" href="/filec/gotoFileLib.htm">
+                    <i class="fa fa-cloud"></i>
+                    <span>资源共享库</span>
+                </a>
+            </li>
+
+            <li class="sub">
                 <a id="myUpLoadId" href="/task/listMyFile.htm">
-                    <i class="fa fa-desktop"></i>
+                    <i class="fa fa-tasks"></i>
                     <span>我的资源</span>
                 </a>
             </li>

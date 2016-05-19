@@ -11,18 +11,13 @@ import com.amazingfour.crms.domain.User;
 import com.amazingfour.crms.domain.UserFile;
 import com.amazingfour.crms.service.CloudFileService;
 import com.amazingfour.crms.service.impl.TaskServiceImp;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -102,7 +97,7 @@ public class CloudFileController {
             @RequestParam(value = "page", required = false) String page,
             CloudFile cloudFile) {
         ModelAndView mav = new ModelAndView();
-        int pageSize = 12; // 页容量
+        int pageSize = 15; // 页容量
 
         if (page == null || page == "") {
             page = "1";
@@ -239,5 +234,62 @@ public class CloudFileController {
             obj.put("mes", "更新失败!");
         }
         ResponseUtil.renderJson(response, obj.toString());
+    }
+
+    /**
+     * 查看文件详情
+     *
+     * @param fileId
+     * @return
+     */
+    @RequestMapping("/viewFileMes")
+    public ModelAndView viewFileMes(@RequestParam(value = "fileId") String fileId){
+        ModelAndView mav = new ModelAndView();
+        CloudFile cloudFile = cloudFileService.findById(Long.parseLong(fileId));
+        mav.addObject("cloudFile", cloudFile);
+        mav.setViewName("file/fileMes");
+        return mav;
+    }
+
+
+    //跳转到资源共享库页面
+    @RequestMapping("/gotoFileLib")
+    public ModelAndView gotoFileLib(
+            @RequestParam(value = "page", required = false) String page,
+            CloudFile cloudFile) {
+        ModelAndView mav = new ModelAndView();
+        int pageSize = 15; // 页容量
+
+        if (page == null || page == "") {
+            page = "1";
+        }
+
+        String fileName = cloudFile.getFileName();
+        //Byte fileState = cloudFile.getFileState();
+        Byte shareState = (byte)1;
+        cloudFile.setShareState(shareState);
+
+        Map<String, Object> map = new HashMap<String, Object>(); // 使用Map传值到mapper处理
+        map.put("start", (Integer.parseInt(page) - 1) * pageSize); // 起始记录
+        map.put("size", pageSize);
+        map.put("fileName", fileName);
+        //map.put("fileState", fileState);
+        map.put("shareState", shareState);
+        //查询数据库并加入视频帧地址
+        List<CloudFile> cloudFileList = MyUploadToken.getVframes(cloudFileService.find(map));
+
+        int total = cloudFileService.count(cloudFile);   //查询记录总数
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("fileName", fileName);
+        //params.put("fileState", fileState);
+        params.put("shareState", shareState);
+        String pageCode = PageUtil.getPagation("/filec/gotoFileLib.htm", params,
+                total, Integer.parseInt(page), pageSize);
+
+        mav.addObject("pageCode", pageCode);
+        mav.addObject("cloudFileList", cloudFileList);
+        mav.setViewName("file/fileLib");
+        return mav;
     }
 }

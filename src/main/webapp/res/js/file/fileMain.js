@@ -7,7 +7,6 @@ $(function(){
         $(".cb:checked").parent().show();
         $(".cb:not(:checked)").parent().hide();
     });
-
 });
 
 
@@ -83,7 +82,7 @@ function viewFile(fileUrl,fileName){
                     title: false,
                     closeBtn: 0,
                     area: 'auto',
-                    offset:['2px','2px'],
+                    offset:['25%','30%'],
                     //skin: 'white',
                     shade:0.9,
                     shadeClose: true,
@@ -170,7 +169,46 @@ function selectFiles(){
     $(".cb:checked").parent().show();*/
 }
 
-//点击删除按钮删除选中的文件
+//列表复选框的全选和反选
+function selectFiles2(){
+    if(isChecked){
+        $(".cb").prop('checked', isChecked);
+        isChecked = false;
+    }else{
+        $(".cb").prop('checked', isChecked);
+        isChecked = true;
+    }
+}
+
+//资源管理页面点击删除按钮删除选中的文件
+function deleteMFiles(){
+    /*if(!confirm("删除后无法恢复,确定要删除吗？")){
+     return;
+     }*/
+    layer.confirm('删除后无法恢复,确定要删除吗？', {icon: 0, title:'警告',offset:30}, function(index){
+        if($(".cb:checked").length<=0){
+            layer.alert("请至少选择一项!",{icon:3,title:'提醒',offset:30,shift:6});
+            return;
+        }
+        var formdata = $("#fileMainForm").serializeArray();
+        $.ajax({
+            type:'POST',
+            url:'/filec/delFiles.htm',
+            data:formdata,
+            cache:false,
+            success:function(data,status){
+                layer.msg(data.mes, {icon: 1,time:1000,offset:100},function(){
+                    window.location.href = "/filec/listFile.htm";
+                });
+            },
+            error:function(xhr,status,ex){
+                layer.msg(status+":请求失败!",{icon:5,offset:100,shift:6});
+            }
+        });
+    });
+}
+
+//我的资源页面点击删除按钮删除选中的文件
 function deleteFiles(){
     /*if(!confirm("删除后无法恢复,确定要删除吗？")){
         return;
@@ -209,6 +247,23 @@ function editFilePre(fileId){
         content: [contentUrl,'no'],
         btn:['提交','取消'],
         yes:function(index, layero){},
+        move:false
+    });
+}
+
+//查看文件详情
+function viewFileMes(fileId,fileUrl,fileName){
+    var contentUrl = 'filec/viewFileMes.htm?fileId='+fileId;
+    layer.open({
+        type: 2,
+        title: ['文件详情','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
+        shade: 0.5,
+        area: ['500px', '300px'],
+        content: [contentUrl,'no'],
+        btn:'下载',
+        yes:function(){
+            downloadFile(fileUrl,fileName)
+        },
         move:false
     });
 }

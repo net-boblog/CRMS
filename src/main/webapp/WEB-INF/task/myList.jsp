@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>投稿管理页面</title>
+    <title>我的资源页面</title>
     <!-- 引入全局css样式 -->
     <jsp:include page="/WEB-INF/reuse/css.jsp"/>
         <style>
@@ -94,14 +94,14 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper site-min-height">
-            <h3><i class="fa fa-angle-right"></i> 投稿管理</h3>
+            <h3><i class="fa fa-angle-right"></i> 我的资源</h3>
             <!--<img src="http://developer.qiniu.com/samples/黑名单-S01E12.flv?vframe/jpg/offset/10/w/328/h/220">-->
 
             <!-- DEL ADD SEARCH FORM -->
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-theme03" onclick="selectFiles()">全选</button>
+                        <button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>
                         <button type="button" class="btn btn-theme04" onclick="deleteFiles()"><i
                                 class="glyphicon glyphicon-trash"></i>删除
                         </button>
@@ -112,7 +112,7 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="pull-right">
-                            <form class="form-inline" role="form" method="post" action="/task/listMyFile.htm">
+                            <form id="actionId" class="form-inline" role="form" method="post" action="/task/listMyFile.htm">
                                 <div class="form-group">
                                     <label class="control-label" for="fileNameSearchId">文件名：</label>
                                     <input type="text" class="form-control" id="fileNameSearchId" name="fileName"

@@ -103,14 +103,14 @@
       <div class="row mt">
         <div class="col-lg-12">
           <div class="col-lg-4">
-            <button type="button" class="btn btn-theme03" onclick="selectFiles()">全选</button>
-            <button type="button" class="btn btn-theme04" onclick="deleteFiles()"><i class="glyphicon glyphicon-trash"></i>删除</button>
-            <button type="button" class="btn btn-theme02" onclick="openAddFile()"><i class="glyphicon glyphicon-plus"></i>新增</button>
-            <%--<a id="iframe" class="btn btn-theme02" href="/filec/gotoUpload.htm" role="button"><i class="glyphicon glyphicon-plus"></i>新增</a>--%>
+            <button type="button" class="btn btn-theme04" onclick="deleteMFiles()"><i class="glyphicon glyphicon-trash"></i>删除</button>
+            <%--<button type="button" class="btn btn-theme02" onclick="openAddFile()"><i
+                    class="glyphicon glyphicon-plus"></i>新增
+            </button>--%>
           </div>
           <div class="col-lg-8">
             <div class="pull-right">
-              <form class="form-inline" role="form" method="post" action="/filec/listFile.htm">
+              <form id="actionId" class="form-inline" role="form" method="post" action="/filec/listFile.htm">
                 <div class="form-group">
                   <label class="control-label" for="fileNameSearchId">文件名：</label>
                   <input type="text" class="form-control" id="fileNameSearchId" name="fileName" placeholder="">
@@ -121,92 +121,96 @@
                     <option value="">请选择...</option>
                     <option value="0">未审核</option>
                     <option value="1">审核中</option>
-                    <option value="2">已审核</option>
+                    <option value="2">已过审</option>
+                    <option value="3">未过审</option>
                   </select>
                 </div>
                 <button type="submit" class="btn btn-theme">搜索<i class="glyphicon glyphicon-search"></i></button>
               </form>
             </div>
           </div><!-- /form-panel -->
-        </div>
-      </div><!-- /col-lg-12 -->
+        </div><!-- /col-lg-12 -->
       </div><!-- /row -->
 
-      <!-- 视频列表row -->
+      <!-- 文件列表row -->
       <div class="row mt">
         <div class="col-lg-12">
-<form id="fileMainForm">
-          <!-- PANELS -->
+          <form id="fileMainForm">
+          <table class="table table-striped table-advance table-hover"> <%--table table-striped table-advance table-hover--%>
+            <thead>
+            <tr>
+              <th width="30px"><input type="checkbox" onclick="selectFiles2()" title="全选/全不选"></th>
+              <th><i class="fa fa-files-o"></i> 文件名称</th>
+              <th class="hidden-phone"><i class="fa fa-question-circle"></i> 文件描述</th>
+              <th><i class="fa fa-calendar"></i> 修改时间</th>
+              <th><i class=" fa fa-edit"></i> 状态</th>
+              <th><i class=" fa fa-cog"></i> 操作</th>
+            </tr>
+            </thead>
+            <tbody>
 <c:forEach var="cloudFile" items="${cloudFileList}" varStatus="status">
-          <!-- Spotify Panel -->
-          <div class="col-lg-2 col-md-2 col-sm-2 mb videoDiv">
-            <!--复选框div-->
-            <div class="checkDiv" title="选中进行删除">
-              <input class="cb" type="checkbox" name="fileUrl" value="${cloudFile.fileUrl}">
-              <%--<input type="hidden" name="fileId" value="${cloudFile.fileId}">--%>
-            </div><!-- /复选框div -->
-            <div class="content-panel pn"> <%--style="background-color:#f2f2f2;">--%>
-            <a class="Atag" href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>
-              <c:set var="cfurl" value="${cloudFile.fileUrl}" scope="request"/>
-              <c:set var="vurl" value="${cloudFile.vframeUrl}" scope="request"/>
-              <%
-                String url = (String)request.getAttribute("cfurl");
-                String fileType = url.substring(url.lastIndexOf('.')+1).toLowerCase();
-                String furl = "/res/img/file-type/256/file.png";
-                if(fileType.matches("(^(doc|docx)$)")){
-                  furl = "/res/img/file-type/256/word.png";
-                }else if(fileType.matches("(^(xls|xlsx)$)")){
-                  furl = "/res/img/file-type/256/excel.png";
-                }else if(fileType.matches("(^(ppt|pptx)$)")){
-                  furl = "/res/img/file-type/256/ppt.png";
-                }else if(fileType.equals("pdf")){
-                  furl = "/res/img/file-type/256/pdf.png";
-                }else if(fileType.equals("txt")){
-                  furl = "/res/img/file-type/256/txt.png";
-                }else if(fileType.matches("^(flv|mp4|webm|ogg)$")){
-                  //furl = (String)request.getAttribute("vurl");
-                  furl = "/res/img/file-type/256/movie.png";
-                }else if(fileType.matches("^(gif|jpg|jpeg|png)$")){
-                  furl = "/res/img/file-type/256/image.png";
-                }else if(fileType.matches("^(mp3|acc)$")){
-                  furl = "/res/img/file-type/256/music.png";
-                }else if(fileType.matches("(^(zip|rar)$)")){
-                  furl = "/res/img/file-type/256/zip.png";
-                }else{}
-
-                /*if(furl==null || "".equals(furl)){
-                  furl = "/res/img/file-type/file.png";
-                }*/
-              %>
-              <div id="spotify" style="background:url(<%=furl%>) no-repeat center top;background-position-x:50%;background-position-y:50%;background-size:cover;">
-                <div class="col-xs-4 col-xs-offset-8">
-                  <span class="label btn btn-clear-g" style="color:#68dff0;border-color:#68dff0;">
-                    <c:choose>
-                      <c:when test="${cloudFile.fileState==2}">已审核</c:when>
-                      <c:when test="${cloudFile.fileState==1}">审核中</c:when>
-                      <c:otherwise>未审核</c:otherwise>
-                    </c:choose>
-                  </span>
-                </div>
-                <div class="sp-title" style="width:140px;text-align: center">
-                  ${cloudFile.fileName}
-                </div>
-                <%--<div class="play">
-                  <i class="fa fa-play-circle"></i>
-                </div>--%>
-              </div>
-            </a>
-              <p class="followers text-right" style="margin-left: 10px;margin-right: 10px;">
-                <%--<span class="pull-left"><i class="glyphicon glyphicon-time"></i> ${cloudFile.fileDate.toLocaleString()}</span>--%>
-                <span class="pull-left">
-                <a href='javascript:editFilePre("${cloudFile.fileId}");'><i class="glyphicon glyphicon-edit"></i>编辑</a>
-                </span>
-                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'><i class="glyphicon glyphicon-download-alt">下载</i></a>
-              </p>
-            </div>
-          </div>
+          <c:set var="cfurl" value="${cloudFile.fileUrl}" scope="request"/>
+          <c:set var="vurl" value="${cloudFile.vframeUrl}" scope="request"/>
+          <%
+            String url = (String)request.getAttribute("cfurl");
+            String fileType = url.substring(url.lastIndexOf('.')+1).toLowerCase();
+            String furl = "/res/img/file-type/32/file.png";
+            if(fileType.matches("(^(doc|docx)$)")){
+              furl = "/res/img/file-type/32/word.png";
+            }else if(fileType.matches("(^(xls|xlsx)$)")){
+              furl = "/res/img/file-type/32/excel.png";
+            }else if(fileType.matches("(^(ppt|pptx)$)")){
+              furl = "/res/img/file-type/32/ppt.png";
+            }else if(fileType.equals("pdf")){
+              furl = "/res/img/file-type/32/pdf.png";
+            }else if(fileType.equals("txt")){
+              furl = "/res/img/file-type/32/txt.png";
+            }else if(fileType.matches("^(flv|mp4|webm|ogg)$")){
+              furl = "/res/img/file-type/32/movie.png";
+            }else if(fileType.matches("^(gif|jpg|jpeg|png)$")){
+              furl = "/res/img/file-type/32/image.png";
+            }else if(fileType.matches("^(mp3|acc)$")){
+              furl = "/res/img/file-type/32/music.png";
+            }else if(fileType.matches("(^(zip|rar)$)")){
+              furl = "/res/img/file-type/32/zip.png";
+            }else{}
+          %>
+              <tr>
+                <td>
+                    <input class="cb" type="checkbox" name="fileUrl" value="${cloudFile.fileUrl}" title="选中进行删除">
+                </td>
+                <td>
+                  <img src="<%=furl%>" width="24px">
+                  <a href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>${cloudFile.fileName}</a>
+                </td>
+                <td class="hidden-phone">${cloudFile.fileDescript}</td>
+                <td>${cloudFile.fileDate.toLocaleString()}</td>
+                <td>
+                  <c:choose>
+                    <c:when test="${cloudFile.fileState==3}">
+                      <span class="label label-danger label-mini">未过审</span>
+                    </c:when>
+                    <c:when test="${cloudFile.fileState==2}">
+                      <span class="label label-success label-mini">已过审</span>
+                    </c:when>
+                    <c:when test="${cloudFile.fileState==1}">
+                      <span class="label label-info label-mini">审核中</span>
+                    </c:when>
+                    <c:otherwise>
+                      <span class="label label-warning label-mini">未审核</span>
+                    </c:otherwise>
+                  </c:choose>
+                </td>
+                <td>
+                  <%--<a class="btn btn-default btn-xs" href='javascript:void(0);' role="button" title="是否共享"><i class="fa fa-share-alt"></i></a>--%>
+                  <a class="btn btn-default btn-xs" href='javascript:editFilePre("${cloudFile.fileId}");' role="button" title="编辑"><i class="fa fa-pencil"></i></a>
+                  <a class="btn btn-default btn-xs" href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");' role="button" title="下载"><i class="fa fa-download"></i></a>
+                </td>
+              </tr>
 </c:forEach>
-</form>
+            </tbody>
+          </table>
+          </form>
         </div>
       </div><!-- /row -->
 
