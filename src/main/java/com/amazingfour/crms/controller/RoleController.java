@@ -244,10 +244,9 @@ public class RoleController {
                 return;
                 //return "redirect:/user/preinsert.htm";
             }
-            role.setRoleId(Long.valueOf(roleId));
-            roleService.update(role);
-            }
-
+        }
+        role.setRoleId(Long.valueOf(roleId));
+        roleService.update(role);
             //查出roleId对应的菜单
             List<Menu> rmList = menuService.getMenuById(Long.valueOf(roleId));//查询到List<Menu>集合
 

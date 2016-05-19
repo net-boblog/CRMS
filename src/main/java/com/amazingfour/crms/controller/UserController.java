@@ -7,9 +7,11 @@ import com.amazingfour.common.utils.ResponseUtil;
 import com.amazingfour.common.utils.mail.Mail;
 import com.amazingfour.common.utils.mail.MailUtils;
 import com.amazingfour.crms.domain.Menu;
+import com.amazingfour.crms.domain.Operation;
 import com.amazingfour.crms.domain.Role;
 import com.amazingfour.crms.domain.User;
 import com.amazingfour.crms.service.MenuService;
+import com.amazingfour.crms.service.OperationService;
 import com.amazingfour.crms.service.RoleService;
 import com.amazingfour.crms.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,8 @@ public class UserController {
     private RoleService roleService;
     @Resource
     private MenuService menuService;
+    @Resource
+    private OperationService operationService;
 
     //管理员登录
     @RequestMapping("/login")
@@ -78,7 +82,11 @@ public class UserController {
                     3.将菜单存入session
                  */
                 session.setAttribute("menuList",menuList);
-
+                /*
+                    4.将角色功能存入session
+                 */
+                List<Operation> operList = operationService.getOperbyId(Long.valueOf(role.getRoleId()));
+                session.setAttribute("operList",operList);
 
                 return "redirect:/user/list.htm";
                 /*if(resultUser.getUserName().equals(username)&&resultUser.getPassword().equals(s)){//判断数据库获得的数据与页面输入的数据是否相等

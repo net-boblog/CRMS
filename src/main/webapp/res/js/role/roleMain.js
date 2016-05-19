@@ -34,7 +34,7 @@ function openEditOper(roleId){
         type: 2,
         title: ['编辑角色及权限','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
         shade: 0.5,
-        area: ['400px', '250px'],
+        area: ['600px', '450px'],
         content: [roleUrl],
         move:false
     });
