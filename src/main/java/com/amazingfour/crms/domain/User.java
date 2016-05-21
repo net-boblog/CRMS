@@ -17,7 +17,7 @@ public class User {
     private String emailKey;
     private Date outDate;
     private String imgUrl;
-    private int telPhone;
+    private Long telPhone;
 
     public Role getRole() {
         return role;
@@ -107,11 +107,11 @@ public class User {
         this.imgUrl = imgUrl;
     }
 
-    public int getTelPhone() {
+    public Long getTelPhone() {
         return telPhone;
     }
 
-    public void setTelPhone(int telPhone) {
+    public void setTelPhone(Long telPhone) {
         this.telPhone = telPhone;
     }
 }

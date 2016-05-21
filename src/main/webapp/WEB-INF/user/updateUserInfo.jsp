@@ -35,12 +35,17 @@
 
 <body>
 <form id="euserForm" encType="multipart/form-data" method="post"><%-- action="/user/update.htm" method="post" onsubmit="return checkForm()">--%>
+    <input id="userId" type="hidden" name="userId" value="${sessionScope.currentUser.userId}">
     <table class="table table-bordered table-striped table-condensed">
         <tbody>
         <tr>
             <th scope="row">上传头像：</th>
             <td> <input type="file" name="file" id="file"/>
-                <div id="preview" style="width: 100px;height:100px;border:1px solid gray;"></div>
+                <div id="preview" style="width: 100px;height:100px;border:1px solid gray;">
+                    <c:if test="${user.imgUrl!=null}">
+                        <img src="${user.imgUrl}">
+                    </c:if>
+                </div>
             </td>
 
         </tr>
@@ -60,7 +65,7 @@
         </tr>
         <tr>
             <th scope="row">手机号码：</th>
-            <td><input id="telPhone" class="form-control" name="telPhone" rows="3"></td>
+            <td><input id="telPhone" class="form-control" name="telPhone" value="${user.telPhone}" rows="3"></td>
         </tr>
         <tr>
             <th scope="row"></th>
@@ -97,16 +102,26 @@ $(function(){
             return;
         }
 
+        var phoneValue = $("#telPhone").val();
+        /*if(phoneValue==""){
+            layer.tips('手机号码不能为空!', '#telPhone',{tips: 1,tipMore:true});
+            return;
+        }
+        if(!/^1[3|4|5|8][0-9]\d{8}$/.test(phoneValue)){
+            layer.tips('手机号码格式不正确', '#telPhone',{tips: 1});
+            return;
+        }*/
+
+        var userid = $("#userId").val();
         $.ajaxFileUpload({
             type:"POST",
             url:"/user/upload.htm",
             secureuri :false,
             fileElementId :'file',//file控件id
             dataType : 'json',
-            data:{"userEmail":$("#userEmail").val(),"telPhone":$("#telPhone").val(),"userId":${sessionScope.currentUser.userId}},
+            data:{"telPhone":phoneValue,"userId":userid}, //"userEmail":$("#userEmail").val(),
             cache:false,
             success:function(data,status){
-                alert("");
                 parent.layer.msg(status+data.mes,{shade:0.5,time:2000},function(){
                     parent.window.location="/user/list.htm";
                 });
@@ -119,21 +134,26 @@ $(function(){
 
     //绑定邮箱
     $("#emailBtn").click(function(){
-        if($("#userEmail").val()==""){
+        var emailVal = $("#userEmail").val();
+        if(emailVal==""){
             layer.tips('邮箱不能为空!', '#userEmail',{tips: 1});
+            return;
+        }
+        if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/.test(emailVal)){
+            layer.tips('邮箱格式不正确', '#userEmail',{tips: 1});
             return;
         }
         var userid = $("input[name='userId']").val();
         var useremail = $("input[name='userEmail']").val();
-        var emaildata = {userId:userid,userEmail:useremail};
+        var emaildata = {"userId":userid,"userEmail":useremail};
         $.ajax({
             type:"POST",
             url:"/user/bindEmail.htm",
             data:emaildata,
             cache:false,
             success:function(data,status){
-                parent.layer.alert(status+data.mes, {icon: 6,title:'激活邮箱',btn:'已激活'},function(index){
-                    window.location="/user/preUpdate.htm?userId="+userid;
+                parent.layer.alert(data, {icon: 6,title:'激活邮箱',btn:'已激活'},function(index){
+                    window.location="/user/preUserInfo.htm?userId="+userid;
                     parent.layer.close(index);
                 });
             },
@@ -188,13 +208,20 @@ function preview2(file) {
 $(function() {
     $('[type=file]').change(function(e) {
             if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(this.value)) {
-                alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+                alert("图片类型必须是.gifi,jpeg,jpg,png中的一种");
                 ths.value = "";
                 return ;
             }
-        var file = e.target.files[0]
+        var file = e.target.files[0];
         preview1(file)
-    })
+    });
+
+    $('#telPhone').change(function(e) {
+        if (!/^1[3|4|5|8][0-9]\d{8}$/.test(this.value)) {
+            layer.tips('手机号码格式不正确', '#telPhone',{tips: 1});
+        }
+    });
+
 })
 
 </script>

@@ -51,7 +51,7 @@ public class RoleController {
         request.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
 
-        int pageSize = 4; // 页容量
+        int pageSize = 5; // 页容量
 
         if (page == null || page == "") {
 

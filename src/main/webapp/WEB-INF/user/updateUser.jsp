@@ -56,13 +56,20 @@
             <th scope="row">邮箱：</th>
             <td><c:set var="acti" scope="page" value="${user.activated}"/>
                 <span class="col-xs-7" style="padding: 0px;">
-                    <input id="userEmail" class="form-control" type="text" name="userEmail" value="${user.userEmail}" placeholder="email@example.com"
-                           <c:if test="${acti == 1}">disabled</c:if>>
+                    <input id="userEmail" class="form-control" type="text" value="${user.userEmail}" placeholder="email@example.com"
+                           disabled>
                 </span>
-                <span id="emailSpan" <c:if test="${acti==1}">style="display: none"</c:if> class="col-xs-2"><button id="emailBtn" type="button" class="btn btn-success">绑定</button></span>
+                <span style="color:red">
+                    <c:choose>
+                        <c:when test="${acti == 1}">已激活</c:when>
+                        <c:when test="${acti == 0}">未激活</c:when>
+                        <c:otherwise> </c:otherwise>
+                    </c:choose>
+                </span>
+               <%-- <span id="emailSpan" <c:if test="${acti==1}">style="display: none"</c:if> class="col-xs-2"><button id="emailBtn" type="button" class="btn btn-success">绑定</button></span>
                 <span id="eSpan" <c:if test="${acti==1}">style="display: none"</c:if>>绑定邮箱<br>可以找回密码!</span>
                 <span id="rEmailSpan" <c:if test="${acti==0||acti==null}">style="display: none"</c:if> class="col-xs-2"><button id="rEmailBtn" type="button" class="btn btn-default">重新绑定</button></span>
-                <span id="cEmailSpan" style="display: none"><button id="cEmailBtn" type="button" class="btn btn-default">取消</button></span>
+                <span id="cEmailSpan" style="display: none"><button id="cEmailBtn" type="button" class="btn btn-default">取消</button></span>--%>
 
             </td>
         </tr>
@@ -110,7 +117,6 @@ $(function(){
             data:userdata,
             cache:false,
             success:function(data,status){
-                alert("");
                 parent.layer.msg(status+data.mes,{shade:0.5,time:2000},function(){
                     parent.window.location="/user/list.htm";
                 });
@@ -121,7 +127,7 @@ $(function(){
         });
     });
 
-    //绑定邮箱
+    /*//绑定邮箱
     $("#emailBtn").click(function(){
         if($("#userEmail").val()==""){
             layer.tips('邮箱不能为空!', '#userEmail',{tips: 1});
@@ -160,7 +166,7 @@ $(function(){
         $("#emailSpan").hide();
         $("#cEmailSpan").hide();
         $("#rEmailSpan").show();
-    });
+    });*/
 });
 
 

@@ -37,14 +37,16 @@
         <select name="fileState" class="form-control" id="efileStateId" required>
           <option value="${cloudFile.fileState}">
             <c:choose>
-              <c:when test="${cloudFile.fileState==2}">已审核</c:when>
+              <c:when test="${cloudFile.fileState==3}">未过审</c:when>
+              <c:when test="${cloudFile.fileState==2}">已过审</c:when>
               <c:when test="${cloudFile.fileState==1}">审核中</c:when>
               <c:otherwise>未审核</c:otherwise>
             </c:choose>
           </option>
           <option value="0">未审核</option>
           <option value="1">审核中</option>
-          <option value="2">已审核</option>
+          <option value="2">未过审</option>
+          <option value="3">已过审</option>
         </select>
       </td>
     </tr>

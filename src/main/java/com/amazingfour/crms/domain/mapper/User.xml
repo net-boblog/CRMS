@@ -141,7 +141,7 @@
     </update>
     <!--修改用户基本信息-->
     <update id="updateUserInfo" parameterType="User">
-        UPDATE user set user_email=#{userEmail},img_url=#{imgUrl},tel_phone=#{telPhone}
+        UPDATE user set img_url=#{imgUrl},tel_phone=#{telPhone}
         WHERE user_id=#{userId}
     </update>
     <!--激活邮箱-->

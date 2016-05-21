@@ -124,8 +124,8 @@
                                         <option value="">请选择...</option>
                                         <option value="0">未审核</option>
                                         <option value="1">审核中</option>
-                                        <option value="2">审核已通过</option>
-                                        <option value="3">审核未通过</option>
+                                        <option value="2">已过审</option>
+                                        <option value="3">未过审</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-theme">搜索<i class="glyphicon glyphicon-search"></i>
@@ -197,8 +197,8 @@
                                     <td width="50px">
                                         <center>
                                             <c:choose>
-                                                <c:when test="${cloudFile.fileState==3}">审核未通过</c:when>
-                                                <c:when test="${cloudFile.fileState==2}">审核通过</c:when>
+                                                <c:when test="${cloudFile.fileState==3}">未过审</c:when>
+                                                <c:when test="${cloudFile.fileState==2}">已过审</c:when>
                                                 <c:when test="${cloudFile.fileState==1}">审核中</c:when>
                                                 <c:otherwise>未审核</c:otherwise>
                                             </c:choose>

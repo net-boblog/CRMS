@@ -24,6 +24,7 @@ function openEditUser(userId){
 }
 
 //编辑用户基本信息
+/*
 function openEditUserInfo(){
     var userUrl = "/user/preUserInfo.htm";
     layer.open({
@@ -34,4 +35,4 @@ function openEditUserInfo(){
         content: [userUrl,'no'],
         move:false
     });
-}
+}*/

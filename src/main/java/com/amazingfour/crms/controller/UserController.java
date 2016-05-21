@@ -180,9 +180,12 @@ public class UserController {
 
     //编辑用户基本信息前置
     @RequestMapping("/preUserInfo")
-    public ModelAndView preUserInfo() {
+    public ModelAndView preUserInfo(@RequestParam(value = "userId") String userId) {
         ModelAndView mav = new ModelAndView();
-
+        User user1 = new User();
+        user1.setUserId(Long.parseLong(userId));
+        User user = userService.findOneById(user1);
+        mav.addObject("user",user);
         mav.setViewName("user/updateUserInfo");//跳到指定页面
         return mav;
     }
@@ -193,8 +196,8 @@ public class UserController {
         JSONObject obj = new JSONObject();
         User user = new User();
         user.setUserId(Long.parseLong(request.getParameter("userId")));
-        user.setUserEmail(userEmail);
-        user.setTelPhone(Integer.parseInt(telPhone));
+        //user.setUserEmail(userEmail);
+        user.setTelPhone(Long.parseLong(telPhone));
         String path = request.getSession().getServletContext().getRealPath("upload");
         String fileName = file.getOriginalFilename();
         //fileName += new Date().getTime()+".jpg";
@@ -205,9 +208,14 @@ public class UserController {
         //保存
         try {
             file.transferTo(targetFile);
-            user.setImgUrl( request.getContextPath()+"/upload/"+fileName);
+            String img = request.getContextPath()+"/upload/"+fileName;
+            user.setImgUrl(img);
 
             if(userService.updateUserInifo(user)){
+                HttpSession session = request.getSession();
+                User currentUser = (User)session.getAttribute("currentUser");
+                currentUser.setImgUrl(img);
+                session.setAttribute("currentUser",currentUser);
                 obj.put("mes", "更新成功!");
             }else{
                 obj.put("mes", "更新失败!");

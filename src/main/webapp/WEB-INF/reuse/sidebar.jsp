@@ -41,10 +41,18 @@
                         </a>
                     </li>
                 </c:if>
+            <c:if test="${menu.name == '资源共享库'}">
+                <li class="sub">
+                    <a id="fileLibId" href="${menu.url}">
+                        <i class="fa fa-cloud"></i>
+                        <span>${menu.name}</span>
+                    </a>
+                </li>
+            </c:if>
                 <c:if test="${menu.name == '我的资源'}">
                     <li class="sub">
                         <a id="myUpLoadId" href="${menu.url}">
-                            <i class="fa fa-desktop"></i>
+                            <i class="fa fa-tasks"></i>
                             <span>${menu.name}</span>
                         </a>
                     </li>
@@ -142,3 +150,18 @@
     </div>
 </aside>
 <!--sidebar end-->
+
+<script>
+    //编辑用户基本信息
+    function openEditUserInfo(){
+        var userUrl = "/user/preUserInfo.htm?userId="+${sessionScope.currentUser.userId};
+        layer.open({
+            type: 2,
+            title: ['编辑用户信息','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
+            shade: 0.5,
+            area: ['600px', '355px'],
+            content: [userUrl,'no'],
+            move:false
+        });
+    }
+</script>
