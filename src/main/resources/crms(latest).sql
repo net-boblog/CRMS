@@ -666,6 +666,7 @@ CREATE TABLE `cloudfile` (
   `file_date` datetime DEFAULT NULL,
   `file_descript` varchar(1024) DEFAULT NULL,
   `file_state` tinyint(4) DEFAULT NULL,
+  `share_state` tinyint(4) DEFAULT 0,
   `instanceId` varchar(20) DEFAULT NULL,
   `bussinessKey` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`file_id`),

@@ -114,7 +114,7 @@
     </update>
     <!--修改密码-->
    <update id="updatePassword" parameterType="User">
-      UPDATE USER set password=#{password}
+      UPDATE user set password=#{password}
       WHERE username=#{userName}
    </update>
     <!--解除用户黑名单-->

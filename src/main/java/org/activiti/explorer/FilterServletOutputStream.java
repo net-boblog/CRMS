@@ -1,10 +1,12 @@
 package org.activiti.explorer;
 
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.ServletOutputStream;
+
 public class FilterServletOutputStream extends ServletOutputStream {
 
     private DataOutputStream stream;
@@ -26,12 +28,12 @@ public class FilterServletOutputStream extends ServletOutputStream {
         stream.write(b, off, len);
     }
 
-
+    @Override
     public void setWriteListener(WriteListener writeListener) {
         this.writeListener = writeListener;
     }
 
-
+    @Override
     public boolean isReady() {
         return true;
     }

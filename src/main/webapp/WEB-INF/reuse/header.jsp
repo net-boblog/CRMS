@@ -4,9 +4,9 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
     </div>
     <!--logo start-->
-    <a href="index.html" class="logo"><b>云平台资源管理系统</b></a>
+    <a href="javascript:void(0);" class="logo"><b>云平台资源管理系统</b></a>
     <!--logo end-->
-    <div class="nav notify-row" id="top_menu">
+    <%--<div class="nav notify-row" id="top_menu">
         <!--  notification start -->
         <ul class="nav top-menu">
             <!-- inbox dropdown start-->
@@ -76,7 +76,7 @@
             <!-- inbox dropdown end -->
         </ul>
         <!--  notification end -->
-    </div>
+    </div>--%>
     <div class="top-menu">
         <ul class="nav pull-right top-menu">
             <li><a class="logout" href="javascript:openEditPass();">修改密码</a></li>

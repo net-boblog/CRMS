@@ -14,6 +14,7 @@ public class CloudFile {
     private Date fileDate;
     private String fileDescript;
     private Byte fileState;
+    private Byte shareState;
     private String vframeUrl;
     private String instanceId;
     private String bussinessKey;
@@ -67,6 +68,14 @@ public class CloudFile {
 
     public void setFileState(Byte fileState) {
         this.fileState = fileState;
+    }
+
+    public Byte getShareState() {
+        return shareState;
+    }
+
+    public void setShareState(Byte shareState) {
+        this.shareState = shareState;
     }
 
     public String getVframeUrl() {

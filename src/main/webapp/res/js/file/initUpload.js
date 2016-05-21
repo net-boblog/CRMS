@@ -131,7 +131,7 @@ $(function() {
                     //processData:false,    //使用formData时，processData不交给jquery处理,由xhr处理
                     success:function(data,status){
                         parent.layer.msg(status+data.message,{shade:0.1,time:2000},function(){
-                            parent.window.location="/filec/listFile.htm";
+                            parent.window.location = "/task/listMyFile.htm";
                         });
                     },
                     error:function(xhr,status,ex){
