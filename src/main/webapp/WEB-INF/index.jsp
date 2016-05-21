@@ -107,12 +107,16 @@
 
             <div class="row mt">
                 <div class="col-lg-12">
+                <c:forEach items="${sessionScope.operList}" var="oper">
+                    <c:if test="${oper.funName=='用户新增'}">
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-theme02" onclick="openAddUser()"><i class="glyphicon glyphicon-plus"></i>新增</button>
+                        <button type="button" class="btn btn-theme02" onclick="openAddUser('${oper.action}')"><i class="glyphicon glyphicon-plus"></i>新增</button>
                     </div>
+                        </c:if>
+                    <c:if test="${oper.funName=='用户查询'}">
                                 <div class="col-lg-8">
                                     <div class="pull-right">
-                                        <form class="form-inline" role="form" action="/user/list.htm" method="post">
+                                        <form class="form-inline" role="form" action="${oper.action}" method="post">
                                             <div class="form-group">
                                     <label class="control-label" for="userNameSearchId">用户名：</label>
                                     <input type="text" name="userName" class="form-control" id="userNameSearchId" placeholder="">
@@ -129,6 +133,8 @@
                             </form>
                         </div>
                     </div><!-- /form-panel -->
+                    </c:if>
+                </c:forEach>
                 </div>
             </div>
 
@@ -161,10 +167,20 @@
                                      <div style="text-align:center">
                                       <table width="100%">
                                          <tr>
+                                            <c:forEach items="${sessionScope.operList}" var="oper">
+                                                <c:if test="${oper.funName=='用户编辑'}">
                                              <td> <a href="javascript:openEditUser('${b.userId.toString()}')">编辑</a></td>
+                                                </c:if>
+                                                <c:if test="${oper.funName=='用户删除'}">
                                              <td> <a href="javascript:del('${b.userId}')">删除</a></td>
+                                                </c:if>
+                                                <c:if test="${oper.funName=='拉黑用户'}">
                                              <td> <a href="javascript:defriend('${b.userId}')">拉黑</a></td>
+                                                </c:if>
+                                                <c:if test="${oper.funName=='解除拉黑'}">
                                              <td><a href="javascript:removeBlack('${b.userId}')">解除</a></td>
+                                                </c:if>
+                                            </c:forEach>
                                          </tr>
                                       </table>
                                      </div>

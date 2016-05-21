@@ -16,6 +16,8 @@ public class User {
     private Byte activated;
     private String emailKey;
     private Date outDate;
+    private String imgUrl;
+    private int telPhone;
 
     public Role getRole() {
         return role;
@@ -95,5 +97,21 @@ public class User {
 
     public void setOutDate(Date outDate) {
         this.outDate = outDate;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public int getTelPhone() {
+        return telPhone;
+    }
+
+    public void setTelPhone(int telPhone) {
+        this.telPhone = telPhone;
     }
 }

@@ -16,11 +16,11 @@
 
 
     <script type="text/javascript">
-        function del(roleId) {
+        function del(roleId,url) {
             if (confirm("确定要删除这条记录吗?")) {
                 $
                         .get(
-                        "${pageContext.request.contextPath}/role/delete.htm",
+                        "${pageContext.request.contextPath}"+url+"",
                         {
                             roleId : roleId
                         },
@@ -60,18 +60,23 @@
     MAIN CONTENT
     *********************************************************************************************************************************************************** -->
     <!--main content start-->
+
     <section id="main-content">
+
         <section class="wrapper site-min-height">
             <h3><i class="fa fa-angle-right"></i>角色管理</h3>
-
             <div class="row mt">
                 <div class="col-lg-12">
+                    <c:forEach items="${sessionScope.operList}" var="oper">
+                        <c:if test="${oper.funName=='角色新增'}">
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-theme02" onclick="openAddRole()"><i class="glyphicon glyphicon-plus"></i>新增</button>
+                        <button type="button" class="btn btn-theme02" onclick="openAddRole('${oper.action}')"><i class="glyphicon glyphicon-plus"></i>新增</button>
                     </div>
+                    </c:if>
+                    <c:if test="${oper.funName=='角色查询'}">
                     <div class="col-lg-8">
                         <div class="pull-right">
-                            <form class="form-inline" role="form" action="/role/list.htm" method="post">
+                            <form class="form-inline" role="form" action="${oper.action}" method="post">
 
                                 <div class="form-group">
                                     <label class="control-label" for="roleNameId">角色名：</label>
@@ -81,6 +86,8 @@
                             </form>
                         </div>
                     </div><!-- /form-panel -->
+                    </c:if>
+                    </c:forEach>
                 </div>
             </div>
 
@@ -110,11 +117,20 @@
                                         <div style="text-align:center">
                                             <table width="100%">
                                                 <tr>
-                                                    <td> <a href="javascript:openEditRole('${role.roleId.toString()}')"> 菜单</a></td>
-                                                    <td> <a href="javascript:openEditOper('${role.roleId.toString()}')"> 功能</a></td>
-                                                    <td> <a href="javascript:del('${role.roleId}')">删除</a></td>
+                                                    <c:forEach items="${sessionScope.operList}" var="oper">
+                                                    <c:if test="${oper.funName=='角色菜单新增'}">
+                                                        <td> <a href="javascript:openEditRole('${role.roleId.toString()}','${oper.action}')"> 菜单</a></td>
+                                                    </c:if>
+                                                    <c:if test="${oper.funName=='角色功能新增'}">
+                                                        <td> <a href="javascript:openEditOper('${role.roleId.toString()}','${oper.action}')"> 功能</a></td>
+                                                    </c:if>
+                                                    <c:if test="${oper.funName=='角色删除'}">
+                                                        <td> <a href="javascript:del('${role.roleId}','${oper.action}')">删除</a></td>
+                                                    </c:if>
+                                                    </c:forEach>
                                                 </tr>
                                             </table>
+
                                         </div>
                                     </center>
                                 </td>
@@ -131,8 +147,10 @@
                 </div>
             </div>
         </section>
+
         <! --/wrapper -->
     </section>
+
     <!-- /MAIN CONTENT -->
 
     <!--main content end-->
@@ -150,4 +168,3 @@
 <script type="text/javascript" src="/res/js/role/roleMain.js"></script>
 </body>
 </html>
-

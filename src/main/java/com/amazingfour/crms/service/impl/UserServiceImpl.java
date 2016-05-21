@@ -110,6 +110,16 @@ public class UserServiceImpl extends AbstractService<User,Long> implements UserS
         }
     }
 
+    //修改用户基本信息
+    public boolean updateUserInifo(User user) {
+        if(userDao.updateUserInfo(user)>0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     //找回密码发邮件时保存验证信息
     public boolean saveEmailMes(User user){
         if (userDao.saveEmailMes(user)>0){

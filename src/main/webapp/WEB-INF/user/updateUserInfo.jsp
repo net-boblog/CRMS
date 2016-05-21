@@ -16,42 +16,35 @@
     <meta name="author" content="">
     <meta name="keyword" content="">
 
-    <title>更新用户页面</title>
+    <title>更新用户基本信息页面</title>
+    <style>
+        #preview {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+        }
+        #preview img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
     <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 
 </head>
 
 <body>
-<form id="euserForm"><%-- action="/user/update.htm" method="post" onsubmit="return checkForm()">--%>
+<form id="euserForm" encType="multipart/form-data" method="post"><%-- action="/user/update.htm" method="post" onsubmit="return checkForm()">--%>
     <table class="table table-bordered table-striped table-condensed">
         <tbody>
         <tr>
-            <th scope="row">用户名：</th>
-            <td><input id="userName" class="form-control" type="text" name="userName" value="${user.userName}">
-                <div>
-                    <font color="red" id="error"></font>
-                </div>
+            <th scope="row">上传头像：</th>
+            <td> <input type="file" name="file" id="file"/>
+                <div id="preview" style="width: 100px;height:100px;border:1px solid gray;"></div>
             </td>
 
         </tr>
-        <tr>
-            <th scope="row">角色：</th>
-            <td>
-                <div id="container">
-                    <select name="role.roleId" class="form-control" style="width:152px">
-                        <option value="${user.role.roleId}" selected="selected">${user.role.roleName}</option>
-                        <c:forEach var="b" items="${roleList}" varStatus="status">
-                            <option value="${b.roleId}">${b.roleName}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <input type="hidden" name="userId" value="${user.userId}"/>
-            <th scope="row">密码：</th>
-            <td><input id="password" class="form-control" type="password" name="password" value="${user.password}" disabled></td>
-        </tr>
+
         <tr>
             <th scope="row">邮箱：</th>
             <td><c:set var="acti" scope="page" value="${user.activated}"/>
@@ -63,18 +56,17 @@
                 <span id="eSpan" <c:if test="${acti==1}">style="display: none"</c:if>>绑定邮箱<br>可以找回密码!</span>
                 <span id="rEmailSpan" <c:if test="${acti==0||acti==null}">style="display: none"</c:if> class="col-xs-2"><button id="rEmailBtn" type="button" class="btn btn-default">重新绑定</button></span>
                 <span id="cEmailSpan" style="display: none"><button id="cEmailBtn" type="button" class="btn btn-default">取消</button></span>
-
             </td>
         </tr>
         <tr>
-            <th scope="row">描述：</th>
-            <td><textarea id="" class="form-control" name="userDescript" rows="3">${user.userDescript}</textarea></td>
+            <th scope="row">手机号码：</th>
+            <td><input id="telPhone" class="form-control" name="telPhone" rows="3"></td>
         </tr>
         <tr>
             <th scope="row"></th>
             <td class="text-right">
                 <%--<a class="btn btn-primary" href="javascript:$('#euserForm').submit();" role="button" target="_parent">修改2</a>--%>
-                <button id="euserBtn" type="button" class="btn btn-primary">修改</button>&nbsp;
+                <button id="euserBtn" type="button" class="btn btn-primary">保存</button>&nbsp;
                 <button id="fileCance2" type="reset" class="btn btn-default">重置</button>&nbsp;
                 <%--<button id="fileCance3" type="button" class="btn btn-default" onclick="window.location='/user/list.htm'">返回</button>--%>
             </td>
@@ -92,6 +84,7 @@
 
 <!-- js placed at the end of the document so the pages load faster -->
 <jsp:include page="/WEB-INF/reuse/layerJs.jsp"/>
+<script type="text/javascript" src="/assets/js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="/assets/js/plupload/plupload.full.min.js"></script>
 
 <script type="text/javascript">
@@ -99,15 +92,18 @@ $(function(){
     //更新用户信息，不包括邮箱
     $("#euserBtn").click(function(){
         if($("#userName").val()==""){
-            //$("#userError").text("用户名不能为空！");
+            //$("#userError").text("用户名不x能为空！");
             layer.tips('用户名不能为空!', '#userName',{tips: 4});
             return;
         }
-        var userdata = $("#euserForm").serializeArray();
-        $.ajax({
+
+        $.ajaxFileUpload({
             type:"POST",
-            url:"/user/update.htm",
-            data:userdata,
+            url:"/user/upload.htm",
+            secureuri :false,
+            fileElementId :'file',//file控件id
+            dataType : 'json',
+            data:{"userEmail":$("#userEmail").val(),"telPhone":$("#telPhone").val(),"userId":${sessionScope.currentUser.userId}},
             cache:false,
             success:function(data,status){
                 alert("");
@@ -136,7 +132,7 @@ $(function(){
             data:emaildata,
             cache:false,
             success:function(data,status){
-                parent.layer.alert(data, {icon: 6,title:'激活邮箱',btn:'已激活'},function(index){
+                parent.layer.alert(status+data.mes, {icon: 6,title:'激活邮箱',btn:'已激活'},function(index){
                     window.location="/user/preUpdate.htm?userId="+userid;
                     parent.layer.close(index);
                 });
@@ -163,7 +159,43 @@ $(function(){
     });
 });
 
+function preview1(file) {
+    var img = new Image(), url = img.src = URL.createObjectURL(file)
+    var $img = $(img)
+    img.onload = function() {
+        URL.revokeObjectURL(url)
+        $('#preview').empty().append($img)
+    }
+}
+function preview2(file) {
+    var reader = new FileReader()
+    reader.onload = function(e) {
+        var $img = $('<img>').attr("src", e.target.result)
+        $('#preview').empty().append($img)
+    }
+    reader.readAsDataURL(file)
+}
 
+/*
+ * 判断图片类型
+ *
+ * @param ths
+ *          type="file"的javascript对象
+ * @return true-符合要求,false-不符合
+ */
+
+
+$(function() {
+    $('[type=file]').change(function(e) {
+            if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(this.value)) {
+                alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+                ths.value = "";
+                return ;
+            }
+        var file = e.target.files[0]
+        preview1(file)
+    })
+})
 
 </script>
 

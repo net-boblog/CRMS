@@ -14,7 +14,8 @@
         <result property="activated" column="activated"/>
         <result property="emailKey" column="email_key"/>
         <result property="outDate" column="out_date"/>
-
+        <result property="imgUrl" column="img_Url"/>
+        <result property="telPhone" column="tel_phone"/>
         <!--<collection property="Role" column="role_id" ofType="Role">
             <result property="roleName" column="role_name"/>
             <result property="roleDescript" column="role_descript"/>
@@ -136,6 +137,11 @@
     <!--绑定邮箱-->
     <update id="bindEmail" parameterType="User">
         UPDATE user set user_email=#{userEmail},activated=0,email_key=#{emailKey},out_date=#{outDate}
+        WHERE user_id=#{userId}
+    </update>
+    <!--修改用户基本信息-->
+    <update id="updateUserInfo" parameterType="User">
+        UPDATE user set user_email=#{userEmail},img_url=#{imgUrl},tel_phone=#{telPhone}
         WHERE user_id=#{userId}
     </update>
     <!--激活邮箱-->

@@ -18,6 +18,7 @@ public interface UserDao extends BaseDao<User,Long>{
     public int removeBlack(Long id);
     public User findOneById(User user);
     public int bindEmail(User user);
+    public int updateUserInfo(User user);
     public int activated(User user);
     public int saveEmailMes(User user);
     public List<Integer> findByRoleName(String roleName);

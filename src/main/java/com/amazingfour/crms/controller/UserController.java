@@ -27,10 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
+import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
-
+import org.springframework.web.multipart.MultipartFile;
 /**
  * Created by kennyho on 2016/1/11.
  */
@@ -175,6 +176,46 @@ public class UserController {
         mav.addObject("roleList",roleList);
         mav.setViewName("user/addUser");//跳到指定页面
         return mav;
+    }
+
+    //编辑用户基本信息前置
+    @RequestMapping("/preUserInfo")
+    public ModelAndView preUserInfo() {
+        ModelAndView mav = new ModelAndView();
+
+        mav.setViewName("user/updateUserInfo");//跳到指定页面
+        return mav;
+    }
+
+    //修改用户基本信息
+    @RequestMapping(value = "/upload")
+    public void upload(@RequestParam(value = "file", required = false) MultipartFile file,String userEmail,String telPhone,HttpServletRequest request,HttpServletResponse response) {
+        JSONObject obj = new JSONObject();
+        User user = new User();
+        user.setUserId(Long.parseLong(request.getParameter("userId")));
+        user.setUserEmail(userEmail);
+        user.setTelPhone(Integer.parseInt(telPhone));
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        String fileName = file.getOriginalFilename();
+        //fileName += new Date().getTime()+".jpg";
+        File targetFile = new File(path, fileName);
+        if(!targetFile.exists()){
+            targetFile.mkdirs();
+        }
+        //保存
+        try {
+            file.transferTo(targetFile);
+            user.setImgUrl( request.getContextPath()+"/upload/"+fileName);
+
+            if(userService.updateUserInifo(user)){
+                obj.put("mes", "更新成功!");
+            }else{
+                obj.put("mes", "更新失败!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ResponseUtil.renderJson(response, obj.toString());
     }
 
     /**

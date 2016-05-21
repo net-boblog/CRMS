@@ -7,8 +7,14 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
 
-            <p class="centered"><a href="profile.html"><img src="/assets/img/ui-sam.jpg" class="img-circle"
-                                                            width="60"></a></p>
+            <p class="centered"><a href="javascript:openEditUserInfo()">
+
+                <c:if test="${sessionScope.currentUser.imgUrl==null}">
+                <img src="/assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                    </c:if>
+            <c:if test="${sessionScope.currentUser.imgUrl!=null}">
+                <img src="${sessionScope.currentUser.imgUrl}" class="img-circle" width="60"></a></p>
+            </c:if>
             <h5 class="centered">${sessionScope.currentUser.userName}</h5>
             <c:forEach items="${sessionScope.menuList}" var="menu">
                 <c:if test="${menu.name == '用户管理'}">

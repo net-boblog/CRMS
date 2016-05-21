@@ -19,6 +19,7 @@ public interface UserService extends BaseService<User,Long> {
     public boolean bindEmail(User user);
     public boolean activated(User user);
     public int existUserEmail(User user);
+    public boolean updateUserInifo(User user);
     public boolean saveEmailMes(User user);
     public List<Integer> findByRoleName(String roleName);
 }
