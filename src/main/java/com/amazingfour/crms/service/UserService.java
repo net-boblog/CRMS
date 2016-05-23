@@ -22,4 +22,6 @@ public interface UserService extends BaseService<User,Long> {
     public boolean updateUserInifo(User user);
     public boolean saveEmailMes(User user);
     public List<Integer> findByRoleName(String roleName);
+    //批量删除用户
+    public int deleteBatch(List<String> userId);
 }

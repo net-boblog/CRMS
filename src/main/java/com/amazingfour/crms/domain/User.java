@@ -1,5 +1,6 @@
 package com.amazingfour.crms.domain;
 
+import java.beans.Transient;
 import java.util.Date;
 
 /**
@@ -12,6 +13,7 @@ public class User {
     private String password;
     private String userDescript;
     private Byte userState;
+    private String verifyCode;
     private String userEmail;
     private Byte activated;
     private String emailKey;
@@ -42,6 +44,11 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+   @Transient //不需要持久到DB的属性使用该注解
+    public String getVerifyCode(){return verifyCode;}
+    public void setVerifyCode(String verifyCode){this.verifyCode=verifyCode;}
+
 
     public String getPassword() {
         return password;

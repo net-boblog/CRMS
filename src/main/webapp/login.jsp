@@ -11,6 +11,28 @@
     <!-- 引入全局css样式 -->
     <jsp:include page="/WEB-INF/reuse/css.jsp"/>
 
+	  <script type="text/javascript">
+
+
+		  function changeImg() {
+			  var imgSrc = $("#imgObj");
+			  var src = imgSrc.attr("src");
+			  imgSrc.attr("src", chgUrl(src));
+		  }
+		  //时间戳
+		  //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+		  function chgUrl(url) {
+			  var timestamp = (new Date()).valueOf();
+			  url = url.substring(0, 17);
+			  if ((url.indexOf("&") >= 0)) {
+				  url = url + "×tamp=" + timestamp;
+			  } else {
+				  url = url + "?timestamp=" + timestamp;
+			  }
+			  return url;
+		  }
+
+	  </script>
 
   </head>
 
@@ -28,19 +50,34 @@
 		        <div class="login-wrap">
 
 					<div>
-						<span  id="login_err" class="sty_txt2"><font color="red">${errorMsg}${errorMsg1 }${blacklist}</font> </span>
+						<span  id="login_err" class="sty_txt2" style="color: red"><font color="red">${errorMsg}${errorMsg1 }${blacklist}</font> </span>
 					</div>
 
-		            <input type="text" class="form-control" id="userName" name="userName" value="${user.userName }" placeholder="请输入用户名" autofocus required>
+		            <input type="text" class="form-control" id="userName" name="userName" value="${user.userName }" placeholder="请输入用户名" autofocus>
 		            <br>
-		            <input type="password" class="form-control" id="password"  name="password" placeholder="请输入密码" required>
+		            <input type="password" class="form-control" id="password"  name="password" placeholder="请输入密码">
+                    <br>
+					<div>
+						<span  id="code_err" class="sty_txt2" style="color: red"><font color="red">${msg}</font> </span>
+					</div>
+           <table cellpadding="2">
+                     <tr>
+					 <td>
+						 <input class="form-control" id="verifyCode" name="verifyCode" type="text" style="width:180px;" /></td>
+	                 <td>&nbsp;
+						 <a href="javascript:;" onclick="changeImg()">
+							 <img id="imgObj" alt="点击刷新验证码" placeholder="请输入验证码" src="code.htm" />
+						 </a>
+					 </td>
+					 </tr>
+           </table>
 		            <label class="checkbox">
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.jsp#myModal"> 忘记密码?</a>
 		
 		                </span>
 		            </label>
-		            <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> 登录</button>
+		            <button class="btn btn-theme btn-block login-submit-btn" type="submit"><i class="fa fa-lock"></i> 登录</button>
 		            <hr>
 
 		            <div class="registration">
@@ -100,19 +137,26 @@
 	  %>
 
 	  <script type="text/javascript">
-		  function checkForm(){
-			  var userName=document.getElementById("userName").value;
-			  var password=document.getElementById("password").value;
-			  if(userName==null || userName==""){
-				  document.getElementById("login_err").innerHTML="用户名不能为空";
-				  return false;
-			  }
-			  if(password==null || password==""){
-				  document.getElementById("login_err").innerHTML="密码不能为空";
-				  return false;
-			  }
-			  return true;
+	  $('.login-submit-btn').click(function checkForm(e){
+		  var form = $('form.form-login');
+		  var userName=document.getElementById("userName").value;
+		  var password=document.getElementById("password").value;
+		  var verifyCode=document.getElementById("verifyCode").value;
+		  if(userName==null || userName==""){
+			  document.getElementById("login_err").innerHTML="用户名不能为空";
+			  return false;
 		  }
+		  if(password==null || password==""){
+			  document.getElementById("login_err").innerHTML="密码不能为空";
+			  return false;
+		  }
+		  if(verifyCode==null || verifyCode==""){
+			  document.getElementById("code_err").innerHTML="验证码不能为空";
+			  return false;
+		  }
+		  form.onsubmit();
+		  return true;
+	  })
 
 		  //找回密码
 		  function findPassByEmail(){

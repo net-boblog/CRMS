@@ -22,4 +22,6 @@ public interface UserDao extends BaseDao<User,Long>{
     public int activated(User user);
     public int saveEmailMes(User user);
     public List<Integer> findByRoleName(String roleName);
+    //批量删除文件
+    public int deleteBatch(List<String> userId);
 }

@@ -10,6 +10,7 @@
         <result property="password" column="password"/>
         <result property="userDescript" column="user_descript"/>
         <result property="userState" column="user_state"/>
+        <result property="verifyCode" column="verifycode"/>
         <result property="userEmail" column="user_email"/>
         <result property="activated" column="activated"/>
         <result property="emailKey" column="email_key"/>
@@ -78,6 +79,14 @@
     <!-- 删除用户-->
     <delete id="delete" parameterType="Long">  <!-- 不需要指明返回类型 自动返回删除行数或者是异常信息 -->
         delete from user WHERE  user_id=#{userId}
+    </delete>
+
+    <!-- 批量删除用户-->
+    <delete id="deleteBatch" parameterType="String">
+        DELETE FROM user where user_id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
     <!-- 新增用户 -->

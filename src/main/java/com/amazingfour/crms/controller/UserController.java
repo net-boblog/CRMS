@@ -6,6 +6,7 @@ import com.amazingfour.common.utils.PageUtil;
 import com.amazingfour.common.utils.ResponseUtil;
 import com.amazingfour.common.utils.mail.Mail;
 import com.amazingfour.common.utils.mail.MailUtils;
+import com.amazingfour.common.utils.qiniu.MyBucketManager;
 import com.amazingfour.crms.domain.Menu;
 import com.amazingfour.crms.domain.Operation;
 import com.amazingfour.crms.domain.Role;
@@ -48,13 +49,17 @@ public class UserController {
     @Resource
     private OperationService operationService;
 
-    //管理员登录
+    //用户登录
     @RequestMapping("/login")
-    public String login(User user,HttpServletRequest request){
-
-        String username=user.getUserName();//获取页面填入的用户名
-        String password=user.getPassword();//获取页面填入的密码
-        String s= Encrypt.Encrypt_md5(password);//将页面密码转化为密文
+    public String login(User user,String verifyCode,HttpServletRequest request,HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        if (!(verifyCode.equalsIgnoreCase(session.getAttribute("code").toString()))) {  //忽略验证码大小写
+            request.setAttribute("errorMsg", "验证码不正确");
+            return "forward:/login.jsp";
+        }
+        String username = user.getUserName();//获取页面填入的用户名
+        String password = user.getPassword();//获取页面填入的密码
+        String s = Encrypt.Encrypt_md5(password);//将页面密码转化为密文
         user.setPassword(s);
         User resultUser = userService.login(user);
         if(resultUser!=null){//判断是否从数据库里查出了数据
@@ -64,7 +69,7 @@ public class UserController {
                 request.setAttribute("blacklist","该用户已被拉黑，请联系管理员！");
                 return "forward:/login.jsp";
             }else {
-                HttpSession session = request.getSession();
+                //HttpSession session = request.getSession();
                 /*
                     1.将用户存入session
                  */
@@ -118,7 +123,6 @@ public class UserController {
         int pageSize = 4; // 页容量
 
         if (page == null || page == "") {
-
             page = "1";
 
         } /*else {
@@ -551,4 +555,36 @@ public class UserController {
     public String findPassPage2(){
         return "user/emailTip";
     }*/
+    /**
+     * 批量删除用户
+     *
+     * @param userId
+     * @param response
+     */
+    @RequestMapping("/delUsers")
+    public void delUsers(String[] userId, HttpServletResponse response) {
+        JSONObject obj = new JSONObject();
+
+        //判断userId是否为空
+        if (userId == null || userId.length == 0) {
+            obj.put("mes", "请至少选择一项!");
+            ResponseUtil.renderJson(response, obj.toString());
+            return;
+        }
+        List<String> userIdList=new ArrayList<>();
+        Collections.addAll(userIdList,userId);//将前端用户ID由数组类型转化为list
+          int rows = userService.deleteBatch(userIdList);
+            int len = userId.length;
+            if (rows == 0) {
+                obj.put("mes", "用户删除失败!");
+            } else if (rows < len) {
+                obj.put("mes", "部分删除失败!");
+            } else if (rows == len) {
+                obj.put("mes", "删除成功!");
+            } else {
+                obj.put("mes", "未知错误!");
+            }
+
+        ResponseUtil.renderJson(response, obj.toString());
+    }
 }

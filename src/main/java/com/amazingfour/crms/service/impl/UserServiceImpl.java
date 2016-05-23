@@ -133,4 +133,13 @@ public class UserServiceImpl extends AbstractService<User,Long> implements UserS
     public List<Integer> findByRoleName(String roleName) {
         return userDao.findByRoleName(roleName);
     }
+    //批量删除文件
+    public int deleteBatch(List<String> userId) {
+        return userDao.deleteBatch(userId);
+        /*if(rows==fileUrls.size()){
+            return true;
+        }else{
+            return false;
+        }*/
+    }
 }
