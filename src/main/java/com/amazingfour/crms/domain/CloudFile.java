@@ -12,6 +12,8 @@ public class CloudFile {
     private String fileName;
     private String fileUrl;
     private Date fileDate;
+    private String fileType;
+    private String fileSize;
     private String fileDescript;
     private Byte fileState;
     private Byte shareState;
@@ -48,6 +50,22 @@ public class CloudFile {
 
     public Date getFileDate() {
         return fileDate;
+    }
+
+    public String getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(String fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     public void setFileDate(Date fileDate) {

@@ -9,5 +9,6 @@
 
 <!--layer用于制作弹出层-->
 <script type="text/javascript" src="assets/js/layer/layer.js"></script>
+<script type="text/javascript" src="/assets/js/layer/extend/layer.ext.js"></script>  <!--图像弹出层-->
 <!--common script for all pages-->
 <script src="/assets/js/common-scripts.js"></script>

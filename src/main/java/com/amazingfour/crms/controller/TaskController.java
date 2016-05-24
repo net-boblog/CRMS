@@ -279,10 +279,10 @@ public class TaskController {
         cloudFile.setFileDate(new Date());
         JSONObject obj = new JSONObject();
         if (cloudFileService.update(cloudFile)) {
-            if (key != null) {
+            /*if (key != null) {    //采用覆盖上传，因此不再用“新增+删除”的模式
                 MyBucketManager bm = new MyBucketManager();
                 bm.delete(key);
-            }
+            }*/
             obj.put("mes", "更新成功!");
         } else {
             obj.put("mes", "更新失败!");

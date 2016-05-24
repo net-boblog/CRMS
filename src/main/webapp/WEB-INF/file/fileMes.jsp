@@ -44,6 +44,12 @@
       <td>${cloudFile.fileDate.toLocaleString()}
     </tr>
     <tr>
+      <th scope="row">文件属性：</th>
+      <td>文件类型：${cloudFile.fileType}
+        &nbsp;&nbsp;&nbsp;文件大小：${cloudFile.fileSize}
+      </td>
+    </tr>
+    <tr>
       <th scope="row" height="100px">文件描述：</th>
       <td>
         ${cloudFile.fileDescript}

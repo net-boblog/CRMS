@@ -4,6 +4,7 @@ import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.model.BatchStatus;
+import com.qiniu.storage.model.FileInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.ConsoleAppender;
@@ -106,5 +107,27 @@ public class MyBucketManager {
         }
     }
 
+    /**
+     * 查看文件元信息
+     * @param key
+     * @return
+     */
+    public FileInfo statFile(String key){
+        FileInfo info = null;
+        try {
+            info = bucketManager.stat(ConfigToken.BUCKETNAME, key);
+        }catch (QiniuException e){
+            Response r = e.response;
+            // 请求失败时简单状态信息
+            log.error(r.toString());
+            try {
+                // 响应的文本信息
+                log.error(r.bodyString());
+            } catch (QiniuException e1) {
+                //ignore
+            }
+        }
+        return info;    //返回四个字段json{"fsize"(文件大小),"hash","mimeType","putTime"(最后上传时间)}
+    }
 
 }

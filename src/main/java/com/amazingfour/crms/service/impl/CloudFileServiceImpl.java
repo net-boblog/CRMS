@@ -27,11 +27,14 @@ public class CloudFileServiceImpl extends AbstractService<CloudFile, Long> imple
     //批量删除文件
     public int deleteBatch(List<String> fileUrls) {
         return cloudFileDao.deleteBatch(fileUrls);
-        /*if(rows==fileUrls.size()){
+    }
+
+    //更新文件的共享状态
+    public boolean updateShare(CloudFile cloudFile){
+        if(cloudFileDao.updateShare(cloudFile)>0){
             return true;
-        }else{
-            return false;
-        }*/
+        }
+        return false;
     }
 
     public CloudFile findByBussinessKey(String bussinessKey) {

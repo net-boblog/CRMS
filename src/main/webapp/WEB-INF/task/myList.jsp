@@ -73,7 +73,7 @@
         }
     </style>
 </head>
-<body>
+<body style="overflow: hidden;">
 
 <section id="container">
     <!-- **********************************************************************************************************************************************************
@@ -101,7 +101,7 @@
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>
+                        <%--<button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>--%>
                         <button type="button" class="btn btn-theme04" onclick="deleteFiles()"><i
                                 class="glyphicon glyphicon-trash"></i>删除
                         </button>
@@ -146,8 +146,8 @@
                 <div class="col-lg-12">
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th>
-                                <center>选择框</center>
+                            <th width="30px">
+                                <input style=" width:15px;height:15px;" type="checkbox" onclick="selectFiles2()" title="全选/全不选">
                             </th>
                             <th>
                                 <center>序号</center>
@@ -172,15 +172,8 @@
                         <form id="fileMainForm">
                             <c:forEach var="cloudFile" items="${cloudFileList}" varStatus="status">
                                 <tr>
-                                    <td width="50px">
-                                        <!--复选框div-->
-                                            <%--<div class="checkDiv" title="选中进行删除">--%>
-                                        <input class="cb" type="checkbox" name="fileUrl"
-                                               value="${cloudFile.fileUrl}"/>
-                                            <%--<input type="hidden" name="fileId" value="${cloudFile.fileId}">--%>
-                                            <%--</div>--%>
-                                        <!-- /复选框div -->
-                                        </center>
+                                    <td>
+                                        <input class="cb" type="checkbox" name="fileUrl" value="${cloudFile.fileUrl}"/>
                                     </td>
                                     <td width="50px">
                                         <center>
@@ -188,7 +181,11 @@
                                         </center>
                                     </td>
                                     <td width="150px">
-                                        <center>${cloudFile.fileName} </center>
+                                        <center>
+                                            <a href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>
+                                                ${cloudFile.fileName}
+                                            </a>
+                                        </center>
                                     </td>
                                     <td width="100px">
                                         <center>${cloudFile.fileDate.toLocaleString()} </center>
@@ -207,11 +204,17 @@
                                     <td width="200px">
                                         <center>
                                             <div style="text-align:center">
-                                                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'
-                                                   class=""><i
-                                                        class="glyphicon glyphicon-download-alt">下载</i></a>
-                                                <a class="Atag nowrap"
-                                                   href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>查看</a>
+                                                <a id="${cloudFile.fileId}" class="Atag nowrap" href='javascript:shareFile("${cloudFile.fileId}","${cloudFile.shareState}");'>
+                                                    <c:choose>
+                                                        <c:when test="${cloudFile.shareState==0}">共享</c:when>
+                                                        <c:otherwise>取消共享</c:otherwise>
+                                                    </c:choose>
+                                                </a>
+
+                                                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>下载</a>  <%--<i class="glyphicon glyphicon-download-alt">下载</i>--%>
+                                                <a class="Atag nowrap" href='javascript:viewFileMes("${cloudFile.fileId}","${cloudFile.fileUrl}","${cloudFile.fileName}");'>
+                                                    详情
+                                                </a>
                                                 <c:if test="${cloudFile.fileState==2}">
                                                     <a href='javascript:editFilePre("${cloudFile.fileId}");'><i
                                                             class="glyphicon glyphicon-edit"></i>编辑</a>

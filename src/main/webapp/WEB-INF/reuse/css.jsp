@@ -17,6 +17,7 @@
 
 <![endif]-->
 
-<%--<style>
-    body{background: #FFFFFF;}
-</style>--%>
+<style>
+    /*body{background: #FFFFFF;}*/
+    body{overflow: hidden;}
+</style>

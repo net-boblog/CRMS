@@ -59,6 +59,14 @@
           </td>
         </tr>
         <tr>
+          <th scope="row">文件属性：</th>
+          <td>文件类型：
+            <input style="border:0" id="fileTypeId" type="text" name="fileType" value="" size="10" readonly required>
+            &nbsp;文件大小：
+            <input style="border:0" id="fileSizeId" type="text" name="fileSize" value="" size="10" readonly required>
+          </td>
+        </tr>
+        <tr>
           <th scope="row">上传理由及文件描述：</th>
           <td><textarea id="fileIntroId" class="form-control" name="fileDescript" rows="3" placeholder="请输入文件描述"></textarea></td>
         </tr>

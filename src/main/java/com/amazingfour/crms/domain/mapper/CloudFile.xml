@@ -8,6 +8,8 @@
         <result property="fileName" column="file_name"/>
         <result property="fileUrl" column="file_url"/>
         <result property="fileDate" column="file_date"/>
+        <result property="fileType" column="file_type"/>
+        <result property="fileSize" column="file_size"/>
         <result property="fileDescript" column="file_descript"/>
         <result property="fileState" column="file_state"/>
         <result property="shareState" column="share_state"/>
@@ -17,8 +19,8 @@
 
     <!-- 添加文件 -->
     <insert id="insert" parameterType="CloudFile" useGeneratedKeys="true" keyProperty="fileId">
-        insert into cloudfile(file_id,file_name,file_url,file_date,file_descript,file_state,share_state,instanceId,bussinessKey)
-        values(#{fileId},#{fileName},#{fileUrl},#{fileDate},#{fileDescript},0,0,#{instanceId},#{bussinessKey})
+        insert into cloudfile(file_id,file_name,file_url,file_date,file_type,file_size,file_descript,file_state,share_state,instanceId,bussinessKey)
+        values(#{fileId},#{fileName},#{fileUrl},#{fileDate},#{fileType},#{fileSize},#{fileDescript},0,0,#{instanceId},#{bussinessKey})
     </insert>
 
     <!-- 查找文件 -->
@@ -74,7 +76,7 @@
     <!-- 更新文件 -->
     <update id="update" parameterType="CloudFile">
         update cloudfile set
-        file_name=#{fileName},file_url=#{fileUrl},file_date=#{fileDate},file_descript=#{fileDescript},file_state=#{fileState},share_state=#{shareState}
+        file_name=#{fileName},file_url=#{fileUrl},file_date=#{fileDate},file_type=#{fileType},file_size=#{fileSize},file_descript=#{fileDescript},file_state=#{fileState},share_state=#{shareState}
         where file_id=#{fileId}
     </update>
 
@@ -85,6 +87,11 @@
             #{item}
         </foreach>
     </delete>
+
+    <!-- 共享文件 -->
+    <update id="updateShare" parameterType="CloudFile">
+        update cloudfile set share_state=#{shareState} where file_id=#{fileId}
+    </update>
 
     <!-- 根据bussinessKey查找一个文件 -->
     <select id="findByBussinessKey" parameterType="String" resultMap="CloudFileResult">

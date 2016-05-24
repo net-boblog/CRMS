@@ -13,6 +13,9 @@ public interface CloudFileService extends BaseService<CloudFile, Long> {
     //批量删除文件
     public int deleteBatch(List<String> fileUrls);
 
+    //更新文件的共享状态
+    public boolean updateShare(CloudFile cloudFile);
+
     //根据bussinessKey查找一个文件
     public CloudFile findByBussinessKey(String bussinessKey);
 

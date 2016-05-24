@@ -62,35 +62,33 @@ function viewFile(fileUrl,fileName){
                 $('#light').append(videoStr);
                 opendiv();
             }else if(/^(mp3|acc)$/.test(fileType)){
-                //var str = "<p>"+fileName+"</p>";
                 layer.open({
                     type: 1,
                     title: [fileName,'background-color:#A94442;color:white;border-bottom:0;'],
                     closeBtn: 1,
                     area: "auto",
                     offset:'rb',
-                    //skin: 'black',
                     shade: 0,
                     content: "<div style='background-color:#101010'><audio src='"+data.downloadUrl+"' controls autoplay>无法播放音乐，格式不支持!</audio></div>"
                 });
             }else if(/^(gif|jpg|jpeg|png)$/.test(fileType)){    //图像预览
-                /*var picStr = "<img class='showc' src='"+data.downloadUrl+"' alt='"+fileName+"'>";
-                $('#light').append(picStr);
-                opendiv();*/
-                layer.open({
-                    type: 1,
-                    title: false,
-                    closeBtn: 0,
-                    area: 'auto',
-                    offset:['25%','30%'],
-                    //skin: 'white',
-                    shade:0.9,
-                    shadeClose: true,
-                    content: "<img src='"+data.downloadUrl+"' alt='"+fileName+"'/>"
-                    /*content: [data.downloadUrl,'no'],
-                    success: function(layero, index){
-                        layer.iframeAuto(layero);
-                    }*/
+                var photoJson = {
+                    "title": "", //相册标题
+                    "id": 123, //相册id
+                    "start": 0, //初始显示的图片序号，默认0
+                    "data": [
+                        {
+                            "alt": fileName,
+                            "pid": 0, //图片id
+                            "src": data.downloadUrl, //原图地址
+                            "thumb": "" //缩略图地址
+                        }
+                    ]
+                };
+                layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+                    layer.photos({
+                        photos: photoJson
+                    });
                 });
             }else{
                 layer.alert(fileName+' 不支持在线预览，请下载文件后用合适的工具打开！', {
@@ -109,10 +107,9 @@ function downloadFile(fileUrl,fileName){
 
             var ext = fileUrl.substring(fileUrl.lastIndexOf("."));
             var fName = fileName + ext;
-            var url = data.downloadUrl;//+"&attname=";
-            //window.location=url;
-
-            //document.getElementById('downloadFrame').src=url;
+            var url = data.downloadUrl;//+"&attname="+fName;
+            //var url = encodeURI(downUrl);
+            //console.log(url);
 
             //alert("success");
            /* $.get(data.downloadUrl,
@@ -141,7 +138,7 @@ function openAddFile(){
         type: 2,
         title: ['新增文件','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
         shade: 0.5,
-        area: ['600px', '305px'],
+        area: ['600px', '342px'],
         content: ['/filec/gotoUpload.htm','no'],
         btn:['提交','取消'],
         yes:function(index, layero){
@@ -182,9 +179,6 @@ function selectFiles2(){
 
 //资源管理页面点击删除按钮删除选中的文件
 function deleteMFiles(){
-    /*if(!confirm("删除后无法恢复,确定要删除吗？")){
-     return;
-     }*/
     layer.confirm('删除后无法恢复,确定要删除吗？', {icon: 0, title:'警告',offset:30}, function(index){
         if($(".cb:checked").length<=0){
             layer.alert("请至少选择一项!",{icon:3,title:'提醒',offset:30,shift:6});
@@ -210,9 +204,6 @@ function deleteMFiles(){
 
 //我的资源页面点击删除按钮删除选中的文件
 function deleteFiles(){
-    /*if(!confirm("删除后无法恢复,确定要删除吗？")){
-        return;
-    }*/
     layer.confirm('删除后无法恢复,确定要删除吗？', {icon: 0, title:'警告',offset:30}, function(index){
         if($(".cb:checked").length<=0){
             layer.alert("请至少选择一项!",{icon:3,title:'提醒',offset:30,shift:6});
@@ -243,7 +234,7 @@ function editFilePre(fileId){
         type: 2,
         title: ['更新文件','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
         shade: 0.5,
-        area: ['600px', '407px'],
+        area: ['600px', '444px'],
         content: [contentUrl,'no'],
         btn:['提交','取消'],
         yes:function(index, layero){},
@@ -258,13 +249,27 @@ function viewFileMes(fileId,fileUrl,fileName){
         type: 2,
         title: ['文件详情','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
         shade: 0.5,
-        area: ['500px', '300px'],
+        area: ['500px', '335px'],
         content: [contentUrl,'no'],
         btn:'下载',
         yes:function(){
             downloadFile(fileUrl,fileName)
         },
         move:false
+    });
+}
+
+//共享文件
+function shareFile(fileId,shareState){
+    var state = shareState==1?0:1;
+    var aText = ["共享","取消共享"];
+    $.get("/filec/shareFile.htm",{"fileId":fileId,"shareState":state},
+    function(data){
+        if(data){
+            $("#"+fileId).text(aText[state]);
+        }else{
+            alert("文件共享出错了!");
+        }
     });
 }
 

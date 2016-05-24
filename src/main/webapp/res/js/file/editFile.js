@@ -42,10 +42,10 @@ $(function() {
     var uploader = Qiniu.uploader({
         runtimes: 'html5,html4',    //上传模式,依次退化
         browse_button: 'pickfiles',       //上传选择的点选按钮，**必需**
-        uptoken_url: '/filec/getTokenJs.htm',//'/filec/getReTokenJs.htm?key='+fileUrlStr,   //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+        uptoken_url: '/filec/getReTokenJs.htm?key='+fileUrlStr,//'/filec/getTokenJs.htm',   //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
         // uptoken : '<Your upload token>',
         //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
-        unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK会为每个文件自动生成key（文件名）
+        //unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK会为每个文件自动生成key（文件名）
         // save_key: true,
         // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK在前端将不对key进行任何处理
         domain: 'http://7xpdvw.com1.z0.glb.clouddn.com/',   //bucket 域名，下载资源时用到，**必需**
@@ -71,9 +71,13 @@ $(function() {
                         //up.splice(1,99);  //表示删除从1到99的文件，不包括1
                     }
                     var fName = up.files[0].name;
-                    var fsname = fName.substring(0,fName.lastIndexOf("."));
+                    //var fsname = fName.substring(0,fName.lastIndexOf("."));
+                    var nt = fName.split('.');
+                    var fSize = bytesToSize(file.size);
                     hasFile = true;
-                    $("#fileNameId").val(fsname);
+                    $("#fileNameId").val(nt[0]);
+                    $("#fileTypeId").val(nt[1]);
+                    $("#fileSizeId").val(fSize);
                 });
             },
             'BeforeUpload': function (up, file) {
@@ -103,12 +107,12 @@ $(function() {
                 ftime = (fsize-floaded)/frate;
                 fpercent = file.percent;
                 var arr = new Array(8);
-                arr[0] = (frate/1024).toFixed(2);
-                arr[1] = "kb/s - 已上传";
-                arr[2] = (floaded/1048576).toFixed(2);
-                arr[3] = "MB，共";
-                arr[4] = (fsize/1048576).toFixed(2);
-                arr[5] = "MB，剩余";
+                arr[0] = bytesToSize(frate);
+                arr[1] = "/s - 已上传";
+                arr[2] = bytesToSize(floaded);
+                arr[3] = "，共";
+                arr[4] = bytesToSize(fsize);
+                arr[5] = "，剩余";
                 arr[6] = (ftime).formatTime();
                 arr[7] = "时间";
                 var str = arr.join('');
@@ -133,7 +137,7 @@ $(function() {
                 //序列化表单数据
                 $("#fileUrlId").val(keyName);
                 var params = $("#fileForm").serializeArray();
-                params.push({name:"key",value:fileUrlStr});
+                //params.push({name:"key",value:fileUrlStr});
                 //异步保存上传文件信息
                 $.ajax({
                     type:"POST",
@@ -163,7 +167,7 @@ $(function() {
             'Key': function (up, file) {
                 // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
                 // 该配置必须要在 unique_names: false , save_key: false 时才生效
-                var key = "";   //若要覆盖上传，业务服务端要指定key外，客户端也要指定同名的key
+                var key = fileUrlStr;   //若要覆盖上传，业务服务端要指定key外，客户端也要指定同名的key
                 // do something with key here
                 return key;
             }
@@ -194,4 +198,12 @@ Number.prototype.formatTime=function(){
     return [zero(h),zero(i),zero(s)].join(":");
 };
 
+//数据字节换算
+var k = 1000, // or 1024
+    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+function bytesToSize(bytes) {
+    if (bytes === 0) return '0 B';
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+}
 

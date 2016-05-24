@@ -52,9 +52,13 @@ $(function() {
                         //up.splice(1,99);  //表示删除从1到99的文件，不包括1
                     }
                     var fName = up.files[0].name;
-                    var fsname = fName.substring(0,fName.lastIndexOf("."));
+                    //var fsname = fName.substring(0,fName.lastIndexOf("."));
+                    var nt = fName.split('.');
+                    var fSize = bytesToSize(file.size);
                     hasFile = true;
-                    $("#fileNameId").val(fsname);
+                    $("#fileNameId").val(nt[0]);
+                    $("#fileTypeId").val(nt[1]);
+                    $("#fileSizeId").val(fSize);
                 });
             },
             'BeforeUpload': function (up, file) {
@@ -83,12 +87,12 @@ $(function() {
                 ftime = (fsize-floaded)/frate;
                 fpercent = file.percent;
                 var arr = new Array(8);
-                arr[0] = (frate/1024).toFixed(2);
-                arr[1] = "kb/s - 已上传";
-                arr[2] = (floaded/1048576).toFixed(2);
-                arr[3] = "MB，共";
-                arr[4] = (fsize/1048576).toFixed(2);
-                arr[5] = "MB，剩余";
+                arr[0] = bytesToSize(frate);      //(frate/1024).toFixed(2);
+                arr[1] = "/s - 已上传";           //"kb/s - 已上传";
+                arr[2] = bytesToSize(floaded);   //(floaded/1048576).toFixed(2);
+                arr[3] = "，共";                 //"MB，共";
+                arr[4] = bytesToSize(fsize);    //(fsize/1048576).toFixed(2);
+                arr[5] = "，剩余";              //"MB，剩余";
                 arr[6] = (ftime).formatTime();
                 arr[7] = "时间";
                 var str = arr.join('');
@@ -180,3 +184,12 @@ Number.prototype.formatTime=function(){
     };
     return [zero(h),zero(i),zero(s)].join(":");
 };
+
+//数据字节换算
+var k = 1000, // or 1024
+    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+function bytesToSize(bytes) {
+    if (bytes === 0) return '0 B';
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+}

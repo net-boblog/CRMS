@@ -75,7 +75,7 @@
 </head>
 
 
-<body>
+<body style="overflow: hidden;">
 
 <section id="container">
   <!-- **********************************************************************************************************************************************************
@@ -130,11 +130,13 @@
             </div><!-- /复选框div -->--%>
             <div class="content-panel pn">
             <a class="Atag" href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>
-              <c:set var="cfurl" value="${cloudFile.fileUrl}" scope="request"/>
+              <%--<c:set var="cfurl" value="${cloudFile.fileUrl}" scope="request"/>--%>
               <c:set var="vurl" value="${cloudFile.vframeUrl}" scope="request"/>
+              <c:set var="cftype" value="${cloudFile.fileType}" scope="request"/>
               <%
-                String url = (String)request.getAttribute("cfurl");
-                String fileType = url.substring(url.lastIndexOf('.')+1).toLowerCase();
+                /*String url = (String)request.getAttribute("cfurl");
+                String fileType = url.substring(url.lastIndexOf('.')+1).toLowerCase();*/
+                String fileType = ((String)request.getAttribute("cftype")).toLowerCase();
                 String furl = "/res/img/file-type/256/file.png";
                 if(fileType.matches("(^(doc|docx)$)")){
                   furl = "/res/img/file-type/256/word.png";

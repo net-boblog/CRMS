@@ -15,6 +15,9 @@ public interface CloudFileDao extends BaseDao<CloudFile, Long> {
     //批量删除文件
     public int deleteBatch(List<String> fileUrls);
 
+    //更新文件的共享状态
+    public int updateShare(CloudFile cloudFile);
+
     //根据bussinessKey查找一个文件
     public CloudFile findByBussinessKey(String bussinessKey);
 

@@ -133,7 +133,7 @@ function preAdjust(fileId) {
         type: 2,
         title: ['编辑视频','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],
         shade: 0.5,
-        area: ['600px', '307px'],
+        area: ['600px', '344px'],
         content: [contentUrl,'no'],
         btn:['提交','取消'],
         yes:function(index, layero){},

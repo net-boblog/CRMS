@@ -70,12 +70,24 @@
       z-index:1101;
       overflow: hidden;
     }
+
+    .ht{
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      -o-text-overflow:ellipsis;
+      overflow:hidden;
+    }
+
+    table{
+      table-layout:fixed;
+      overflow:hidden;
+    }
   </style>
 
 </head>
 
 
-<body>
+<body style="overflow: hidden;">
 
 <section id="container">
   <!-- **********************************************************************************************************************************************************
@@ -139,21 +151,24 @@
           <table class="table table-striped table-advance table-hover"> <%--table table-striped table-advance table-hover--%>
             <thead>
             <tr>
-              <th width="30px"><input type="checkbox" onclick="selectFiles2()" title="全选/全不选"></th>
-              <th><i class="fa fa-files-o"></i> 文件名称</th>
-              <th class="hidden-phone"><i class="fa fa-question-circle"></i> 文件描述</th>
-              <th><i class="fa fa-calendar"></i> 修改时间</th>
-              <th><i class=" fa fa-edit"></i> 状态</th>
-              <th><i class=" fa fa-cog"></i> 操作</th>
+              <th width="2%"><input type="checkbox" onclick="selectFiles2()" title="全选/全不选"></th>
+              <th width="30%"><i class="fa fa-files-o"></i> 文件名称</th>
+              <th width="35%" class="hidden-phone"><i class="fa fa-question-circle"></i> 文件描述</th>
+              <th width="12%"><i class="fa fa-calendar"></i> 修改时间</th>
+              <th width="6%"><i class="fa fa-cube"></i> 大小</th>
+              <th width="6%"><i class="fa fa-edit"></i> 状态</th>
+              <th width="6%"><i class="fa fa-cog"></i> 操作</th>
             </tr>
             </thead>
             <tbody>
 <c:forEach var="cloudFile" items="${cloudFileList}" varStatus="status">
-          <c:set var="cfurl" value="${cloudFile.fileUrl}" scope="request"/>
+          <%--<c:set var="cfurl" value="${cloudFile.fileUrl}" scope="request"/>--%>
           <c:set var="vurl" value="${cloudFile.vframeUrl}" scope="request"/>
+          <c:set var="cftype" value="${cloudFile.fileType}" scope="request"/>
           <%
-            String url = (String)request.getAttribute("cfurl");
-            String fileType = url.substring(url.lastIndexOf('.')+1).toLowerCase();
+            /*String url = (String)request.getAttribute("cfurl");
+            String fileType = url.substring(url.lastIndexOf('.')+1).toLowerCase();*/
+            String fileType = ((String)request.getAttribute("cftype")).toLowerCase();
             String furl = "/res/img/file-type/32/file.png";
             if(fileType.matches("(^(doc|docx)$)")){
               furl = "/res/img/file-type/32/word.png";
@@ -179,12 +194,13 @@
                 <td>
                     <input class="cb" type="checkbox" name="fileUrl" value="${cloudFile.fileUrl}" title="选中进行删除">
                 </td>
-                <td>
+                <td class="ht">
                   <img src="<%=furl%>" width="24px">
                   <a href='javascript:viewFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>${cloudFile.fileName}</a>
                 </td>
-                <td class="hidden-phone">${cloudFile.fileDescript}</td>
+                <td class="hidden-phone ht">${cloudFile.fileDescript}</td>
                 <td>${cloudFile.fileDate.toLocaleString()}</td>
+                <td>${cloudFile.fileSize}</td>
                 <td>
                   <c:choose>
                     <c:when test="${cloudFile.fileState==3}">

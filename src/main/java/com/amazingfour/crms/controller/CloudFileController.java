@@ -225,10 +225,10 @@ public class CloudFileController {
         cloudFile.setFileDate(new Date());
         JSONObject obj = new JSONObject();
         if (cloudFileService.update(cloudFile)) {
-            if (key != null) {
+            /*if (key != null) {
                 MyBucketManager bm = new MyBucketManager();
                 bm.delete(key);
-            }
+            }*/
             obj.put("mes", "更新成功!");
         } else {
             obj.put("mes", "更新失败!");
@@ -258,7 +258,7 @@ public class CloudFileController {
             @RequestParam(value = "page", required = false) String page,
             CloudFile cloudFile) {
         ModelAndView mav = new ModelAndView();
-        int pageSize = 15; // 页容量
+        int pageSize = 18; // 页容量
 
         if (page == null || page == "") {
             page = "1";
@@ -291,5 +291,22 @@ public class CloudFileController {
         mav.addObject("cloudFileList", cloudFileList);
         mav.setViewName("file/fileLib");
         return mav;
+    }
+
+    /**
+     * 更新文件的共享状态
+     *
+     * @param cloudFile
+     * @param response
+     */
+    @RequestMapping("/shareFile")
+    public void shareFile(CloudFile cloudFile,HttpServletResponse response){
+        JSONObject obj = new JSONObject();
+        if (cloudFileService.updateShare(cloudFile)) {
+            obj.put("mes", true);
+        } else {
+            obj.put("mes", false);
+        }
+        ResponseUtil.renderJson(response, obj.toString());
     }
 }

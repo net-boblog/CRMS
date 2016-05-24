@@ -45,8 +45,8 @@
           </option>
           <option value="0">未审核</option>
           <option value="1">审核中</option>
-          <option value="2">未过审</option>
-          <option value="3">已过审</option>
+          <option value="2">已过审</option>
+          <option value="3">未过审</option>
         </select>
       </td>
     </tr>
@@ -76,6 +76,14 @@
             <span><small id="persId">......</small></span>
           </div>
         </div><!-- /上传进度end -->
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">文件属性：</th>
+      <td>文件类型：
+        <input style="border:0" id="fileTypeId" type="text" name="fileType" value="${cloudFile.fileType}" size="10" readonly required>
+        &nbsp;文件大小：
+        <input style="border:0" id="fileSizeId" type="text" name="fileSize" value="${cloudFile.fileSize}" size="10" readonly required>
       </td>
     </tr>
     <tr>
