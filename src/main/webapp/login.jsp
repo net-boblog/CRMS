@@ -63,10 +63,10 @@
            <table cellpadding="2">
                      <tr>
 					 <td>
-						 <input class="form-control" id="verifyCode" name="verifyCode" type="text" style="width:180px;" /></td>
-	                 <td>&nbsp;
+						 <input class="form-control" id="verifyCode" name="verifyCode" type="text" style="width:180px;" placeholder="请输入验证码" /></td>
+	                 <td style="padding-left: 15px;">
 						 <a href="javascript:;" onclick="changeImg()">
-							 <img id="imgObj" alt="点击刷新验证码" placeholder="请输入验证码" src="code.htm" />
+							 <img id="imgObj" alt="点击刷新验证码" title="点击刷新验证码" src="code.htm" />
 						 </a>
 					 </td>
 					 </tr>
