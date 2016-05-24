@@ -114,15 +114,19 @@
       <!-- DEL ADD SEARCH FORM -->
       <div class="row mt">
         <div class="col-lg-12">
+      <c:forEach items="${sessionScope.operList}" var="oper">
+        <c:if test="${oper.funName=='资源删除'}">
           <div class="col-lg-4">
-            <button type="button" class="btn btn-theme04" onclick="deleteMFiles()"><i class="glyphicon glyphicon-trash"></i>删除</button>
+            <button type="button" class="btn btn-theme04" onclick="deleteMFiles('${oper.action}')"><i class="glyphicon glyphicon-trash"></i>删除</button>
             <%--<button type="button" class="btn btn-theme02" onclick="openAddFile()"><i
                     class="glyphicon glyphicon-plus"></i>新增
             </button>--%>
           </div>
+          </c:if>
+        <c:if test="${oper.funName=='资源查询'}">
           <div class="col-lg-8">
             <div class="pull-right">
-              <form id="actionId" class="form-inline" role="form" method="post" action="/filec/listFile.htm">
+              <form id="actionId" class="form-inline" role="form" method="post" action="${oper.action}">
                 <div class="form-group">
                   <label class="control-label" for="fileNameSearchId">文件名：</label>
                   <input type="text" class="form-control" id="fileNameSearchId" name="fileName" placeholder="">
@@ -141,6 +145,8 @@
               </form>
             </div>
           </div><!-- /form-panel -->
+          </c:if>
+        </c:forEach>
         </div><!-- /col-lg-12 -->
       </div><!-- /row -->
 
@@ -218,9 +224,15 @@
                   </c:choose>
                 </td>
                 <td>
+                 <c:forEach items="${sessionScope.operList}" var="oper">
                   <%--<a class="btn btn-default btn-xs" href='javascript:void(0);' role="button" title="是否共享"><i class="fa fa-share-alt"></i></a>--%>
-                  <a class="btn btn-default btn-xs" href='javascript:editFilePre("${cloudFile.fileId}");' role="button" title="编辑"><i class="fa fa-pencil"></i></a>
-                  <a class="btn btn-default btn-xs" href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");' role="button" title="下载"><i class="fa fa-download"></i></a>
+                   <c:if test="${oper.funName=='资源编辑'}">
+                  <a class="btn btn-default btn-xs" href='javascript:editFilePre("${cloudFile.fileId}","${oper.action}");' role="button" title="编辑"><i class="fa fa-pencil"></i></a>
+                  </c:if>
+                   <c:if test="${oper.funName=='资源下载'}">
+                  <a class="btn btn-default btn-xs" href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}","${oper.action}");' role="button" title="下载"><i class="fa fa-download"></i></a>
+                  </c:if>
+                 </c:forEach>
                 </td>
               </tr>
 </c:forEach>

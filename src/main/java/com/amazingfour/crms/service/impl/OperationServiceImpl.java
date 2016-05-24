@@ -76,5 +76,10 @@ public class OperationServiceImpl extends AbstractService<Operation,Long> implem
         return operationDao.getOperbyId(id);
     }
 
+    @Override
+    public List<Operation> getOperbySubId(Long id) {
+        return operationDao.getOperbySubId(id);
+    }
+
 
 }

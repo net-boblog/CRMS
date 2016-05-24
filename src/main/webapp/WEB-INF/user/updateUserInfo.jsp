@@ -127,7 +127,9 @@ $(function(){
                 });
             },
             error:function(xhr,status,ex){
-                alert(status+":更新失败!");
+                parent.layer.msg(status+":更新失败",{shade:0.5,time:2000},function(){
+                    parent.window.location="/user/list.htm";
+                });
             }
         });
     });

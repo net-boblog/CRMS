@@ -37,7 +37,6 @@
             <!--</bean>-->
         <!--</mvc:message-converters>-->
     <!--</mvc:annotation-driven>-->
-
     <!-- 内部资源视图解析器,前缀+ viewName +后缀 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- webroot到某一指定的文件夹的路径 -->
@@ -51,13 +50,25 @@
         <!--<property name="maxUploadSize" value="10240000"/>-->
         <!--<property name="defaultEncoding" value="UTF-8"/>-->
     <!--</bean>-->
-    <!-- 拦截器-->
-    <!--<mvc:interceptors>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/**/*"/>-->
-            <!--<bean class="com.hmaccelerate.interceptors.LoginInterceptor">-->
-            <!--</bean>-->
-        <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors>-->
+
+    <!-- 配置资源文件,防止被拦截 -->
+    <!--<mvc:resources location="/assets" mapping="/assets/**"/>-->
+    <!--<mvc:resources location="/diagram-viewer" mapping="/diagram-viewer/**"/>-->
+    <!--<mvc:resources location="/res" mapping="/res/**"/>-->
+    <!--<mvc:resources location="/upload" mapping="/upload/**"/>-->
+
+    <!--拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/*"/>
+            <bean class="com.amazingfour.common.utils.MemberInterceptor">
+                <property name="excludedUrls">
+                    <list>
+                        <value>/login</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

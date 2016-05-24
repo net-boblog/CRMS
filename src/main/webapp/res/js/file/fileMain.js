@@ -101,8 +101,8 @@ function viewFile(fileUrl,fileName){
 }
 
 //下载视频
-function downloadFile(fileUrl,fileName){
-    $.get("/filec/getDownloadUrl.htm",{key:fileUrl},
+function downloadFile(fileUrl,fileName,url){
+    $.get(url,{key:fileUrl},
         function(data){
 
             var ext = fileUrl.substring(fileUrl.lastIndexOf("."));
@@ -110,6 +110,8 @@ function downloadFile(fileUrl,fileName){
             var url = data.downloadUrl;//+"&attname="+fName;
             //var url = encodeURI(downUrl);
             //console.log(url);
+
+            //document.getElementById('downloadFrame').src=url;
 
             //alert("success");
            /* $.get(data.downloadUrl,
@@ -178,7 +180,10 @@ function selectFiles2(){
 }
 
 //资源管理页面点击删除按钮删除选中的文件
-function deleteMFiles(){
+function deleteMFiles(url){
+    /*if(!confirm("删除后无法恢复,确定要删除吗？")){
+     return;
+     }*/
     layer.confirm('删除后无法恢复,确定要删除吗？', {icon: 0, title:'警告',offset:30}, function(index){
         if($(".cb:checked").length<=0){
             layer.alert("请至少选择一项!",{icon:3,title:'提醒',offset:30,shift:6});
@@ -187,7 +192,7 @@ function deleteMFiles(){
         var formdata = $("#fileMainForm").serializeArray();
         $.ajax({
             type:'POST',
-            url:'/filec/delFiles.htm',
+            url:url,
             data:formdata,
             cache:false,
             success:function(data,status){
@@ -228,8 +233,8 @@ function deleteFiles(){
 }
 
 //编辑视频前置，查询并弹出编辑iframe页面
-function editFilePre(fileId){
-    var contentUrl = 'filec/preUpdate.htm?fileId='+fileId;
+function editFilePre(fileId,url){
+    var contentUrl = ''+url+'?fileId='+fileId;
     layer.open({
         type: 2,
         title: ['更新文件','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],

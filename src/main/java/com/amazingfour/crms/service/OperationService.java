@@ -27,5 +27,7 @@ public interface OperationService  extends BaseService<Operation,Long>{
 
     public List<Operation> getOperbyId(Long id);
 
+    public List<Operation> getOperbySubId(Long id);
+
 
 }

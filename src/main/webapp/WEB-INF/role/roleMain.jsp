@@ -119,13 +119,13 @@
                                                 <tr>
                                                     <c:forEach items="${sessionScope.operList}" var="oper">
                                                     <c:if test="${oper.funName=='角色菜单新增'}">
-                                                        <td> <a href="javascript:openEditRole('${role.roleId.toString()}','${oper.action}')"> 菜单</a></td>
+                                                        <td> <a  class="btn btn-default btn-xs" href="javascript:openEditRole('${role.roleId.toString()}','${oper.action}')"> 菜单</a></td>
                                                     </c:if>
                                                     <c:if test="${oper.funName=='角色功能新增'}">
-                                                        <td> <a href="javascript:openEditOper('${role.roleId.toString()}','${oper.action}')"> 功能</a></td>
+                                                        <td> <a class="btn btn-default btn-xs" href="javascript:openEditOper('${role.roleId.toString()}','${oper.action}')"> 功能</a></td>
                                                     </c:if>
                                                     <c:if test="${oper.funName=='角色删除'}">
-                                                        <td> <a href="javascript:del('${role.roleId}','${oper.action}')">删除</a></td>
+                                                        <td> <a class="btn btn-default btn-xs" href="javascript:del('${role.roleId}','${oper.action}')">删除</a></td>
                                                     </c:if>
                                                     </c:forEach>
                                                 </tr>

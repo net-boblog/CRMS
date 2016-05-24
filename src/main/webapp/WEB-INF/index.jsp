@@ -16,11 +16,11 @@
 
 
     <script type="text/javascript">
-        function del(userId) {
+        function del(userId,url) {
             if (confirm("确定要删除这条记录吗?")) {
                 $
                         .get(
-                        "${pageContext.request.contextPath}/user/delete.htm",
+                        "${pageContext.request.contextPath}"+url+"",
                         {
                             userId : userId
                         },
@@ -203,7 +203,6 @@
                   <form id="userMainForm">
                     <c:forEach var="b" items="${userList}" varStatus="status">
                         <tr>
-                            <td><center><input type='checkbox' class="cb" name='userId' value="${b.userId}" /></center></td>
                             <td width="50px"><center>${status.index+1 } </center></td>
                             <td><center>${b.userName } </center></td>
                             <td><center>${b.role.roleName } </center></td>
@@ -221,16 +220,16 @@
                                          <tr>
                                             <c:forEach items="${sessionScope.operList}" var="oper">
                                                 <c:if test="${oper.funName=='用户编辑'}">
-                                             <td> <a href="javascript:openEditUser('${b.userId.toString()}')">编辑</a></td>
+                                             <td> <a href="javascript:openEditUser('${b.userId.toString()}','${oper.action}')">编辑</a></td>
                                                 </c:if>
                                                 <c:if test="${oper.funName=='用户删除'}">
-                                             <td> <a href="javascript:del('${b.userId}')">删除</a></td>
+                                             <td> <a href="javascript:del('${b.userId}','${oper.action}')">删除</a></td>
                                                 </c:if>
                                                 <c:if test="${oper.funName=='拉黑用户'}">
-                                             <td> <a href="javascript:defriend('${b.userId}')">拉黑</a></td>
+                                             <td> <a href="javascript:defriend('${b.userId}','${oper.action}')">拉黑</a></td>
                                                 </c:if>
                                                 <c:if test="${oper.funName=='解除拉黑'}">
-                                             <td><a href="javascript:removeBlack('${b.userId}')">解除</a></td>
+                                             <td><a href="javascript:removeBlack('${b.userId}','${oper.action}')">解除</a></td>
                                                 </c:if>
                                             </c:forEach>
                                          </tr>

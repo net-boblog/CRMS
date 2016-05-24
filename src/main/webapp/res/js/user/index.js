@@ -11,8 +11,8 @@ function openAddUser(url){
 }
 
 //编辑用户弹窗
-function openEditUser(userId){
-    var userUrl = "/user/preUpdate.htm?userId="+userId;
+function openEditUser(userId,url){
+    var userUrl = ""+url+"?userId="+userId;
     layer.open({
         type: 2,
         title: ['编辑用户','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],

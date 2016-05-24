@@ -101,15 +101,22 @@
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="col-lg-4">
-                        <%--<button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>--%>
-                        <button type="button" class="btn btn-theme04" onclick="deleteFiles()"><i
-                                class="glyphicon glyphicon-trash"></i>删除
+                <c:forEach items="${sessionScope.operList}" var="oper">
+                    <c:if test="${oper.funName=='删除我的资源'}">
+                        <button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>
+                        <button type="button" class="btn btn-theme04" onclick="deleteFiles()"><i class="glyphicon glyphicon-trash"></i>删除
                         </button>
+                        </c:if>
+                        <c:if test="${oper.funName=='编辑我的资源'}">
                         <button type="button" class="btn btn-theme02" onclick="openAddFile()"><i
                                 class="glyphicon glyphicon-plus"></i>新增
                         </button>
+                        </c:if>
                         <%--<a id="iframe" class="btn btn-theme02" href="/filec/gotoUpload.htm" role="button"><i class="glyphicon glyphicon-plus"></i>新增</a>--%>
+                </c:forEach>
                     </div>
+                <c:forEach items="${sessionScope.operList}" var="oper">
+                    <c:if test="${oper.funName=='查询我的资源'}">
                     <div class="col-lg-8">
                         <div class="pull-right">
                             <form id="actionId" class="form-inline" role="form" method="post" action="/task/listMyFile.htm">
@@ -133,6 +140,8 @@
                             </form>
                         </div>
                     </div>
+                    </c:if>
+                    </c:forEach>
                     <!-- /form-panel -->
                 </div>
             </div>

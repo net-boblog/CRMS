@@ -18,7 +18,11 @@ public interface OperationDao extends BaseDao<Operation,Long> {
 
     public List<Operation> getOperbyId(Long id);
 
+    public List<Operation> getOperbySubId(Long id);
+
     public void insertOper(RoleOper domain);
 
     public void deleteOper(RoleOper domain);
+
+
 }

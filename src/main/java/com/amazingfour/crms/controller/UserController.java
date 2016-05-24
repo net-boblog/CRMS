@@ -17,6 +17,7 @@ import com.amazingfour.crms.service.RoleService;
 import com.amazingfour.crms.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
@@ -91,7 +92,7 @@ public class UserController {
                 /*
                     4.将角色功能存入session
                  */
-                List<Operation> operList = operationService.getOperbyId(Long.valueOf(role.getRoleId()));
+                List<Operation> operList = operationService.getOperbySubId(Long.valueOf(role.getRoleId()));
                 session.setAttribute("operList",operList);
 
                 return "redirect:/user/list.htm";
@@ -110,6 +111,16 @@ public class UserController {
             request.setAttribute("errorMsg", "用户名或密码错误");
             return "forward:/login.jsp";
         }
+    }
+
+
+    @RequestMapping(value = "/relogin", method = RequestMethod.GET)
+    public ModelAndView relogin(String redirectURL, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        //把拦截前路径存下来，以便登入成功可以直接请求到登录前的页面
+        view.addObject("redirectURL", redirectURL);
+        view.setViewName("/login");
+        return view;
     }
 
     //从数据库中获取所有用户信息

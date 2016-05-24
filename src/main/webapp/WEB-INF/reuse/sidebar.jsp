@@ -10,7 +10,7 @@
             <p class="centered"><a href="javascript:openEditUserInfo()">
 
                 <c:if test="${sessionScope.currentUser.imgUrl==null}">
-                <img src="/assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                <img src="/assets/img/ui-sam.jpg" class="img-circle" width="60" ></a></p>
                     </c:if>
             <c:if test="${sessionScope.currentUser.imgUrl!=null}">
                 <img src="${sessionScope.currentUser.imgUrl}" class="img-circle" width="60"></a></p>
