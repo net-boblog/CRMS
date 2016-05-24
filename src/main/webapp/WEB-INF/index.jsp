@@ -203,6 +203,7 @@
                   <form id="userMainForm">
                     <c:forEach var="b" items="${userList}" varStatus="status">
                         <tr>
+                            <td width="30px"><input class="cb" type="checkbox" name="userId" value="${b.userId}"></td>
                             <td width="50px"><center>${status.index+1 } </center></td>
                             <td><center>${b.userName } </center></td>
                             <td><center>${b.role.roleName } </center></td>

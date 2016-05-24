@@ -69,6 +69,7 @@ public class MemberInterceptor implements HandlerInterceptor {
         excludedUrls.add("/user/preUserInfo.htm");
         excludedUrls.add("/user/login.htm");
         excludedUrls.add("/user/logout.htm");
+        excludedUrls.add("/code.htm");
         excludedUrls.add("/role/updateRole.htm");
         excludedUrls.add("/role/updateOper.htm");
         excludedUrls.add("/role/updateOperByMenu.htm");
