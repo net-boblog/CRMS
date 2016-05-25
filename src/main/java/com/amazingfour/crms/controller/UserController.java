@@ -128,15 +128,15 @@ public class UserController {
         return "forward:"+menuList.get(0).getUrl()+"";
     }
 
-    //返回登录界面
-    @RequestMapping(value = "/relogin", method = RequestMethod.GET)
-    public ModelAndView relogin(String redirectURL, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView();
-        //把拦截前路径存下来，以便登入成功可以直接请求到登录前的页面
-        view.addObject("redirectURL", redirectURL);
-        view.setViewName("/login");
-        return view;
-    }
+//    //返回登录界面
+//    @RequestMapping(value = "/relogin", method = RequestMethod.GET)
+//    public ModelAndView relogin(String redirectURL, HttpServletRequest request) {
+//        ModelAndView view = new ModelAndView();
+//        //把拦截前路径存下来，以便登入成功可以直接请求到登录前的页面
+//        view.addObject("redirectURL", redirectURL);
+//        view.setViewName("/login");
+//        return view;
+//    }
 
     //从数据库中获取所有用户信息
     @RequestMapping("/list")

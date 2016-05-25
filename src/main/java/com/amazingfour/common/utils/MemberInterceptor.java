@@ -101,7 +101,7 @@ public class MemberInterceptor implements HandlerInterceptor {
         //这里可以根据session的用户来判断角色的权限，根据权限来重定向不同的页面，简单起见，这里只是做了一个重定向
         if (user==null||user.equals("")) {
             //被拦截，重定向到login界面
-            response.sendRedirect(contextPath+"/user/relogin.htm");
+            response.sendRedirect(contextPath+"/user/logout.htm");
             return false;
         }
         for(Menu menu : menuList){
