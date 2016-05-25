@@ -17,9 +17,12 @@
 
     <script type="text/javascript">
         function del(roleId,url) {
-            if (confirm("确定要删除这条记录吗?")) {
-                $
-                        .get(
+           layer.confirm('删除后无法恢复,确定要删除吗？', {icon: 0, title:'警告',offset:30}, function(index){
+//                if($(".cb:checked").length<=0){
+//                    layer.alert("请至少选择一项!",{icon:3,title:'提醒',offset:30,shift:6});
+//                    return;
+//                }
+                $.get(
                         "${pageContext.request.contextPath}"+url+"",
                         {
                             roleId : roleId
@@ -29,13 +32,14 @@
                             var data = eval("(" + data + ")"); //将data 转换成JS对象，这样才可以使用data.msg这种形式
 
                             if ("success" == data.msg) {
-                                alert("删除成功!");
-                                window.location.href = "${pageContext.request.contextPath}/role/list.htm";
-                            } else {
-                                alert(data.error);
+                                layer.msg(data.msg+"删除成功！", {icon: 1,time:1000,offset:100},function(){
+                                    window.location.href = "/role/list.htm";
+                                });
+                            } else if ("error" == data.msg){
+                                layer.msg("角色已分配，不能删除！",{icon:5,offset:100,shift:6});
                             }
                         });
-            }
+            });
         }
 
     </script>
@@ -119,13 +123,13 @@
                                                 <tr>
                                                     <c:forEach items="${sessionScope.operList}" var="oper">
                                                     <c:if test="${oper.funName=='角色菜单新增'}">
-                                                        <td> <a  class="btn btn-default btn-xs" href="javascript:openEditRole('${role.roleId.toString()}','${oper.action}')"> 菜单</a></td>
+                                                        <td> <a  class="btn btn-default btn-xs" href="javascript:openEditRole('${role.roleId.toString()}','${oper.action}')" role="button" title="菜单"> <i class="fa fa-gear"></i></a></td>
                                                     </c:if>
                                                     <c:if test="${oper.funName=='角色功能新增'}">
-                                                        <td> <a class="btn btn-default btn-xs" href="javascript:openEditOper('${role.roleId.toString()}','${oper.action}')"> 功能</a></td>
+                                                        <td> <a class="btn btn-default btn-xs" href="javascript:openEditOper('${role.roleId.toString()}','${oper.action}')" role="button" title="功能"> <i class="fa fa-gears"></i></a></td>
                                                     </c:if>
                                                     <c:if test="${oper.funName=='角色删除'}">
-                                                        <td> <a class="btn btn-default btn-xs" href="javascript:del('${role.roleId}','${oper.action}')">删除</a></td>
+                                                        <td> <a class="btn btn-default btn-xs" href="javascript:del('${role.roleId}','${oper.action}')" role="button" title="删除"><i class="glyphicon glyphicon-trash"></i></a></td>
                                                     </c:if>
                                                     </c:forEach>
                                                 </tr>

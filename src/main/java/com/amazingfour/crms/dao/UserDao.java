@@ -13,6 +13,7 @@ import java.util.Map;
 public interface UserDao extends BaseDao<User,Long>{
     public User login(User user);
     public int existUserByName(String userName);
+    public int findUserRole(Long id);
     public int defriend(Long id);
     public int updatePassword(User user);
     public int removeBlack(Long id);

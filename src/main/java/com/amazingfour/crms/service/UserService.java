@@ -11,6 +11,7 @@ import java.util.List;
 public interface UserService extends BaseService<User,Long> {
     public User login(User user);
     public boolean existUserByName(String userName);
+    public boolean findUserRole(Long id);
     public boolean defriend(Long id);
     public boolean updatePassword(User user);
     public boolean removeBlack(Long id);

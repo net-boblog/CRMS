@@ -150,8 +150,11 @@
     </div>
 </aside>
 <!--sidebar end-->
-
+<script src="/assets/js/jquery.js"></script>
 <script>
+    $(function(){
+        checkUserInfo();
+    })
     //编辑用户基本信息
     function openEditUserInfo(){
         var userUrl = "/user/preUserInfo.htm?userId="+${sessionScope.currentUser.userId};
@@ -163,5 +166,15 @@
             content: [userUrl,'no'],
             move:false
         });
+    }
+
+    function checkUserInfo(){
+        if(${requestScope.userMsg=='1'}){
+            openEditUserInfo();
+            layer.msg("小提示：请完善您的基本信息！",{icon:5,offset:100,shift:6});
+        }else if(${userMsg=='2'}){
+            openEditUserInfo();
+            layer.msg("小提示：绑定邮箱能绑住您找回密码哦！",{icon:5,offset:100,shift:6});
+        }
     }
 </script>

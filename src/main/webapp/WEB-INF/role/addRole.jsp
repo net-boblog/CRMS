@@ -140,7 +140,7 @@
           async: {
               enable: true,
               type: 'post',
-              url: "/role/addRole.htm",
+              url: "/role/addRole.htm"
 
           },
           data: {

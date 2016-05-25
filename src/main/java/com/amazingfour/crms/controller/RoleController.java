@@ -104,22 +104,31 @@ public class RoleController {
     public void delete(@RequestParam(value = "roleId") String roleId,
                        HttpServletResponse response) {
         JSONObject result = new JSONObject();
+        if(userService.findUserRole(Long.valueOf(roleId))){
+            result.put("msg", "error");
+        }else{
         //查出roleId对应的菜单
         List<Menu> listMenu = menuService.getMenuById(Long.valueOf(roleId));//查询到List<Menu>集合
+        List<Operation> listOperation = operationService.getOperbyId(Long.valueOf(roleId));
         RoleMenu roleMenu = new RoleMenu();
         roleMenu.setRoleId(Long.valueOf(roleId));
         for(Menu menu:listMenu){
             roleMenu.setMenuId(menu.getMenuId());
             menuService.deleteMenu(roleMenu);
         }
+        RoleOper roleOper = new RoleOper();
+        roleOper.setRoleId(Long.valueOf(roleId));
+        for(Operation operation:listOperation){
+            roleOper.setOperationId(operation.getOperationId());
+            operationService.deleteOper(roleOper);
+        }
         roleService.delete(Long.valueOf(roleId));
-
             result.put("msg", "success");
 
+        }
         try {
             ResponseUtil.write(result, response);
         } catch (Exception e) {
-            result.put("error","删除失败！");
             e.printStackTrace();
         }
     }

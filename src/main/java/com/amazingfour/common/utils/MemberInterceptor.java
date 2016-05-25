@@ -66,14 +66,24 @@ public class MemberInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
         //这里配置放行的路径
-        excludedUrls.add("/user/preUserInfo.htm");
-        excludedUrls.add("/user/login.htm");
-        excludedUrls.add("/user/logout.htm");
-        excludedUrls.add("/code.htm");
-        excludedUrls.add("/role/updateRole.htm");
-        excludedUrls.add("/role/updateOper.htm");
-        excludedUrls.add("/role/updateOperByMenu.htm");
+        excludedUrls.add("/user/preUserInfo.htm");      //用户个人信息修改前置
+        excludedUrls.add("/user/login.htm");            //用户登录界面
+        excludedUrls.add("/code.htm");                  //验证码
+        excludedUrls.add("/user/logout.htm");           //退出登录
+        excludedUrls.add("/role/updateRole.htm");       //修改用户菜单
         excludedUrls.add("/role/updateMenu.htm");
+        excludedUrls.add("/role/updateOper.htm");       //修改用户功能
+        excludedUrls.add("/role/updateOperByMenu.htm");
+        excludedUrls.add("/user/bindEmail.htm");        //绑定邮箱
+        excludedUrls.add("/user/upload.htm");           //修改头像
+        excludedUrls.add("/role/addRole.htm");          //角色新增前置
+        excludedUrls.add("/role/insert.htm");           //角色新增
+        excludedUrls.add("/user/passPre.htm");          //修改密码
+        excludedUrls.add("/user/comInformation.htm");   //判断用户基本信息是否完善
+        excludedUrls.add("/user/activated.htm");   //激活邮箱
+        excludedUrls.add("/user/insert.htm");   //用户新增
+        excludedUrls.add("/user/findPassByEmail.htm");   //用户新增
+        excludedUrls.add("/user/findPassPre.htm");   //用户新增
 
         String requestUri = request.getRequestURI();
         for (String url : excludedUrls) {

@@ -122,7 +122,7 @@ $(function(){
             data:{"telPhone":phoneValue,"userId":userid}, //"userEmail":$("#userEmail").val(),
             cache:false,
             success:function(data,status){
-                parent.layer.msg(status+data.mes,{shade:0.5,time:2000},function(){
+                parent.layer.msg(status+":更新成功",{shade:0.5,time:2000},function(){
                     parent.window.location="/user/list.htm";
                 });
             },

@@ -95,6 +95,12 @@
         values(#{userName},#{role.roleId},#{password},#{userDescript},0)
     </insert>
 
+    <select id="findUserRole" parameterType="Long"
+            resultType="Integer">
+        select count(*) from user u join role a
+        where u.role_id=a.role_id and u.role_id=#{roleId}
+    </select>
+
     <!-- 检查某个账号的用户是否存在 -->
     <select id="existUserByName" parameterType="String"
             resultType="Integer">

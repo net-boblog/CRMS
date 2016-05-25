@@ -36,6 +36,17 @@ public class UserServiceImpl extends AbstractService<User,Long> implements UserS
             return false;
         }
     }
+
+    //查找角色是否已被使用
+    public boolean findUserRole(Long id) {
+        if(userDao.findUserRole(id)>0){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
     //拉黑用户
     public boolean defriend(Long id){
         if(userDao.defriend(id)>0){

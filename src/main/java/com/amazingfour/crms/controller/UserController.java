@@ -95,7 +95,7 @@ public class UserController {
                 List<Operation> operList = operationService.getOperbySubId(Long.valueOf(role.getRoleId()));
                 session.setAttribute("operList",operList);
 
-                return "redirect:/user/list.htm";
+                return "redirect:/user/comInformation.htm";
                 /*if(resultUser.getUserName().equals(username)&&resultUser.getPassword().equals(s)){//判断数据库获得的数据与页面输入的数据是否相等
                     HttpSession session = request.getSession();
                     session.setAttribute("currentUser", resultUser);
@@ -113,7 +113,22 @@ public class UserController {
         }
     }
 
+    //判断是否补全信息
+    @RequestMapping(value = "/comInformation", method = RequestMethod.GET)
+    public String comInformation(String redirectURL, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("currentUser");
+        if(user.getUserEmail()==null||"".equals(user.getUserEmail())){
+            request.setAttribute("userMsg","1");    //用户未填写基本信息
+        }else if(user.getUserEmail()!=null){
+            if(user.getActivated()==0)
+            request.setAttribute("userMsg","2");     //用户未激活邮箱
+        }
+        List<Menu> menuList = (List<Menu>) session.getAttribute("menuList");
+        return "forward:"+menuList.get(0).getUrl()+"";
+    }
 
+    //返回登录界面
     @RequestMapping(value = "/relogin", method = RequestMethod.GET)
     public ModelAndView relogin(String redirectURL, HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
