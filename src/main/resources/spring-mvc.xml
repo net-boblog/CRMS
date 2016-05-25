@@ -63,9 +63,9 @@
             <mvc:mapping path="/**/*"/>
             <bean class="com.amazingfour.common.utils.MemberInterceptor">
                 <property name="excludedUrls">
-                    <!--<list>-->
+                    <list>
                         <!--<value>/login</value>-->
-                    <!--</list>-->
+                    </list>
                 </property>
             </bean>
         </mvc:interceptor>
