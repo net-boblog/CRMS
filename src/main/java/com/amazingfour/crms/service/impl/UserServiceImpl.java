@@ -108,7 +108,6 @@ public class UserServiceImpl extends AbstractService<User,Long> implements UserS
             return false;
         }
     }
-
     //忘记密码时判断用户是否存在和邮箱是否已绑定
     public int existUserEmail(User user){
         User oneUser = userDao.findOneById(user);

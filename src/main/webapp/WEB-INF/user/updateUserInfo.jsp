@@ -106,11 +106,11 @@ $(function(){
         /*if(phoneValue==""){
             layer.tips('手机号码不能为空!', '#telPhone',{tips: 1,tipMore:true});
             return;
-        }
-        if(!/^1[3|4|5|8][0-9]\d{8}$/.test(phoneValue)){
+        }*/
+        if(phoneValue!=""&&!/^1[3|4|5|8][0-9]\d{8}$/.test(phoneValue)){
             layer.tips('手机号码格式不正确', '#telPhone',{tips: 1});
             return;
-        }*/
+        }
 
         var userid = $("#userId").val();
         $.ajaxFileUpload({
@@ -218,11 +218,11 @@ $(function() {
         preview1(file)
     });
 
-    $('#telPhone').change(function(e) {
+   /* $('#telPhone').change(function(e) {
         if (!/^1[3|4|5|8][0-9]\d{8}$/.test(this.value)) {
             layer.tips('手机号码格式不正确', '#telPhone',{tips: 1});
         }
-    });
+    });*/
 
 })
 

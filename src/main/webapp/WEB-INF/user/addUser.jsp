@@ -76,9 +76,11 @@ $(function(){
     $("#auserBtn").click(function(){
         if($("#userName").val()==""){
             layer.tips('用户名不能为空!', '#userName',{tips: 4});
+            return;
         }
         if($("#roleSel").val()==""){
             layer.tips('请选择角色!', '#roleSel',{tips: 4,tipsMore:true});
+            return;
         }
         if($("#passwordId").val()==""){
             layer.tips('密码不能为空!', '#passwordId',{tips: 4,tipsMore:true});

@@ -84,6 +84,9 @@ public class MemberInterceptor implements HandlerInterceptor {
         excludedUrls.add("/user/insert.htm");   //用户新增
         excludedUrls.add("/user/findPassByEmail.htm");   //用户新增
         excludedUrls.add("/user/findPassPre.htm");   //用户新增
+        excludedUrls.add("/user/update.htm");   //用户更新
+        excludedUrls.add("/user/updatepassword.htm");   //修改密码
+        excludedUrls.add("/user/delUsers.htm");
 
         String requestUri = request.getRequestURI();
         for (String url : excludedUrls) {

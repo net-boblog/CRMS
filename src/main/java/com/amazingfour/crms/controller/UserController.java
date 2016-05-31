@@ -386,7 +386,7 @@ public class UserController {
         }
 
         //开始绑定邮箱
-        String key = UUID.randomUUID().toString(); //邮箱密钥，用于验证邮件的url
+        String key = UUID.randomUUID().toString(); //邮箱密钥，用于验证邮件的url。生成随机字母数字序列
         Date outDate = new Date(System.currentTimeMillis()+30*60*1000);    //设置邮件30分钟后过期
         //long date = outDate.getTime()/1000*1000;    //忽略毫秒数，mySql取出时间是忽略毫秒数的
         String sid = Encrypt.Encrypt_md5(user.getUserId()+"$"+ outDate.getTime()+"$"+key);   //数字签名
