@@ -188,7 +188,7 @@
                 <span class="pull-left">
                 <a href='javascript:viewFileMes("${cloudFile.fileId}","${cloudFile.fileUrl}","${cloudFile.fileName}");'><i class="glyphicon glyphicon-edit"></i>详情</a>
                 </span>
-                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'><i class="glyphicon glyphicon-download-alt">下载</i></a>
+                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}","/filec/getDownloadUrl.htm");'><i class="glyphicon glyphicon-download-alt">下载</i></a>
               </p>
             </div>
           </div>

@@ -88,6 +88,14 @@ public class MemberInterceptor implements HandlerInterceptor {
         excludedUrls.add("/user/updatepassword.htm");   //修改密码
         excludedUrls.add("/user/delUsers.htm");
 
+        excludedUrls.add("/filec/getTokenJs.htm");   //获得上传凭证
+        excludedUrls.add("/filec/addFile.htm");   //新增文件
+        excludedUrls.add("/filec/getReTokenJs.htm");   //获得重新上传凭证
+        excludedUrls.add("/filec/updateFile.htm");   //更新文件
+        excludedUrls.add("/filec/viewFileMes.htm");   //查看文件详情
+        excludedUrls.add("/filec/gotoFileLib.htm");   //进入资源共享库
+        excludedUrls.add("/task/listMyFile.htm");   //进入我的资源
+
         String requestUri = request.getRequestURI();
         for (String url : excludedUrls) {
             if (requestUri.endsWith(url)) {

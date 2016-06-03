@@ -159,11 +159,11 @@
             <tr>
               <th width="2%"><input type="checkbox" onclick="selectFiles2()" title="全选/全不选"></th>
               <th width="30%"><i class="fa fa-files-o"></i> 文件名称</th>
-              <th width="35%" class="hidden-phone"><i class="fa fa-question-circle"></i> 文件描述</th>
-              <th width="12%"><i class="fa fa-calendar"></i> 修改时间</th>
-              <th width="6%"><i class="fa fa-cube"></i> 大小</th>
-              <th width="6%"><i class="fa fa-edit"></i> 状态</th>
-              <th width="6%"><i class="fa fa-cog"></i> 操作</th>
+              <th width="32%" class="hidden-phone"><i class="fa fa-question-circle"></i> 文件描述</th>
+              <th width="14%"><i class="fa fa-calendar"></i> 修改时间</th>
+              <th width="7%"><i class="fa fa-cube"></i> 大小</th>
+              <th width="7%"><i class="fa fa-edit"></i> 状态</th>
+              <th width="7%"><i class="fa fa-cog"></i> 操作</th>
             </tr>
             </thead>
             <tbody>

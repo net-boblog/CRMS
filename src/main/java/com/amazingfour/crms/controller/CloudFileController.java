@@ -34,10 +34,10 @@ public class CloudFileController {
     private TaskServiceImp taskServiceImp;
 
     //跳转到视频管理页面
-    @RequestMapping("/init")
+    /*@RequestMapping("/init")
     public String init() {
         return "file/fileMain";
-    }
+    }*/
 
     //跳转到上传页面
     @RequestMapping("/gotoUpload")

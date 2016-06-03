@@ -258,7 +258,7 @@ function viewFileMes(fileId,fileUrl,fileName){
         content: [contentUrl,'no'],
         btn:'下载',
         yes:function(){
-            downloadFile(fileUrl,fileName)
+            downloadFile(fileUrl,fileName,"/filec/getDownloadUrl.htm")
         },
         move:false
     });
