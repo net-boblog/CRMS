@@ -101,21 +101,19 @@
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="col-lg-4">
-                <%--<c:forEach items="${sessionScope.operList}" var="oper">
-                    <c:if test="${oper.funName=='删除我的资源'}">--%>
-                        <%--<button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>--%>
+
+                        <button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>
                         <button type="button" class="btn btn-theme04" onclick="deleteFiles()"><i class="glyphicon glyphicon-trash"></i>删除
                         </button>
-                        <%--</c:if>
-                        <c:if test="${oper.funName=='编辑我的资源'}">--%>
+
                         <button type="button" class="btn btn-theme02" onclick="openAddFile()"><i
                                 class="glyphicon glyphicon-plus"></i>新增
                         </button>
-                        <%--</c:if>
-                </c:forEach>--%>
+
+                        <%--<a id="iframe" class="btn btn-theme02" href="/filec/gotoUpload.htm" role="button"><i class="glyphicon glyphicon-plus"></i>新增</a>--%>
+
                     </div>
-                <%--<c:forEach items="${sessionScope.operList}" var="oper">
-                    <c:if test="${oper.funName=='查询我的资源'}">--%>
+
                     <div class="col-lg-8">
                         <div class="pull-right">
                             <form id="actionId" class="form-inline" role="form" method="post" action="/task/listMyFile.htm">
@@ -139,8 +137,7 @@
                             </form>
                         </div>
                     </div>
-                    <%--</c:if>
-                    </c:forEach>--%>
+
                     <!-- /form-panel -->
                 </div>
             </div>
@@ -218,11 +215,8 @@
                                                         <c:otherwise>取消共享</c:otherwise>
                                                     </c:choose>
                                                 </a>
-                                <%--<c:forEach items="${sessionScope.operList}" var="oper">
-                                            <c:if test="${oper.funName=='资源下载'}">--%>
-                                                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}","/filec/getDownloadUrl.htm");'>下载</a>
-                                            <%--</c:if>
-                                </c:forEach>--%>
+
+                                                <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>下载</a>  <%--<i class="glyphicon glyphicon-download-alt">下载</i>--%>
                                                 <a class="Atag nowrap" href='javascript:viewFileMes("${cloudFile.fileId}","${cloudFile.fileUrl}","${cloudFile.fileName}");'>
                                                     详情
                                                 </a>

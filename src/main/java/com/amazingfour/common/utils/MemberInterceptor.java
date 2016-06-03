@@ -82,19 +82,16 @@ public class MemberInterceptor implements HandlerInterceptor {
         excludedUrls.add("/user/comInformation.htm");   //判断用户基本信息是否完善
         excludedUrls.add("/user/activated.htm");   //激活邮箱
         excludedUrls.add("/user/insert.htm");   //用户新增
-        excludedUrls.add("/user/findPassByEmail.htm");   //用户新增
-        excludedUrls.add("/user/findPassPre.htm");   //用户新增
+        excludedUrls.add("/user/findPassByEmail.htm");   //发送邮件
+        excludedUrls.add("/user/findPassPre.htm");   //重置密码
+        excludedUrls.add("/filec/gotoUpload.htm");   //新增文件弹窗
         excludedUrls.add("/user/update.htm");   //用户更新
-        excludedUrls.add("/user/updatepassword.htm");   //修改密码
-        excludedUrls.add("/user/delUsers.htm");
-
         excludedUrls.add("/filec/getTokenJs.htm");   //获得上传凭证
         excludedUrls.add("/filec/addFile.htm");   //新增文件
         excludedUrls.add("/filec/getReTokenJs.htm");   //获得重新上传凭证
         excludedUrls.add("/filec/updateFile.htm");   //更新文件
         excludedUrls.add("/filec/viewFileMes.htm");   //查看文件详情
-        excludedUrls.add("/filec/gotoFileLib.htm");   //进入资源共享库
-        excludedUrls.add("/task/listMyFile.htm");   //进入我的资源
+
 
         String requestUri = request.getRequestURI();
         for (String url : excludedUrls) {

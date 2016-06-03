@@ -67,11 +67,11 @@
                         <ul class="sub">
                     </c:when>
                 <c:when test="${menu.name == '待领任务'}">
-                        <li><a href="${menu.url}">${menu.name}</a></li>
+                        <li><a href="${menu.url}?taskState=0">${menu.name}</a></li>
                         </li>
                 </c:when>
                     <c:when test="${menu.name == '待办任务'}">
-                        <li><a href="${menu.url}">${menu.name}</a></li>
+                        <li><a href="${menu.url}?taskState=1">${menu.name}</a></li>
                         </li>
                     </c:when>
                     <c:when test="${menu.name == '历史任务'}">
