@@ -233,10 +233,10 @@
                    <c:if test="${oper.funName=='资源编辑'}">
                   <a class="btn btn-default btn-xs" href='javascript:editFilePre("${cloudFile.fileId}","${oper.action}");' role="button" title="编辑"><i class="fa fa-pencil"></i></a>
                   </c:if>
-                   <c:if test="${oper.funName=='资源下载'}">
-                  <a class="btn btn-default btn-xs" href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}","${oper.action}");' role="button" title="下载"><i class="fa fa-download"></i></a>
-                  </c:if>
                  </c:forEach>
+                  <a class="btn btn-default btn-xs"
+                     href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");' role="button"
+                     title="下载"><i class="fa fa-download"></i></a>
                 </td>
               </tr>
           </c:forEach>

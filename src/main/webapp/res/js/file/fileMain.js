@@ -101,8 +101,8 @@ function viewFile(fileUrl,fileName){
 }
 
 //下载视频
-function downloadFile(fileUrl,fileName,url){
-    $.get(url,{key:fileUrl},
+function downloadFile(fileUrl, fileName) {
+    $.get("/filec/getDownloadUrl.htm", {key: fileUrl},
         function(data){
 
             var ext = fileUrl.substring(fileUrl.lastIndexOf("."));
@@ -233,8 +233,8 @@ function deleteFiles(){
 }
 
 //编辑视频前置，查询并弹出编辑iframe页面
-function editFilePre(fileId,url){
-    var contentUrl = ''+url+'?fileId='+fileId;
+function editFilePre(fileId) {
+    var contentUrl = '/filec/preUpdate.htm?fileId=' + fileId;
     layer.open({
         type: 2,
         title: ['更新文件','font-family: Helvetica, arial, sans-serif;font-size: 14px;font-weight: bold;'],

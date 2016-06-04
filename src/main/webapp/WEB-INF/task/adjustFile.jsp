@@ -23,6 +23,7 @@
 <body>
 <form id="fileForm" class="panel">
   <input type="hidden" name="fileId" value="${cloudFile.fileId}">
+  <input type="hidden" name="shareState" value="${cloudFile.shareState}">
   <input id="fileUrlId" type="hidden" name="fileUrl" value="${cloudFile.fileUrl}">
   <input  type="hidden" name="instanceId" value="${cloudFile.instanceId}">
   <input  type="hidden" name="fileState" value="${cloudFile.fileState}">

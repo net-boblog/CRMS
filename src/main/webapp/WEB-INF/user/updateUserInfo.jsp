@@ -103,10 +103,11 @@ $(function(){
         }
 
         var phoneValue = $("#telPhone").val();
-        /*if(phoneValue==""){
+        if (phoneValue == "") {
             layer.tips('手机号码不能为空!', '#telPhone',{tips: 1,tipMore:true});
             return;
-        }*/
+        }
+
         if(phoneValue!=""&&!/^1[3|4|5|8][0-9]\d{8}$/.test(phoneValue)){
             layer.tips('手机号码格式不正确', '#telPhone',{tips: 1});
             return;
@@ -123,12 +124,12 @@ $(function(){
             cache:false,
             success:function(data,status){
                 parent.layer.msg(status+":更新成功",{shade:0.5,time:2000},function(){
-                    parent.window.location="/user/list.htm";
+                    parent.window.location = "${menuList[0].url}";
                 });
             },
             error:function(xhr,status,ex){
                 parent.layer.msg(status+":更新失败",{shade:0.5,time:2000},function(){
-                    parent.window.location="/user/list.htm";
+                    parent.window.location = "${menuList[0].url}";
                 });
             }
         });

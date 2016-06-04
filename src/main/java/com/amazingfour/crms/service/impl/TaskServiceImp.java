@@ -59,9 +59,9 @@ public class TaskServiceImp {
      */
     public CloudFile startWorkFlow(CloudFile cloudFile, Long userId) {
         try {
-            String bussinessKeyId = cloudFile.getBussinessKey();
             // 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
             identityService.setAuthenticatedUserId(userId.toString());
+            String bussinessKeyId = cloudFile.getBussinessKey();
             ProcessInstance instance = runtimeService.startProcessInstanceByKey("auditing-process", bussinessKeyId);
             String instanceId = instance.getProcessInstanceId();
             cloudFile.setInstanceId(instanceId);

@@ -95,7 +95,7 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper site-min-height">
-            <h3><i class="fa fa-angle-right"></i> 任务管理</h3>
+            <h3><i class="fa fa-angle-right"></i> 历史任务列表</h3>
             <!--<img src="http://developer.qiniu.com/samples/黑名单-S01E12.flv?vframe/jpg/offset/10/w/328/h/220">-->
 
             <!-- 任务列表row -->

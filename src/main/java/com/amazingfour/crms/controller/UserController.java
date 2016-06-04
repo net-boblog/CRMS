@@ -6,7 +6,6 @@ import com.amazingfour.common.utils.PageUtil;
 import com.amazingfour.common.utils.ResponseUtil;
 import com.amazingfour.common.utils.mail.Mail;
 import com.amazingfour.common.utils.mail.MailUtils;
-import com.amazingfour.common.utils.qiniu.MyBucketManager;
 import com.amazingfour.crms.domain.Menu;
 import com.amazingfour.crms.domain.Operation;
 import com.amazingfour.crms.domain.Role;
@@ -19,21 +18,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
-import org.springframework.web.multipart.MultipartFile;
 /**
  * Created by kennyho on 2016/1/11.
  */
@@ -597,7 +594,7 @@ public class UserController {
             ResponseUtil.renderJson(response, obj.toString());
             return;
         }
-        List<String> userIdList=new ArrayList<>();
+        List<String> userIdList = new ArrayList<String>();
         Collections.addAll(userIdList,userId);//将前端用户ID由数组类型转化为list
           int rows = userService.deleteBatch(userIdList);
             int len = userId.length;

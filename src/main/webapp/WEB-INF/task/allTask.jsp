@@ -94,7 +94,7 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper site-min-height">
-            <h3><i class="fa fa-angle-right"></i> 任务管理</h3>
+            <h3><i class="fa fa-angle-right"></i> 正在运行的任务</h3>
             <!--<img src="http://developer.qiniu.com/samples/黑名单-S01E12.flv?vframe/jpg/offset/10/w/328/h/220">-->
 
             <!-- 任务列表row -->
@@ -193,7 +193,7 @@
                                                         <a href="/diagram-viewer/index.html?processDefinitionId=${cloudFile.task.processDefinitionId}&processInstanceId=${cloudFile.instanceId}"
                                                            class="trace nowrap"
                                                            target="_BLANK"
-                                                           id="${cloudFile.bussinessKey}">点击查看流程图
+                                                           id="${cloudFile.bussinessKey}">查看流程图
                                                         </a>
                                                     </c:when>
                                                 </c:choose>

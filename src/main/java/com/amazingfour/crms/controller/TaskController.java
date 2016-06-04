@@ -3,7 +3,6 @@ package com.amazingfour.crms.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.amazingfour.common.utils.PageUtil;
 import com.amazingfour.common.utils.ResponseUtil;
-import com.amazingfour.common.utils.qiniu.MyBucketManager;
 import com.amazingfour.common.utils.qiniu.MyUploadToken;
 import com.amazingfour.crms.domain.CloudFile;
 import com.amazingfour.crms.domain.User;
@@ -265,7 +264,7 @@ public class TaskController {
 
 
     /**
-     * 接受申请
+     * 接受调整
      *
      * @param cloudFile
      * @param key

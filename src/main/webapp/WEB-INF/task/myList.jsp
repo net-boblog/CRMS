@@ -102,7 +102,7 @@
                 <div class="col-lg-12">
                     <div class="col-lg-4">
 
-                        <button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>
+                        <%--<button type="button" class="btn btn-theme03" onclick="selectFiles2()">全选</button>--%>
                         <button type="button" class="btn btn-theme04" onclick="deleteFiles()"><i class="glyphicon glyphicon-trash"></i>删除
                         </button>
 
@@ -209,20 +209,18 @@
                                     <td width="200px">
                                         <center>
                                             <div style="text-align:center">
-                                                <a id="${cloudFile.fileId}" class="Atag nowrap" href='javascript:shareFile("${cloudFile.fileId}","${cloudFile.shareState}");'>
-                                                    <c:choose>
-                                                        <c:when test="${cloudFile.shareState==0}">共享</c:when>
-                                                        <c:otherwise>取消共享</c:otherwise>
-                                                    </c:choose>
-                                                </a>
-
                                                 <a href='javascript:downloadFile("${cloudFile.fileUrl}","${cloudFile.fileName}");'>下载</a>  <%--<i class="glyphicon glyphicon-download-alt">下载</i>--%>
                                                 <a class="Atag nowrap" href='javascript:viewFileMes("${cloudFile.fileId}","${cloudFile.fileUrl}","${cloudFile.fileName}");'>
                                                     详情
                                                 </a>
                                                 <c:if test="${cloudFile.fileState==2}">
-                                                    <a href='javascript:editFilePre("${cloudFile.fileId}");'><i
-                                                            class="glyphicon glyphicon-edit"></i>编辑</a>
+                                                    <a id="${cloudFile.fileId}" class="Atag nowrap"
+                                                       href='javascript:shareFile("${cloudFile.fileId}","${cloudFile.shareState}");'>
+                                                        <c:choose>
+                                                            <c:when test="${cloudFile.shareState==0}">共享</c:when>
+                                                            <c:otherwise>取消共享</c:otherwise>
+                                                        </c:choose>
+                                                    </a>
                                                 </c:if>
                                                 <c:choose>
                                                     <c:when test="${cloudFile.fileState==1||cloudFile.fileState==3}">
